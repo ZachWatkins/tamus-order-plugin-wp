@@ -82,7 +82,7 @@ class User_Scope {
 		'add_users',
 		'add_user',
 		'list_users',
-		'list_user'
+		'list_user',
 	);
 
 	/**
