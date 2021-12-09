@@ -29,6 +29,19 @@ class User_Roles {
 	private static $file = __FILE__;
 
 	/**
+	 * Capabilities unique to this plugin.
+	 *
+	 * @var app_caps
+	 */
+	private $app_caps = array(
+		'manage_wso_options',
+		'wso_manage_acf_options',
+		'wso_email_logs',
+		'wso_email_opts',
+		'wso_history_logs',
+	);
+
+	/**
 	 * Initialize the class
 	 *
 	 * @since 1.0.0
@@ -57,7 +70,7 @@ class User_Roles {
 
 		// Logistics basic user scope.
 		// This is a list of user roles the role capability has access to.
-		$logistics_user_scope = array(
+		$base_logistics_scope = array(
 			'capabilities' => array(
 				'delete_user'  => array(
 					'subscriber',
@@ -66,31 +79,6 @@ class User_Roles {
 				'remove_user'  => array(
 					'subscriber',
 					'wso_business_admin',
-				),
-				'edit_user'    => array(
-					'subscriber',
-					'wso_business_admin',
-				),
-				'promote_user' => array(
-					'subscriber',
-					'wso_business_admin',
-				),
-			),
-		);
-		$user_scope->register( 'wso_logistics', $logistics_user_scope );
-
-		// Logistics admin user scope.
-		$logistics_admin_user_scope = array(
-			'capabilities' => array(
-				'delete_user'  => array(
-					'subscriber',
-					'wso_business_admin',
-					'wso_it_rep',
-				),
-				'remove_user'  => array(
-					'subscriber',
-					'wso_business_admin',
-					'wso_it_rep',
 				),
 				'edit_user'    => array(
 					'subscriber',
@@ -104,7 +92,7 @@ class User_Roles {
 				),
 			),
 		);
-		$user_scope->register( 'wso_logistics_admin', $logistics_admin_user_scope );
+		$user_scope->register( 'wso_logistics', $base_logistics_scope );
 
 	}
 
@@ -198,7 +186,7 @@ class User_Roles {
 			'delete_others_bundles'        => true,
 			'delete_private_bundles'       => true,
 			'delete_published_bundles'     => true,
-			'manage_wso_options'           => true,
+			'wso_manage_options'           => true,
 			'upload_files'                 => true,
 			'unfiltered_html'              => true,
 			'read'                         => true,
@@ -221,8 +209,11 @@ class User_Roles {
 			'delete_others_posts'          => false,
 			'delete_private_posts'         => false,
 			'delete_published_posts'       => false,
-			'manage_wso_options'           => true,
-			'manage_acf_options'           => true,
+			'wso_manage_options'           => true,
+			'wso_manage_acf_options'           => true,
+			'wso_email_logs'               => true,
+			'wso_email_opts'           => true,
+			'wso_history_logs'             => true,
 		);
 
 		$this->add_role( 'wso_admin', 'WSO Admin', false, $wso_admin_caps );
@@ -335,8 +326,10 @@ class User_Roles {
 		 * Logistics Admin capabilities.
 		 */
 		$logistics_admin_caps = array(
-			'level_9'                      => true, // Just below a true administrator.
-			'manage_wso_options'           => true,
+			'level_9'            => true, // Just below a true administrator.
+			'wso_manage_options' => true,
+			'wso_email_logs'     => true,
+			'wso_email_opts' => true,
 		);
 
 		$logistics_admin_caps = array_merge( $logistics_admin_caps, $logistics_caps );
@@ -420,7 +413,7 @@ class User_Roles {
 	 *
 	 * @return array
 	 */
-	public function postman_user_capabilities( $caps, $user_role ) {
+	private function postman_user_capabilities( $caps, $user_role ) {
 
 		$postman = array(
 			'active'  => class_exists( 'Postman' ) && is_plugin_active( 'post-smtp/postman-smtp.php' ),
@@ -468,7 +461,7 @@ class User_Roles {
 
 		if ( $duplicate_post['active'] ) {
 			if ( in_array( $user_role, $duplicate_post['copy'], true ) ) {
-				$caps[ 'copy_posts' ] = true;
+				$caps['copy_posts'] = true;
 			}
 		}
 
@@ -479,7 +472,7 @@ class User_Roles {
 	/**
 	 * Advanced Custom Fields Pro
 	 * Show the Advanced Custom Fields admin menu if the user
-	 * is an administrator or they have the 'manage_acf_options'
+	 * is an administrator or they have the 'wso_manage_acf_options'
 	 * capability. By default they need the 'manage_options'
 	 * capability.
 	 *
@@ -489,8 +482,9 @@ class User_Roles {
 	 */
 	public function manage_acf_options( $show ) {
 
-		$show = current_user_can( 'administrator' );
-		$show = current_user_can( 'manage_acf_options' );
+		if ( false === $show ) {
+			$show = current_user_can( 'administrator' ) || current_user_can( 'wso_manage_acf_options' ) ? true : false;
+		}
 
 		return $show;
 

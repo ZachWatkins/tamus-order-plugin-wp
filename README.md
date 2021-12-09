@@ -17,6 +17,15 @@ A GNU GPL 2.0 (or later) WordPress Plugin to facilitate product ordering within 
 9. Uses Advanced Custom Fields for order fields and the Settings page
 10. Affiliated business staff can view orders, will be CC'd on emails sent to the business staff responsible for approving an order.
 
+### Custom User Capabilities
+
+1. `wso_manage_acf_options`: Can see the Advanced Custom Fields options page.
+2. `manage_wso_options`: Can see the Workstation Ordering App options page.
+3. `wso_email_logs`: Can view email logs.
+4. `wso_email_opts`: Can view and change SMTP email settings. Currently only supports the Post SMTP plugin.
+5. `wso_history_logs`: Can view history logs.
+3. All custom post types have each of their capabilities namespaced using their post type slug. Example: `create_wsorders`
+
 ## WordPress Requirements
 
 1. Single site install
@@ -27,14 +36,14 @@ A GNU GPL 2.0 (or later) WordPress Plugin to facilitate product ordering within 
 4. WSOrder WordPress Child Theme
     a. <https://github.tamu.edu/liberalarts-web/cla-wsorder>
     b. <https://github.com/tamulibarts/cla-wsorder>
-4. [Advanced Custom Fields Pro Plugin](https://www.advancedcustomfields.com/pro/)
+5. [Advanced Custom Fields Pro Plugin](https://www.advancedcustomfields.com/pro/)
 
 ## WordPress Recommendations
 
 1. TAMU NetID authentication plugin of some kind, we use an in-house CAS plugin and may switch to SAML SSO OneLogin.
 2. [Post SMTP Plugin](https://wordpress.org/plugins/post-smtp/) - Send emails by SMTP with a logger and one-click resend button in case of failed delivery
 3. [User Switching Plugin](https://github.com/johnbillion/user-switching) - For imitating user accounts in case that is desired functionality. The github.com repository is updated more frequently than the WordPress repository.
-4. [Yoast Duplicate Post Plugin](https://wordpress.org/plugins/duplicate-post/) - Copy custom post types. 
+4. [Yoast Duplicate Post Plugin](https://wordpress.org/plugins/duplicate-post/) - Copy custom post types.
 5. [Simple History Plugin](https://wordpress.org/plugins/simple-history/) - For debugging and user support.
 
 # Developer Notes
@@ -70,13 +79,6 @@ Links to resources:
 * NPM package schema - <https://docs.npmjs.com/cli/v7/configuring-npm/package-json>
 * Composer package schema - <https://getcomposer.org/doc/04-schema.md>
 * The Software Package Data Exchange:reg: - <https://spdx.dev/>
-
-
-## Custom User Capability Slugs
-
-1. manage_acf_options: Determines who can see the Advanced Custom Fields options page.
-2. manage_wso_options: Determines who can see the Workstation Ordering App options page.
-3. All custom post types have each of their capabilities namespaced using their post type slug. Example: `create_wsorders`
 
 ## Command Line Tasks
 
