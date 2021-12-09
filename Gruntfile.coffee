@@ -82,5 +82,6 @@ module.exports = (grunt) ->
 
   @registerTask 'default', ['sass:pkg', 'postcss:pkg']
   @registerTask 'develop', ['sasslint', 'sass:dev', 'postcss:dev']
+  @registerTask 'test', ['sasslint']
   @event.on 'watch', (action, filepath) =>
     @log.writeln('#{filepath} has #{action}')

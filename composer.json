@@ -18,9 +18,9 @@
         }
     ],
     "support": {
-        "email": "liberalartsit@tamu.edu",
-        "source": "https://github.tamu.edu/liberalarts-web/cla-workstation-order",
-        "docs": "https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/README.md"
+        "email": "zwatkins.it@gmail.com",
+        "source": "https://github.com/zachwatkins/cla-workstation-order",
+        "docs": "https://github.com/zachwatkins/cla-workstation-order/blob/master/README.md"
     },
     "minimum-stability": "stable",
     "require": {

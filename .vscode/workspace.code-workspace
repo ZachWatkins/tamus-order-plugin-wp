@@ -1,11 +1,16 @@
 {
 	"folders": [
 		{
-			"path": "."
+			"path": "../"
+		},
+		{
+			"path": "../../../themes/cla-wsorder"
+		},
+		{
+			"path": "../../../themes/genesis-sample"
 		}
 	],
 	"settings": {
-		"workbench.colorTheme": "Default High Contrast",
 		"phpcs.enable": true,
 		"phpcs.standard": "WordPress",
 		"phpcs.executablePath": "./vendor/bin/phpcs",

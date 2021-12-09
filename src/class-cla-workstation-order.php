@@ -79,9 +79,14 @@ class CLA_Workstation_Order {
 		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-department-posttype.php';
 		new \CLA_Workstation_Order\Department_PostType();
 
+		// Register page templates.
 		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-pagetemplate.php';
 		$order_form = new \CLA_Workstation_Order\PageTemplate( CLA_WORKSTATION_ORDER_TEMPLATE_PATH, 'order-form-template.php', 'Order Form' );
 		$order_form->register();
+		$orders = new \CLA_Workstation_Order\PageTemplate( CLA_WORKSTATION_ORDER_TEMPLATE_PATH, 'orders.php', 'Orders' );
+		$orders->register();
+		$my_orders = new \CLA_Workstation_Order\PageTemplate( CLA_WORKSTATION_ORDER_TEMPLATE_PATH, 'my-orders.php', 'My Orders' );
+		$my_orders->register();
 		$my_account = new \CLA_Workstation_Order\PageTemplate( CLA_WORKSTATION_ORDER_TEMPLATE_PATH, 'my-account.php', 'My Account' );
 		$my_account->register();
 
