@@ -16,7 +16,7 @@
     "test": "grunt test",
 	"grunt": "grunt",
 	"grunt:dev": "grunt develop",
-    "checkwp": "phpcs --standard=WordPress --ignore=*/vendor/*,*/node_modules/* --filter=gitmodified .",
+    "checkwp": "phpcs --standard=WordPress --ignore=*/vendor/*,*/node_modules/* --fgitilter=gitmodified .",
     "fixwp": "phpcbf --standard=WordPress --ignore=*/vendor/*,*/node_modules/* --filter=gitmodified ."
   },
   "author": "Zachary Watkins <zwatkins2@tamu.edu> (https://github.com/zachwatkins/)",
