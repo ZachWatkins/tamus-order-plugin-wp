@@ -11,16 +11,13 @@
   "main": "cla-workstation-order.php",
   "private": true,
   "scripts": {
-    "start": "git config core.hooksPath hooks && composer install && npm run configphpcs && npm install && npm test && grunt",
+    "start": "git config core.hooksPath hooks && composer install && npm install && npm run grunt",
+	"start:dev": "git config core.hooksPath hooks && composer install && npm install && npm test && npm run grunt:dev",
     "test": "grunt test",
 	"grunt": "grunt",
-    "checkwp": "./vendor/bin/phpcs --standard=WordPress --ignore=\"*/vendor/*,*/node_modules/*\" --filter=\"gitmodified\" .",
-    "fixwp": "./vendor/bin/phpcbf --standard=WordPress --ignore=\"*/vendor/*,*/node_modules/*\" --filter=\"gitmodified\" .",
-    "configphpcs": "./vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs",
-    "windows-start": "git config core.hooksPath hooks && composer install && npm run windows-configphpcs && npm install && npm test && grunt",
-    "windows-checkwp": "php ./vendor/bin/phpcs --ignore=*/vendor/*,*/node_modules/* --standard=WordPress .",
-    "windows-fixwp": "php ./vendor/bin/phpcbf --ignore=*/vendor/*,*/node_modules/* --standard=WordPress .",
-    "windows-configphpcs": "php ./vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs"
+	"grunt:dev": "grunt develop",
+    "checkwp": "phpcs --standard=WordPress --ignore=*/vendor/*,*/node_modules/* --filter=gitmodified .",
+    "fixwp": "phpcbf --standard=WordPress --ignore=*/vendor/*,*/node_modules/* --filter=gitmodified ."
   },
   "author": "Zachary Watkins <zwatkins2@tamu.edu> (https://github.com/zachwatkins/)",
   "contributors": [
