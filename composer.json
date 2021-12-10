@@ -26,8 +26,16 @@
     "require": {
         "setasign/fpdf": "^1.8"
     },
-    "require-dev": {
-        "wp-coding-standards/wpcs": "^1.0",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1"
-    }
+	"require-dev": {
+		"wp-coding-standards/wpcs": "*"
+	},
+	"scripts": {
+		"post-install-cmd": [
+			"composer run-script --no-dev config-wpcs"
+		],
+		"config-wpcs": [
+			"phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs",
+			"phpcs --config-set default_standard WordPress"
+		]
+	}
 }
