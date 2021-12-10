@@ -210,9 +210,9 @@ class User_Roles {
 			'delete_private_posts'         => false,
 			'delete_published_posts'       => false,
 			'wso_manage_options'           => true,
-			'wso_manage_acf_options'           => true,
+			'wso_manage_acf_options'       => true,
 			'wso_email_logs'               => true,
-			'wso_email_opts'           => true,
+			'wso_email_opts'               => true,
 			'wso_history_logs'             => true,
 		);
 
