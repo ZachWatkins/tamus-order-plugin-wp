@@ -175,6 +175,9 @@ class Order_Form_Helper {
 
 		// Get user's department.
 		$user_department_post    = get_field( 'department', "user_{$user_id}" );
+		if ( ! $user_department_post ) {
+			return array();
+		}
 		$user_department_post_id = $user_department_post->ID;
 
 		// Retrieve products for the current program year.
@@ -308,6 +311,10 @@ class Order_Form_Helper {
 		 * Display products.
 		 */
 		$product_posts = $this->get_product_post_objects_for_program_by_user_dept( $program_id, $category );
+		if ( 0 === count( $product_posts ) ) {
+			$cat = false === $category ? '' : " \"{$category}\"";
+			return wp_kses_post( "<p>No{$cat} products found.</p>" );
+		}
 
 		// Output posts.
 		$output = '';
