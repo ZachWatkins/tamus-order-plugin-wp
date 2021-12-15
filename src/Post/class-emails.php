@@ -2,23 +2,23 @@
 /**
  * The file that defines the Order post type
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/src/class-wsorder-posttype-emails.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/src/class-order-posttype-emails.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/src
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/src
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
-namespace CLA_Workstation_Order;
+namespace TAMUS\Order\Post;
 
 /**
  * Add assets
  *
- * @package cla-workstation-order
+ * @package tamus-order-plugin-wp
  * @since 1.0.0
  */
-class WSOrder_PostType_Emails {
+class Emails {
 
 	/**
 	 * Initialize the class
@@ -29,11 +29,11 @@ class WSOrder_PostType_Emails {
 	public function __construct() {
 
 		// Custom action hooks for triggering emails.
-		add_action( 'wsorder_it_rep_confirmed', array( $this, 'it_rep_confirmation_email' ) );
-		add_action( 'wsorder_business_staff_confirmed', array( $this, 'business_staff_confirmation_email' ) );
-		add_action( 'wsorder_logistics_confirmed', array( $this, 'logistics_confirmation_email' ) );
-		add_action( 'wsorder_returned', array( $this, 'order_returned_email' ) );
-		add_action( 'wsorder_submitted', array( $this, 'order_submitted_email' ) );
+		add_action( 'tamusorder_it_rep_confirmed', array( $this, 'it_rep_confirmation_email' ) );
+		add_action( 'tamusorder_business_staff_confirmed', array( $this, 'business_staff_confirmation_email' ) );
+		add_action( 'tamusorder_logistics_confirmed', array( $this, 'logistics_confirmation_email' ) );
+		add_action( 'tamusorder_returned', array( $this, 'order_returned_email' ) );
+		add_action( 'tamusorder_submitted', array( $this, 'order_submitted_email' ) );
 
 		// Notify parties of changes to order status.
 		add_filter( 'acf/update_value/key=field_5fff6b71a22b0', array( $this, 'it_rep_confirmed' ), 12, 2 );
@@ -147,7 +147,7 @@ class WSOrder_PostType_Emails {
 
 		$old_value = (int) get_post_meta( $post_id, 'it_rep_status_confirmed', true );
 		if ( 1 === intval( $value ) && 0 === $old_value ) {
-			do_action( 'wsorder_it_rep_confirmed', $post_id );
+			do_action( 'tamusorder_it_rep_confirmed', $post_id );
 		}
 
 		return $value;
@@ -236,7 +236,7 @@ class WSOrder_PostType_Emails {
 
 		$old_value = (int) get_post_meta( $post_id, 'business_staff_status_confirmed', true );
 		if ( 1 === intval( $value ) && 0 === $old_value ) {
-			do_action( 'wsorder_business_staff_confirmed', $post_id );
+			do_action( 'tamusorder_business_staff_confirmed', $post_id );
 		}
 
 		return $value;
@@ -291,7 +291,7 @@ class WSOrder_PostType_Emails {
 
 		$old_value = (int) get_post_meta( $post_id, 'it_logistics_status_confirmed', true );
 		if ( 1 === intval( $value ) && 0 === $old_value ) {
-			do_action( 'wsorder_logistics_confirmed', $post_id );
+			do_action( 'tamusorder_logistics_confirmed', $post_id );
 		}
 
 		return $value;

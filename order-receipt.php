@@ -2,10 +2,10 @@
 /**
  * Order Receipt Renderer
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/order-receipt.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/order-receipt.php
  * @author:    Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
+ * @package    tamus-order-plugin-wp
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  *
  * README:   The FPDF library was chosen purely based on what is in this file.
@@ -48,8 +48,8 @@ if (
 		! in_array( $current_user_id, $affiliated_it_reps, true )
 		&& ! in_array( $current_user_id, $affiliated_business_staff, true )
 		&& $current_user_id !== $author_id
-		&& ! current_user_can( 'wso_logistics' )
-		&& ! current_user_can( 'wso_logistics_admin' )
+		&& ! current_user_can( 'logistics' )
+		&& ! current_user_can( 'logistics_admin' )
 		&& ! current_user_can( 'wso_admin' )
 	)
 ) {
@@ -60,7 +60,7 @@ if (
 check_admin_referer( 'auth-post_' . $order_post_id, 'token' );
 
 // Load PDF library.
-require CLA_WORKSTATION_ORDER_DIR_PATH . 'vendor/setasign/fpdf/fpdf.php';
+require TAMUS_ORDER_DIR_PATH . 'vendor/setasign/fpdf/fpdf.php';
 
 // Gather post meta.
 $order_post = get_post( $order_post_id );
@@ -72,7 +72,7 @@ foreach ( $meta as $key => $value ) {
 		$meta[ $key ] = $value[0];
 	}
 }
-$meta['logo'] = CLA_WORKSTATION_ORDER_DIR_URL . 'images/logo-support-center.png';
+$meta['logo'] = TAMUS_ORDER_DIR_URL . 'images/logo-support-center.png';
 // Get timestamps.
 date_default_timezone_set( 'America/Chicago' );
 $publish_time        = strtotime( $order_post->post_modified_gmt . ' UTC' );

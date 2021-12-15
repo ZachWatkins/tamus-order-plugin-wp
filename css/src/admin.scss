@@ -2,11 +2,11 @@
 	width: 150px;
 }
 
-/* Change save and publish buttons for wsorder post edit pages. */
-body.wp-admin.post-type-wsorder {
+/* Change save and publish buttons for tamusorder post edit pages. */
+body.wp-admin.post-type-tamusorder {
 	/* Hide post status on edit page*/
-	.inline-edit-wsorder .inline-edit-status,
-	.inline-edit-wsorder .inline-edit-group,
+	.inline-edit-tamusorder .inline-edit-status,
+	.inline-edit-tamusorder .inline-edit-group,
 	.misc-pub-section.misc-pub-visibility,
 	.misc-pub-section.misc-pub-curtime,
 	.row-actions .inline,
@@ -84,7 +84,7 @@ body.wp-admin.post-type-wsorder {
 	}
 }
 
-.edit-php.post-type-wsorder {
+.edit-php.post-type-tamusorder {
 	.approval {
 		display: inline-block;
 		padding: 3px 5px;

@@ -2,20 +2,20 @@
 /**
  * The file that defines the Order post type
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/src/class-dashboard.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/src/class-dashboard.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/src
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/src
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
-namespace CLA_Workstation_Order;
+namespace TAMUS\Order;
 
 /**
  * Add assets
  *
- * @package cla-workstation-order
+ * @package tamus-order-plugin-wp
  * @since 1.0.0
  */
 class Dashboard {
@@ -188,7 +188,7 @@ class Dashboard {
 		$output .= "<li><a href=\"{$url}/new-order/\">+ Place a New Order</a></li><li><a href=\"{$url}/my-orders/\">My Orders</a></li>";
 		$output .= '</ul>';
 		$returned_query_args = array(
-			'post_type' => 'wsorder',
+			'post_type' => 'tamusorder',
 			'posts_per_page' => -1,
 			'fields' => 'ids',
 			'post_status' => 'returned',
@@ -225,7 +225,7 @@ class Dashboard {
 		 */
 		if ( current_user_can( 'wso_it_rep' ) ) {
 			$todo_query_args = array(
-				'post_type'      => 'wsorder',
+				'post_type'      => 'tamusorder',
 				'posts_per_page' => -1,
 				'fields'         => 'ids',
 				'post_status'    => array( 'draft', 'action_required' ),
@@ -252,7 +252,7 @@ class Dashboard {
 			);
 		} elseif ( current_user_can( 'wso_business_admin' ) ) {
 			$todo_query_args = array(
-				'post_type'      => 'wsorder',
+				'post_type'      => 'tamusorder',
 				'posts_per_page' => -1,
 				'fields'         => 'ids',
 				'post_status'    => array( 'draft', 'action_required' ),
@@ -283,7 +283,7 @@ class Dashboard {
 			);
 		} else {
 			$todo_query_args = array(
-				'post_type'      => 'wsorder',
+				'post_type'      => 'tamusorder',
 				'posts_per_page' => -1,
 				'fields'         => 'ids',
 				'post_status'    => array( 'draft', 'action_required' ),

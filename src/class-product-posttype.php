@@ -2,20 +2,20 @@
 /**
  * The file that defines the Product post type
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/src/class-product-posttype.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/src/class-product-posttype.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/src
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/src
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
-namespace CLA_Workstation_Order;
+namespace TAMUS\Order;
 
 /**
  * Add assets
  *
- * @package cla-workstation-order
+ * @package tamus-order-plugin-wp
  * @since 1.0.0
  */
 class Product_PostType {
@@ -40,8 +40,8 @@ class Product_PostType {
 		add_action( 'restrict_manage_posts', array( $this, 'add_admin_post_category_filter' ), 10 );
 
 		// Load the catalog page template.
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-pagetemplate.php';
-		$catalog = new \CLA_Workstation_Order\PageTemplate( CLA_WORKSTATION_ORDER_TEMPLATE_PATH, 'catalog.php', 'Catalog' );
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-pagetemplate.php';
+		$catalog = new \TAMUS\Order\PageTemplate( TAMUS_ORDER_TEMPLATE_PATH, 'catalog.php', 'Catalog' );
 		$catalog->register();
 
 
@@ -55,10 +55,10 @@ class Product_PostType {
 	 */
 	public function register_post_type() {
 
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-posttype.php';
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-taxonomy.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-posttype.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-taxonomy.php';
 
-		new \CLA_Workstation_Order\PostType(
+		new \TAMUS\Order\PostType(
 			array(
 				'singular' => 'Product',
 				'plural'   => 'Products',
@@ -86,7 +86,7 @@ class Product_PostType {
 	 */
 	public function register_custom_fields() {
 
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'fields/product-fields.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'fields/product-fields.php';
 
 	}
 
@@ -198,7 +198,7 @@ class Product_PostType {
 		);
 		//build a custom dropdown list of values to filter by
 		echo '<select id="program" name="program">';
-		echo '<option value="0">' . __( 'Show all Programs', 'cla-workstation-order' ) . ' </option>';
+		echo '<option value="0">' . __( 'Show all Programs', 'tamus-order-plugin-wp' ) . ' </option>';
 		foreach( $results as $program ) {
 			if ( ! empty( $program ) ) {
 				$select = ($program == $selected) ? ' selected="selected"':'';

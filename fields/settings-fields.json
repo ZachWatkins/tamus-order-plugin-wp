@@ -90,7 +90,7 @@
                 {
                     "param": "options_page",
                     "operator": "==",
-                    "value": "wsorder-settings"
+                    "value": "tamusorder-settings"
                 }
             ]
         ],

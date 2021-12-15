@@ -2,11 +2,11 @@
 /**
  * The file that renders the My Orders page template.
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/templates/my-orders.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/templates/my-orders.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/templates
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/templates
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
@@ -43,7 +43,7 @@ function cla_my_orders() {
 
 	// Get accepted orders.
 	$accepted_order_args = array(
-		'post_type'      => 'wsorder',
+		'post_type'      => 'tamusorder',
 		'fields'         => 'ids',
 		'posts_per_page' => -1,
 		'author'         => $user_id,
@@ -65,7 +65,7 @@ function cla_my_orders() {
 
 	// Get pending orders.
 	$pending_order_args = array(
-		'post_type'      => 'wsorder',
+		'post_type'      => 'tamusorder',
 		'fields'         => 'ids',
 		'posts_per_page' => -1,
 		'author'         => $user_id,
@@ -102,7 +102,7 @@ function cla_my_orders() {
 
 	// Get returned orders.
 	$returned_order_args = array(
-		'post_type'      => 'wsorder',
+		'post_type'      => 'tamusorder',
 		'fields'         => 'ids',
 		'posts_per_page' => -1,
 		'author'         => $user_id,

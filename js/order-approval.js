@@ -1,11 +1,11 @@
 /**
  * Order approval page template functionality.
  *  
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/js/order-approval.js
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/js/order-approval.js
  * @author:    Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/js
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/js
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 (function($){

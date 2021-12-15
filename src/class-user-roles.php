@@ -3,15 +3,15 @@
  * The file that defines customizations to user roles and capabilities for WordPress functionality.
  * https://wordpress.org/support/article/roles-and-capabilities/
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/src/class-user-roles.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/src/class-user-roles.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/src
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/src
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
-namespace CLA_Workstation_Order;
+namespace TAMUS\Order;
 
 /**
  * The core plugin class
@@ -92,7 +92,7 @@ class User_Roles {
 				),
 			),
 		);
-		$user_scope->register( 'wso_logistics', $base_logistics_scope );
+		$user_scope->register( 'logistics', $base_logistics_scope );
 
 	}
 
@@ -115,20 +115,20 @@ class User_Roles {
 		// WSO Admin role.
 		$wso_admin_caps = array(
 			'level_9'                      => true, // Just below a true administrator.
-			'create_wsorders'              => true, // This is needed to edit others orders for some reason.
-			'read_wsorder'                 => true,
-			'read_private_wsorders'        => true,
-			'edit_wsorder'                 => true,
-			'edit_wsorders'                => true,
-			'edit_others_wsorders'         => true,
-			'edit_private_wsorders'        => true,
-			'edit_published_wsorders'      => true, // Required to read published wsorders.
-			'publish_wsorders'             => true, // Required for changing the post status.
-			'delete_wsorder'               => true,
-			'delete_wsorders'              => true,
-			'delete_others_wsorders'       => true,
-			'delete_private_wsorders'      => true,
-			'delete_published_wsorders'    => true,
+			'create_tamusorders'              => true, // This is needed to edit others orders for some reason.
+			'read_tamusorder'                 => true,
+			'read_private_tamusorders'        => true,
+			'edit_tamusorder'                 => true,
+			'edit_tamusorders'                => true,
+			'edit_others_tamusorders'         => true,
+			'edit_private_tamusorders'        => true,
+			'edit_published_tamusorders'      => true, // Required to read published tamusorders.
+			'publish_tamusorders'             => true, // Required for changing the post status.
+			'delete_tamusorder'               => true,
+			'delete_tamusorders'              => true,
+			'delete_others_tamusorders'       => true,
+			'delete_private_tamusorders'      => true,
+			'delete_published_tamusorders'    => true,
 			'create_programs'              => true,
 			'read_program'                 => true,
 			'read_private_programs'        => true,
@@ -225,20 +225,20 @@ class User_Roles {
 		// Logistics role.
 		$logistics_caps = array(
 			'level_8'                      => true, // Just below a true administrator.
-			'create_wsorders'              => true, // This is needed to edit others orders for some reason.
-			'read_wsorder'                 => true,
-			'read_private_wsorders'        => true,
-			'edit_wsorder'                 => true,
-			'edit_wsorders'                => true,
-			'edit_others_wsorders'         => true,
-			'edit_private_wsorders'        => true,
-			'edit_published_wsorders'      => true, // Required to read published wsorders.
-			'publish_wsorders'             => true, // Required for changing the post status.
-			'delete_wsorder'               => true,
-			'delete_wsorders'              => true,
-			'delete_others_wsorders'       => true,
-			'delete_private_wsorders'      => true,
-			'delete_published_wsorders'    => true,
+			'create_tamusorders'              => true, // This is needed to edit others orders for some reason.
+			'read_tamusorder'                 => true,
+			'read_private_tamusorders'        => true,
+			'edit_tamusorder'                 => true,
+			'edit_tamusorders'                => true,
+			'edit_others_tamusorders'         => true,
+			'edit_private_tamusorders'        => true,
+			'edit_published_tamusorders'      => true, // Required to read published tamusorders.
+			'publish_tamusorders'             => true, // Required for changing the post status.
+			'delete_tamusorder'               => true,
+			'delete_tamusorders'              => true,
+			'delete_others_tamusorders'       => true,
+			'delete_private_tamusorders'      => true,
+			'delete_published_tamusorders'    => true,
 			'create_programs'              => true,
 			'read_program'                 => true,
 			'read_private_programs'        => true,

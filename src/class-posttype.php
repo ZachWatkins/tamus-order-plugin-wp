@@ -4,15 +4,15 @@
  *
  * A class definition that registers custom post types with their attributes
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/src/class-posttype.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/src/class-posttype.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/src
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/src
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
-namespace CLA_Workstation_Order;
+namespace TAMUS\Order;
 
 /**
  * The post type registration class

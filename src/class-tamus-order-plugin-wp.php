@@ -5,13 +5,15 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/src/class-cla-workstation-order.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/src/class-tamus-order-plugin-wp.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/src
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/src
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
+
+namespace TAMUS;
 
 /**
  * The core plugin class
@@ -19,7 +21,7 @@
  * @since 1.0.0
  * @return void
  */
-class CLA_Workstation_Order {
+class Order {
 
 	/**
 	 * File name
@@ -44,50 +46,50 @@ class CLA_Workstation_Order {
 	public function __construct() {
 
 		// Load user management hooks.
-		if ( ! class_exists( '\CLA_Workstation_Order\User_Roles' ) ) {
-			require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-user-roles.php';
-			$user_roles = new \CLA_Workstation_Order\User_Roles();
+		if ( ! class_exists( '\TAMUS\Order\User_Roles' ) ) {
+			require_once TAMUS_ORDER_DIR_PATH . 'src/class-user-roles.php';
+			$user_roles = new \TAMUS\Order\User_Roles();
 		}
 
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-user-tamu.php';
-		new \CLA_Workstation_Order\User_Tamu();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-user-tamu.php';
+		new \TAMUS\Order\User_Tamu();
 
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-legacy-support.php';
-		new \CLA_Workstation_Order\Legacy_Support();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-legacy-support.php';
+		new \TAMUS\Order\Legacy_Support();
 
 		// Modify the Dashboard widgets.
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-dashboard.php';
-		new \CLA_Workstation_Order\Dashboard();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-dashboard.php';
+		new \TAMUS\Order\Dashboard();
 
 		// Load required JS and CSS.
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-assets.php';
-		new \CLA_Workstation_Order\Assets();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-assets.php';
+		new \TAMUS\Order\Assets();
 
 		// Create post types.
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-wsorder-posttype.php';
-		new \CLA_Workstation_Order\WSOrder_PostType();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-order-posttype.php';
+		new \TAMUS\Order\TAMUS_Order_PostType();
 
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-product-posttype.php';
-		new \CLA_Workstation_Order\Product_PostType();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-product-posttype.php';
+		new \TAMUS\Order\Product_PostType();
 
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-bundle-posttype.php';
-		new \CLA_Workstation_Order\Bundle_PostType();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-bundle-posttype.php';
+		new \TAMUS\Order\Bundle_PostType();
 
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-program-posttype.php';
-		new \CLA_Workstation_Order\Program_PostType();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-program-posttype.php';
+		new \TAMUS\Order\Program_PostType();
 
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-department-posttype.php';
-		new \CLA_Workstation_Order\Department_PostType();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-department-posttype.php';
+		new \TAMUS\Order\Department_PostType();
 
 		// Register page templates.
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-pagetemplate.php';
-		$order_form = new \CLA_Workstation_Order\PageTemplate( CLA_WORKSTATION_ORDER_TEMPLATE_PATH, 'order-form-template.php', 'Order Form' );
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-pagetemplate.php';
+		$order_form = new \TAMUS\Order\PageTemplate( TAMUS_ORDER_TEMPLATE_PATH, 'order-form-template.php', 'Order Form' );
 		$order_form->register();
-		$orders = new \CLA_Workstation_Order\PageTemplate( CLA_WORKSTATION_ORDER_TEMPLATE_PATH, 'orders.php', 'Orders' );
+		$orders = new \TAMUS\Order\PageTemplate( TAMUS_ORDER_TEMPLATE_PATH, 'orders.php', 'Orders' );
 		$orders->register();
-		$my_orders = new \CLA_Workstation_Order\PageTemplate( CLA_WORKSTATION_ORDER_TEMPLATE_PATH, 'my-orders.php', 'My Orders' );
+		$my_orders = new \TAMUS\Order\PageTemplate( TAMUS_ORDER_TEMPLATE_PATH, 'my-orders.php', 'My Orders' );
 		$my_orders->register();
-		$my_account = new \CLA_Workstation_Order\PageTemplate( CLA_WORKSTATION_ORDER_TEMPLATE_PATH, 'my-account.php', 'My Account' );
+		$my_account = new \TAMUS\Order\PageTemplate( TAMUS_ORDER_TEMPLATE_PATH, 'my-account.php', 'My Account' );
 		$my_account->register();
 
 		// Register settings page.
@@ -112,8 +114,8 @@ class CLA_Workstation_Order {
 	public function init() {
 
 		// Create product category taxonomy.
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-taxonomy.php';
-		new \CLA_Workstation_Order\Taxonomy(
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-taxonomy.php';
+		new \TAMUS\Order\Taxonomy(
 			array( 'Product Category', 'Product Categories' ),
 			'product-category',
 			array( 'product', 'bundle' ),
@@ -142,13 +144,13 @@ class CLA_Workstation_Order {
 
 		if ( function_exists( 'acf_add_options_page' ) ) {
 
-			require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'fields/settings-fields.php';
+			require_once TAMUS_ORDER_DIR_PATH . 'fields/settings-fields.php';
 
 			acf_add_options_page(
 				array(
 					'page_title' => 'Workstation Order Settings',
 					'menu_title' => 'WSO Settings',
-					'menu_slug'  => 'wsorder-settings',
+					'menu_slug'  => 'tamusorder-settings',
 					'capability' => 'manage_wso_options',
 					'redirect'   => false,
 				)
@@ -156,7 +158,7 @@ class CLA_Workstation_Order {
 
 		}
 
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'fields/user-fields.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'fields/user-fields.php';
 
 	}
 

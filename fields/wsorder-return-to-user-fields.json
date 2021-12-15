@@ -28,7 +28,7 @@
                 {
                     "param": "post_type",
                     "operator": "==",
-                    "value": "wsorder"
+                    "value": "tamusorder"
                 },
                 {
                     "param": "current_user_role",
@@ -40,7 +40,7 @@
                 {
                     "param": "post_type",
                     "operator": "==",
-                    "value": "wsorder"
+                    "value": "tamusorder"
                 },
                 {
                     "param": "current_user_role",
@@ -52,19 +52,19 @@
                 {
                     "param": "post_type",
                     "operator": "==",
-                    "value": "wsorder"
+                    "value": "tamusorder"
                 },
                 {
                     "param": "current_user_role",
                     "operator": "==",
-                    "value": "wso_logistics"
+                    "value": "logistics"
                 }
             ],
             [
                 {
                     "param": "post_type",
                     "operator": "==",
-                    "value": "wsorder"
+                    "value": "tamusorder"
                 },
                 {
                     "param": "current_user_role",

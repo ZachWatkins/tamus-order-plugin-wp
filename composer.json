@@ -1,8 +1,8 @@
 {
-    "name": "liberalarts-web/cla-workstation-order",
+    "name": "liberalarts-web/tamus-order-plugin-wp",
     "version": "1.1.0",
     "type": "wordpress-plugin",
-    "homepage": "https://github.tamu.edu/liberalarts-web/cla-workstation-order",
+    "homepage": "https://github.com/zachwatkins/tamus-order-plugin-wp",
     "description": "A GNU GPL 2.0 (or later) WordPress Plugin to facilitate product ordering within a robust, multi-role return / approve workflow using team-based settings.",
     "license": "GPL-2.0-or-later",
     "authors": [
@@ -19,8 +19,8 @@
     ],
     "support": {
         "email": "zwatkins.it@gmail.com",
-        "source": "https://github.com/zachwatkins/cla-workstation-order",
-        "docs": "https://github.com/zachwatkins/cla-workstation-order/blob/master/README.md"
+        "source": "https://github.com/zachwatkins/tamus-order-plugin-wp",
+        "docs": "https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/README.md"
     },
     "minimum-stability": "stable",
     "require": {

@@ -2,11 +2,11 @@
 /**
  * The file that renders the single page template
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/templates/order-form-template.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/templates/order-form-template.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/templates
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/templates
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
@@ -36,7 +36,7 @@ add_filter(
 	function( $title ) {
 		$post_id   = get_the_ID();
 		$post_type = get_post_type( $post_id );
-		if ( 'wsorder' === $post_type ) {
+		if ( 'tamusorder' === $post_type ) {
 			$title = 'Order ' . $title . ' Details';
 		}
 		return $title;
@@ -52,14 +52,14 @@ add_filter(
 function cla_workstation_order_form_styles() {
 
 	wp_register_style(
-		'cla-workstation-order-form-template',
-		CLA_WORKSTATION_ORDER_DIR_URL . 'css/order-form-template.css',
+		'tamus-order-plugin-wp-form-template',
+		TAMUS_ORDER_DIR_URL . 'css/order-form-template.css',
 		false,
-		filemtime( CLA_WORKSTATION_ORDER_DIR_PATH . 'css/order-form-template.css' ),
+		filemtime( TAMUS_ORDER_DIR_PATH . 'css/order-form-template.css' ),
 		'screen'
 	);
 
-	wp_enqueue_style( 'cla-workstation-order-form-template' );
+	wp_enqueue_style( 'tamus-order-plugin-wp-form-template' );
 
 }
 add_action( 'wp_enqueue_scripts', 'cla_workstation_order_form_styles', 1 );
@@ -77,19 +77,19 @@ function cla_workstation_order_form_scripts() {
 	}
 
 	wp_register_script(
-		'cla-workstation-order-form-scripts',
-		CLA_WORKSTATION_ORDER_DIR_URL . 'js/order-form.js',
+		'tamus-order-plugin-wp-form-scripts',
+		TAMUS_ORDER_DIR_URL . 'js/order-form.js',
 		false,
-		filemtime( CLA_WORKSTATION_ORDER_DIR_PATH . 'js/order-form.js' ),
+		filemtime( TAMUS_ORDER_DIR_PATH . 'js/order-form.js' ),
 		true
 	);
 
 	wp_enqueue_script( 'jquery' );
-	wp_enqueue_script( 'cla-workstation-order-form-scripts' );
+	wp_enqueue_script( 'tamus-order-plugin-wp-form-scripts' );
 	// Identify if the page is an order.
 	$post_id   = get_the_ID();
 	$post_type = get_post_type( $post_id );
-	$is_order  = 'wsorder' === $post_type ? 'true' : 'false';
+	$is_order  = 'tamusorder' === $post_type ? 'true' : 'false';
 	// The assumed type for the "current_program" field's return value is object WP_Post.
 	$current_program_post = get_field( 'current_program', 'option' );
 	$script_variables     = "var cla_is_order = $is_order;";
@@ -130,8 +130,8 @@ function cla_workstation_order_form_scripts() {
 	$script_variables .= '
 ';
 	// Include products and prices.
-	require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
-	$cla_form_helper      = new \CLA_Workstation_Order\Order_Form_Helper();
+	require_once TAMUS_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
+	$cla_form_helper      = new \TAMUS\Order\Order_Form_Helper();
 	$products_and_bundles = $cla_form_helper->get_product_post_objects_for_program_by_user_dept( $program_info['choice'] );
 	foreach ( $products_and_bundles as $post_id => $post_title ) {
 		$products_and_bundles[ $post_id ] = get_post_meta( $post_id, 'price', true );
@@ -140,7 +140,7 @@ function cla_workstation_order_form_scripts() {
 ';
 	$script_variables .= 'var cla_product_prices = ' . wp_json_encode( $products_and_bundles );
 
-	wp_add_inline_script( 'cla-workstation-order-form-scripts', $script_variables, 'before' );
+	wp_add_inline_script( 'tamus-order-plugin-wp-form-scripts', $script_variables, 'before' );
 
 }
 add_action( 'wp_enqueue_scripts', 'cla_workstation_order_form_scripts', 1 );
@@ -164,7 +164,7 @@ function cla_render_order_form( $content ) {
 	$pre       = '';
 
 	$maybe_order_author_id = (int) get_post_meta( $post->ID, 'order_author', true );
-	if ( 'wsorder' === $post->post_type && ! empty( $maybe_order_author_id ) ) {
+	if ( 'tamusorder' === $post->post_type && ! empty( $maybe_order_author_id ) ) {
 		$user = get_user_by( 'id', $maybe_order_author_id );
 	} else {
 		$user = wp_get_current_user();
@@ -178,7 +178,7 @@ function cla_render_order_form( $content ) {
 
 	// Get current program meta.
 	$maybe_program_post = get_post_meta( $post->ID, 'program', true );
-	if ( 'wsorder' === $post->post_type && ! empty( $maybe_program_post ) ) {
+	if ( 'tamusorder' === $post->post_type && ! empty( $maybe_program_post ) ) {
 		$program_post = get_post( $maybe_program_post );
 	} else {
 		// Limit users to 1 order per program.
@@ -187,7 +187,7 @@ function cla_render_order_form( $content ) {
 		$program_post     = $current_program;
 		$current_user     = wp_get_current_user();
 		$author_post_args = array(
-			'post_type'      => 'wsorder',
+			'post_type'      => 'tamusorder',
 			'author'         => $current_user->ID,
 			'posts_per_page' => 1,
 			'meta_key'       => 'program',
@@ -223,7 +223,7 @@ function cla_render_order_form( $content ) {
 	 * Get current user info
 	 */
 	$order_info = '';
-	if ( 'wsorder' === $post->post_type && 'returned' === $post->post_status && get_current_user_id() === $maybe_order_author_id ) {
+	if ( 'tamusorder' === $post->post_type && 'returned' === $post->post_status && get_current_user_id() === $maybe_order_author_id ) {
 		$returned_message    = get_post_meta( $post->ID, 'returned_comments', true );
 		$returning_user_name = '';
 		$returning_user_id   = (int) get_post_meta( $post->ID, 'returned_by', true );
@@ -265,7 +265,7 @@ function cla_render_order_form( $content ) {
 	$disable_current_program = '';
 	if ( 'page' === $post->post_type ) {
 		$author_post_args = array(
-			'post_type'      => 'wsorder',
+			'post_type'      => 'tamusorder',
 			'author'         => $user_id,
 			'posts_per_page' => 1,
 			'meta_key'       => 'program',
@@ -347,8 +347,8 @@ function cla_render_order_form( $content ) {
 	/**
 	 * Get the CLA Form Helper class.
 	 */
-	require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
-	$cla_form_helper = new \CLA_Workstation_Order\Order_Form_Helper();
+	require_once TAMUS_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
+	$cla_form_helper = new \TAMUS\Order\Order_Form_Helper();
 
 	/**
 	 * Get product categories.
@@ -445,7 +445,7 @@ function cla_render_order_form( $content ) {
 	/**
 	 * Submit button.
 	 */
-	if ( 'wsorder' === $post->post_type ) {
+	if ( 'tamusorder' === $post->post_type ) {
 		if ( 'returned' === $post->post_status ) {
 			$submit_text = 'Update and Resubmit Order';
 		} else {

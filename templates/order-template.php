@@ -2,11 +2,11 @@
 /**
  * The file that renders the single page template
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/templates/order-template.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/templates/order-template.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/templates
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/templates
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
@@ -19,14 +19,14 @@
 function cla_workstation_order_styles() {
 
 	wp_register_style(
-		'cla-workstation-order',
-		CLA_WORKSTATION_ORDER_DIR_URL . 'css/styles.css',
+		'tamus-order-plugin-wp',
+		TAMUS_ORDER_DIR_URL . 'css/styles.css',
 		false,
-		filemtime( CLA_WORKSTATION_ORDER_DIR_PATH . 'css/styles.css' ),
+		filemtime( TAMUS_ORDER_DIR_PATH . 'css/styles.css' ),
 		'screen'
 	);
 
-	wp_enqueue_style( 'cla-workstation-order' );
+	wp_enqueue_style( 'tamus-order-plugin-wp' );
 
 }
 add_action( 'wp_enqueue_scripts', 'cla_workstation_order_styles', 1 );
@@ -46,19 +46,19 @@ function cla_workstation_order_delete_scripts() {
 	if ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) || current_user_can( 'wso_admin' ) ) {
 
 		wp_register_script(
-			'cla-workstation-order-delete-scripts',
-			CLA_WORKSTATION_ORDER_DIR_URL . 'js/order-delete.js',
+			'tamus-order-plugin-wp-delete-scripts',
+			TAMUS_ORDER_DIR_URL . 'js/order-delete.js',
 			array('jquery'),
-			filemtime( CLA_WORKSTATION_ORDER_DIR_PATH . 'js/order-delete.js' ),
+			filemtime( TAMUS_ORDER_DIR_PATH . 'js/order-delete.js' ),
 			true
 		);
 
 		// wp_enqueue_script( 'jquery' );
-		wp_enqueue_script( 'cla-workstation-order-delete-scripts' );
+		wp_enqueue_script( 'tamus-order-plugin-wp-delete-scripts' );
 		// Include admin ajax URL and nonce.
 		$script_variables = 'var WSODeleteOrderAJAX = {"ajaxurl":"'.admin_url('admin-ajax.php').'","nonce":"'.wp_create_nonce('delete_order').'"};';
 
-		wp_add_inline_script( 'cla-workstation-order-delete-scripts', $script_variables, 'before' );
+		wp_add_inline_script( 'tamus-order-plugin-wp-delete-scripts', $script_variables, 'before' );
 
 	}
 
@@ -126,7 +126,7 @@ add_action( 'genesis_entry_header', function(){
 
 	// Print button.
 	global $post;
-	$bare_url     = CLA_WORKSTATION_ORDER_DIR_URL . 'order-receipt.php?postid=' . $post->ID;
+	$bare_url     = TAMUS_ORDER_DIR_URL . 'order-receipt.php?postid=' . $post->ID;
 	$complete_url = wp_nonce_url( $bare_url, 'auth-post_' . $post->ID, 'token' );
 	$output       .= "<div class=\"cell shrink\"><a class=\"cla-print-order btn btn-square btn-outline-dark\" href=\"{$complete_url}\" target=\"_blank\"><span class=\"dashicons dashicons-printer\"></span></a></div>";
 
@@ -139,7 +139,7 @@ add_action( 'genesis_entry_header', function(){
 
 
 /**
- * Decide if user can update the order. Return true or the error message. Copied from class-wsorder-posttype.php
+ * Decide if user can update the order. Return true or the error message. Copied from class-order-posttype.php
  *
  * @param int $post_id The post ID.
  *

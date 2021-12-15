@@ -2,11 +2,11 @@
 /**
  * The template file that shows the public searchable Order list page.
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/templates/catalog.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/templates/catalog.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/templates
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/templates
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
@@ -94,18 +94,18 @@ add_filter( 'the_title', 'program_title', 11, 2 );
 function cla_order_search_scripts() {
 
 	wp_register_script(
-		'cla-workstation-order-search-script',
-		CLA_WORKSTATION_ORDER_DIR_URL . 'js/order-search.js',
+		'tamus-order-plugin-wp-search-script',
+		TAMUS_ORDER_DIR_URL . 'js/order-search.js',
 		array('jquery'),
-		filemtime( CLA_WORKSTATION_ORDER_DIR_PATH . 'js/order-search.js' ),
+		filemtime( TAMUS_ORDER_DIR_PATH . 'js/order-search.js' ),
 		true
 	);
 
-	wp_enqueue_script( 'cla-workstation-order-search-script' );
+	wp_enqueue_script( 'tamus-order-plugin-wp-search-script' );
 	// Include admin ajax URL and nonce.
 	$script_variables = 'var WSOSearchOrderAJAX = {"ajaxurl":"'.admin_url('admin-ajax.php').'","nonce":"'.wp_create_nonce('search_order').'"};';
 
-	wp_add_inline_script( 'cla-workstation-order-search-script', $script_variables, 'before' );
+	wp_add_inline_script( 'tamus-order-plugin-wp-search-script', $script_variables, 'before' );
 
 }
 add_action( 'wp_enqueue_scripts', 'cla_order_search_scripts', 1 );
@@ -121,19 +121,19 @@ function cla_workstation_order_delete_scripts() {
 	if ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_admin' ) || current_user_can( 'wso_logistics_admin' ) ) {
 
 		wp_register_script(
-			'cla-workstation-order-delete-scripts',
-			CLA_WORKSTATION_ORDER_DIR_URL . 'js/order-delete.js',
+			'tamus-order-plugin-wp-delete-scripts',
+			TAMUS_ORDER_DIR_URL . 'js/order-delete.js',
 			array('jquery'),
-			filemtime( CLA_WORKSTATION_ORDER_DIR_PATH . 'js/order-delete.js' ),
+			filemtime( TAMUS_ORDER_DIR_PATH . 'js/order-delete.js' ),
 			'screen'
 		);
 
 		// wp_enqueue_script( 'jquery' );
-		wp_enqueue_script( 'cla-workstation-order-delete-scripts' );
+		wp_enqueue_script( 'tamus-order-plugin-wp-delete-scripts' );
 		// Include admin ajax URL and nonce.
 		$script_variables = 'var WSODeleteOrderAJAX = {"ajaxurl":"'.admin_url('admin-ajax.php').'","nonce":"'.wp_create_nonce('delete_order').'"};';
 
-		wp_add_inline_script( 'cla-workstation-order-delete-scripts', $script_variables, 'before' );
+		wp_add_inline_script( 'tamus-order-plugin-wp-delete-scripts', $script_variables, 'before' );
 
 	}
 
@@ -165,7 +165,7 @@ function get_program_dropdown() {
 
 	// Build a custom dropdown list of values to filter by.
 	$output = '<div class="search-filter-wrap"><select id="search-program" class="btn-secondary" name="search-program" data-default-value="' . $default_index . '">';
-	$output .= '<option value="0">' . __( 'All Programs', 'cla-workstation-order' ) . '</option>';
+	$output .= '<option value="0">' . __( 'All Programs', 'tamus-order-plugin-wp' ) . '</option>';
 	foreach( $results as $program ) {
 		if ( ! empty( $program ) ) {
 			$select = ($program === $selected) ? ' selected="selected"':'';
@@ -279,7 +279,7 @@ function get_order_output( $post_id ) {
 	$output                = '';
 
 	// Combined output.
-	$output .= "<tr class=\"post-{$post_id} wsorder entry status-{$status}\">";
+	$output .= "<tr class=\"post-{$post_id} tamusorder entry status-{$status}\">";
 	$output .= "<td class=\"status-indicator {$status}\"></td>";
 	$output .= "<td><a href=\"{$permalink}\">{$author_name}</a><br>{$dept_name}</td>";
 	$output .= "<td>{$creation_date}</td>";
@@ -330,7 +330,7 @@ add_action( 'the_content', 'cla_my_orders' );
 function cla_my_orders() {
 
 	$order_args = array(
-		'post_type'      => 'wsorder',
+		'post_type'      => 'tamusorder',
 		'posts_per_page' => -1,
 		'fields'         => 'ids',
 	);

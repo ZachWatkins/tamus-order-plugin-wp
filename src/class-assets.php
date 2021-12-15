@@ -5,15 +5,15 @@
  * A class definition that includes css and js files used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/src/class-assets.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/src/class-assets.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/src
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/src
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
-namespace CLA_Workstation_Order;
+namespace TAMUS\Order;
 
 /**
  * Add assets
@@ -55,10 +55,10 @@ class Assets {
 	public static function register_styles() {
 
 		wp_register_style(
-			'cla-workstation-order-styles',
-			CLA_WORKSTATION_ORDER_DIR_URL . 'css/styles.css',
+			'tamus-order-plugin-wp-styles',
+			TAMUS_ORDER_DIR_URL . 'css/styles.css',
 			false,
-			filemtime( CLA_WORKSTATION_ORDER_DIR_PATH . 'css/styles.css' ),
+			filemtime( TAMUS_ORDER_DIR_PATH . 'css/styles.css' ),
 			'screen'
 		);
 
@@ -73,10 +73,10 @@ class Assets {
 	public static function register_admin_styles() {
 
 		wp_register_style(
-			'cla-workstation-order-admin-styles',
-			CLA_WORKSTATION_ORDER_DIR_URL . 'css/admin.css',
+			'tamus-order-plugin-wp-admin-styles',
+			TAMUS_ORDER_DIR_URL . 'css/admin.css',
 			false,
-			filemtime( CLA_WORKSTATION_ORDER_DIR_PATH . 'css/admin.css' ),
+			filemtime( TAMUS_ORDER_DIR_PATH . 'css/admin.css' ),
 			'screen'
 		);
 
@@ -91,10 +91,10 @@ class Assets {
 	public static function register_admin_scripts() {
 
 		wp_register_script(
-			'cla-workstation-order-admin-script',
-			CLA_WORKSTATION_ORDER_DIR_URL . 'js/admin-wsorder.js',
+			'tamus-order-plugin-wp-admin-script',
+			TAMUS_ORDER_DIR_URL . 'js/admin-tamus-order.js',
 			array('select2'),
-			filemtime( CLA_WORKSTATION_ORDER_DIR_PATH . 'js/admin-wsorder.js' ),
+			filemtime( TAMUS_ORDER_DIR_PATH . 'js/admin-tamus-order.js' ),
 			true
 		);
 
@@ -108,7 +108,7 @@ class Assets {
 	 */
 	public static function enqueue_styles() {
 
-		wp_enqueue_style( 'cla-workstation-order-styles' );
+		wp_enqueue_style( 'tamus-order-plugin-wp-styles' );
 
 	}
 
@@ -120,8 +120,8 @@ class Assets {
 	 */
 	public static function enqueue_admin_styles() {
 
-		wp_enqueue_style( 'cla-workstation-order-admin-styles' );
-		wp_enqueue_script( 'cla-workstation-order-admin-script' );
+		wp_enqueue_style( 'tamus-order-plugin-wp-admin-styles' );
+		wp_enqueue_script( 'tamus-order-plugin-wp-admin-script' );
 
 	}
 

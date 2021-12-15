@@ -133,7 +133,7 @@
                 {
                     "param": "post_type",
                     "operator": "==",
-                    "value": "wsorder"
+                    "value": "tamusorder"
                 },
                 {
                     "param": "current_user_role",

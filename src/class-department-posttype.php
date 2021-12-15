@@ -2,20 +2,20 @@
 /**
  * The file that defines the Department post type
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/src/class-department-posttype.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/src/class-department-posttype.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/src
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/src
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
-namespace CLA_Workstation_Order;
+namespace TAMUS\Order;
 
 /**
  * Add assets
  *
- * @package cla-workstation-order
+ * @package tamus-order-plugin-wp
  * @since 1.0.0
  */
 class Department_PostType {
@@ -41,9 +41,9 @@ class Department_PostType {
 	 */
 	public function register_post_type() {
 
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-posttype.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-posttype.php';
 
-		new \CLA_Workstation_Order\PostType(
+		new \TAMUS\Order\PostType(
 			array(
 				'singular' => 'Department',
 				'plural'   => 'Departments',
@@ -70,6 +70,6 @@ class Department_PostType {
 	 * @return void
 	 */
 	public function register_custom_fields() {
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'fields/department-fields.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'fields/department-fields.php';
 	}
 }

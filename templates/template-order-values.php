@@ -1,12 +1,12 @@
 <?php
 /**
- * Tempalate file for displaying wsorder post type fields.
+ * Tempalate file for displaying tamusorder post type fields.
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/templates/template-order-values.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/templates/template-order-values.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/templates
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/templates
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 

@@ -2,23 +2,23 @@
 /**
  * The file that defines the Order post type
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/src/class-wsorder-posttype.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/src/class-order-posttype.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/src
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/src
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
-namespace CLA_Workstation_Order;
+namespace TAMUS\Order;
 
 /**
  * Add assets
  *
- * @package cla-workstation-order
+ * @package tamus-order-plugin-wp
  * @since 1.0.0
  */
-class WSOrder_PostType {
+class TAMUS_Order_PostType {
 
 	/**
 	 * Initialize the class
@@ -49,18 +49,18 @@ class WSOrder_PostType {
 		 * Change features of edit.php list view for order posts.
 		 */
 		// Add columns to dashboard post list screen.
-		add_filter( 'manage_wsorder_posts_columns', array( $this, 'add_list_view_columns' ) );
-		add_action( 'manage_wsorder_posts_custom_column', array( $this, 'output_list_view_columns' ), 10, 2 );
+		add_filter( 'manage_tamusorder_posts_columns', array( $this, 'add_list_view_columns' ) );
+		add_action( 'manage_tamusorder_posts_custom_column', array( $this, 'output_list_view_columns' ), 10, 2 );
 		// Prevent users from seeing posts they aren't involved with and filter orders based on program URL variable.
 		add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
 		// Change post type counts and URLs based on currently viewed program.
-		add_filter( 'views_edit-wsorder', array( $this, 'change_order_list_status_link_counts_and_urls' ) );
+		add_filter( 'views_edit-tamusorder', array( $this, 'change_order_list_status_link_counts_and_urls' ) );
 		// Add the currently viewed program name before the list of posts.
 		add_action( 'in_admin_header', array( $this, 'program_name_before_order_list_view' ) );
 
 		// Register email action hooks/filters.
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-wsorder-posttype-emails.php';
-		new \CLA_Workstation_Order\WSOrder_PostType_Emails();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/Post/class-emails.php';
+		new \TAMUS\Order\Post\Emails();
 
 		// AJAX action hooks.
 		add_action( 'wp_ajax_make_order', array( $this, 'make_order' ) );
@@ -78,8 +78,8 @@ class WSOrder_PostType {
 		add_filter( 'parse_query', array( $this, 'parse_query_program_filter' ), 10);
 
 		// Custom returned order action.
-		add_action( 'transition_post_status', array( $this, 'do_action_wsorder_returned' ), 12, 3 );
-		add_action( 'wsorder_returned', array( $this, 'reset_approvals' ) );
+		add_action( 'transition_post_status', array( $this, 'do_action_tamusorder_returned' ), 12, 3 );
+		add_action( 'tamusorder_returned', array( $this, 'reset_approvals' ) );
 
 		// Customize post permissions.
 		add_action( 'acf/validate_save_post', array( $this, 'disable_save_order' ) );
@@ -121,9 +121,9 @@ class WSOrder_PostType {
 	/**
 	 * Trigger a custom action when an order is returned.
 	 */
-	public function do_action_wsorder_returned( $new_status, $old_status, $post ) {
+	public function do_action_tamusorder_returned( $new_status, $old_status, $post ) {
 
-		if ( 'wsorder' !== $post->post_type ) {
+		if ( 'tamusorder' !== $post->post_type ) {
 			return;
 		}
 
@@ -147,7 +147,7 @@ class WSOrder_PostType {
 		if ( 'returned' === $new_status && 'returned' !== $old_status ) {
 			update_post_meta( $post->ID, 'returned_by', get_current_user_id() );
 			// Do custom action.
-			do_action( 'wsorder_returned', $post->ID );
+			do_action( 'tamusorder_returned', $post->ID );
 		}
 	}
 
@@ -168,7 +168,7 @@ class WSOrder_PostType {
 		$post_id   = url_to_postid( $url );
 		$post_type = get_post_type( $post_id );
 
-		if ( 'wsorder' !== $post_type ) {
+		if ( 'tamusorder' !== $post_type ) {
 			return;
 		}
 
@@ -222,7 +222,7 @@ class WSOrder_PostType {
 		$post_id   = url_to_postid( $url );
 		$post_type = get_post_type( $post_id );
 
-		if ( 'wsorder' !== $post_type ) {
+		if ( 'tamusorder' !== $post_type ) {
 			return;
 		}
 
@@ -253,7 +253,7 @@ class WSOrder_PostType {
 		} elseif (
 			current_user_can( 'wso_business_admin' )
 			|| (
-				( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) )
+				( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) )
 				&& is_array( $business_staff_status )
 		 		&& is_array( $business_staff_status['business_staff'] )
 		 		&& array_key_exists( 'ID', $business_staff_status['business_staff'] )
@@ -283,7 +283,7 @@ class WSOrder_PostType {
 				update_post_meta( $post_id, 'business_staff_status_date', date('Y-m-d H:i:s') );
 				$json_out['status'] = 'success';
 			}
-		} elseif ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
+		} elseif ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
 		 	if (
 		 		is_array( $it_logistics_status )
 		 		&& false === $it_logistics_status['confirmed']
@@ -319,7 +319,7 @@ class WSOrder_PostType {
 		$post_id   = url_to_postid( $url );
 		$post_type = get_post_type( $post_id );
 
-		if ( 'wsorder' !== $post_type ) {
+		if ( 'tamusorder' !== $post_type ) {
 			return;
 		}
 
@@ -334,7 +334,7 @@ class WSOrder_PostType {
 		if (
 			$current_user_id === $it_rep_id
 			|| $current_user_id === $business_staff_id
-			|| ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) )
+			|| ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) )
 		) {
 			// Store user ID who returned the order.
 			update_post_meta( $post_id, 'returned_comments', $comments );
@@ -374,14 +374,14 @@ class WSOrder_PostType {
 		$post_id   = url_to_postid( $url );
 		$post_type = get_post_type( $post_id );
 
-		if ( 'wsorder' !== $post_type ) {
+		if ( 'tamusorder' !== $post_type ) {
 			return;
 		}
 
 		$json_out = array();
 
 		// Decide what kind of user this is.
-		if ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
+		if ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
 			// Save the post status.
 			$args = array(
 				'ID'          => $post_id,
@@ -425,14 +425,14 @@ class WSOrder_PostType {
 		$post_type = get_post_type( $post_id );
 		$post_status = get_post_status( $post_id );
 
-		if ( 'wsorder' !== $post_type || ! in_array( $post_status, array( 'action_required', 'returned', 'publish' ), true ) ) {
+		if ( 'tamusorder' !== $post_type || ! in_array( $post_status, array( 'action_required', 'returned', 'publish' ), true ) ) {
 			return;
 		}
 
 		$json_out = array( 'status' => 'The post was not deleted due to an error.' );
 
 		// Decide what kind of user this is.
-		if ( current_user_can( 'wso_logistics_admin' ) || current_user_can( 'wso_logistics' ) || current_user_can( 'wso_admin' ) ) {
+		if ( current_user_can( 'logistics_admin' ) || current_user_can( 'logistics' ) || current_user_can( 'wso_admin' ) ) {
 			$deleted = wp_delete_post( $post_id, true );
 			if ( is_object( $deleted ) ) {
 				$json_out['status'] = 'deleted';
@@ -464,7 +464,7 @@ class WSOrder_PostType {
 		$program_id   = (int) $_POST['program_id'];
 		$status       = $_POST['order_status'];
 		$args         = array(
-			'post_type'      => 'wsorder',
+			'post_type'      => 'tamusorder',
 			'post_status'    => array( 'publish', 'returned', 'action_required' ),
 			'fields'         => 'ids',
 			'posts_per_page' => -1,
@@ -531,7 +531,7 @@ class WSOrder_PostType {
 		$output                = '';
 
 		// Combined output.
-		$output .= "<tr class=\"post-{$post_id} wsorder entry status-{$status}\">";
+		$output .= "<tr class=\"post-{$post_id} tamusorder entry status-{$status}\">";
 		$output .= "<td class=\"status-indicator {$status}\"></td>";
 		$output .= "<td><a href=\"{$permalink}\">{$author_name}</a><br>{$dept_name}</td>";
 		$output .= "<td>{$creation_date}</td>";
@@ -565,7 +565,7 @@ class WSOrder_PostType {
 		}
 		$output .= "</td>";
 		$output .= "<td>";
-		if ( current_user_can( 'administrator' ) || current_user_can( 'wso_admin' ) || current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
+		if ( current_user_can( 'administrator' ) || current_user_can( 'wso_admin' ) || current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
 			if ( 'publish' !== $status ) {
 				$output .= '<a class="btn btn-sm btn-outline-yellow" title="Edit this order" href="' . $permalink . '"><span class="dashicons dashicons-welcome-write-blog"></span></a>';
 			}
@@ -586,13 +586,13 @@ class WSOrder_PostType {
 
 		global $post;
 
-		if ( 'wsorder' === get_query_var( 'post_type' ) ) {
+		if ( 'tamusorder' === get_query_var( 'post_type' ) ) {
 
 			$can_update = $this->can_current_user_update_order_public( $post->ID );
 
 			if ( 'publish' === $post->post_status || true !== $can_update ) {
 
-				$single_template = CLA_WORKSTATION_ORDER_TEMPLATE_PATH . '/order-template.php';
+				$single_template = TAMUS_ORDER_TEMPLATE_PATH . '/order-template.php';
 
 			} else {
 
@@ -600,9 +600,9 @@ class WSOrder_PostType {
 				$customer_id     = (int) get_post_meta( $post->ID, 'order_author', true );
 
 				if ( $customer_id === $current_user_id && 'returned' === get_post_status( $post->ID ) ) {
-					$single_template = CLA_WORKSTATION_ORDER_TEMPLATE_PATH . '/order-form-template.php';
+					$single_template = TAMUS_ORDER_TEMPLATE_PATH . '/order-form-template.php';
 				} else {
-					$single_template = CLA_WORKSTATION_ORDER_TEMPLATE_PATH . '/order-approval-template.php';
+					$single_template = TAMUS_ORDER_TEMPLATE_PATH . '/order-approval-template.php';
 				}
 			}
 		}
@@ -648,7 +648,7 @@ class WSOrder_PostType {
 	  	$can_update = false;
 	  	$message    = 'You can only change the order when it is returned to you.';
 	  	// Handle when the order is for the logistics user.
-	  	if ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
+	  	if ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
 	  		if ( 1 !== $it_rep_confirmed ) {
 					$can_update = false;
 					$message    = 'An IT Rep has not confirmed the order yet.';
@@ -677,7 +677,7 @@ class WSOrder_PostType {
 				$can_update = false;
 				$message    = 'An IT representative has already confirmed the order.';
 			}
-		} elseif ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
+		} elseif ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
 			// Sometimes the logistics user can be a business admin too.
 			if ( 0 === $it_rep_confirmed && 'returned' !== $post_status ) {
 				$can_update = false;
@@ -722,7 +722,7 @@ class WSOrder_PostType {
   	if (
   		'publish' === $post_status
   		&& ! current_user_can( 'wso_admin' )
-  		&& ( ! current_user_can( 'wso_logistics' ) || ! current_user_can( 'wso_logistics_admin' ) )
+  		&& ( ! current_user_can( 'logistics' ) || ! current_user_can( 'logistics_admin' ) )
   	) {
   		$can_update = false;
   		$message    = 'This order is already published and cannot be changed.';
@@ -731,8 +731,8 @@ class WSOrder_PostType {
   		&& (
   			current_user_can( 'wso_it_rep' )
   			|| current_user_can( 'wso_business_admin' )
-  			|| current_user_can( 'wso_logistics' )
-  			|| current_user_can( 'wso_logistics_admin' )
+  			|| current_user_can( 'logistics' )
+  			|| current_user_can( 'logistics_admin' )
   			|| current_user_can( 'wso_admin' )
   			|| current_user_can( 'administrator' )
   		)
@@ -756,7 +756,7 @@ class WSOrder_PostType {
   			$can_update = false;
   			$message    = 'You have already confirmed the order.';
   		}
-    } elseif ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
+    } elseif ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
   		$it_rep_confirmed   = (int) get_post_meta( $post_id, 'it_rep_status_confirmed', true );
   		$bus_user           = (int) get_post_meta( $post_id, 'business_staff_status_business_staff', true );
   		$bus_user_confirmed = (int) get_post_meta( $post_id, 'business_staff_status_confirmed', true );
@@ -802,7 +802,7 @@ class WSOrder_PostType {
 	    	$post_type = $screen->post_type;
 	    }
 		}
-    if ( ! isset( $post_type ) || 'wsorder' !== $post_type ) {
+    if ( ! isset( $post_type ) || 'tamusorder' !== $post_type ) {
     	return;
     }
 
@@ -811,7 +811,7 @@ class WSOrder_PostType {
       acf_reset_validation_errors();
     }
 
-    if ( ! current_user_can('wso_logistics') || ! current_user_can( 'wso_logistics_admin' ) ) {
+    if ( ! current_user_can('logistics') || ! current_user_can( 'logistics_admin' ) ) {
       acf_add_validation_error( false, 'You cannot update the order.' );
     }
 
@@ -824,41 +824,41 @@ class WSOrder_PostType {
 	 */
 	public function register_post_type() {
 
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-posttype.php';
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-taxonomy.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-posttype.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-taxonomy.php';
 
-		new \CLA_Workstation_Order\PostType(
+		new \TAMUS\Order\TAMUS_Order_PostType(
 			array(
 				'singular' => 'Order',
 				'plural'   => 'Orders',
 			),
-			'wsorder',
+			'tamusorder',
 			array(),
 			'dashicons-media-spreadsheet',
 			array( 'title' ),
 			array(
-				'capabilities'       => array(
-					'edit_post'              => 'edit_wsorder',
-					'read_post'              => 'read_wsorder',
-					'delete_post'            => 'delete_wsorder',
-					'create_posts'           => 'create_wsorders',
-					'delete_posts'           => 'delete_wsorders',
-					'delete_others_posts'    => 'delete_others_wsorders',
-					'delete_private_posts'   => 'delete_private_wsorders',
-					'delete_published_posts' => 'delete_published_wsorders',
-					'edit_posts'             => 'edit_wsorders',
-					'edit_others_posts'      => 'edit_others_wsorders',
-					'edit_private_posts'     => 'edit_private_wsorders',
-					'edit_published_posts'   => 'edit_published_wsorders',
-					'publish_posts'          => 'publish_wsorders',
-					'read_private_posts'     => 'read_private_wsorders',
+				'capabilities' => array(
+					'edit_post'              => 'edit_tamusorder',
+					'read_post'              => 'read_tamusorder',
+					'delete_post'            => 'delete_tamusorder',
+					'create_posts'           => 'create_tamusorders',
+					'delete_posts'           => 'delete_tamusorders',
+					'delete_others_posts'    => 'delete_others_tamusorders',
+					'delete_private_posts'   => 'delete_private_tamusorders',
+					'delete_published_posts' => 'delete_published_tamusorders',
+					'edit_posts'             => 'edit_tamusorders',
+					'edit_others_posts'      => 'edit_others_tamusorders',
+					'edit_private_posts'     => 'edit_private_tamusorders',
+					'edit_published_posts'   => 'edit_published_tamusorders',
+					'publish_posts'          => 'publish_tamusorders',
+					'read_private_posts'     => 'read_private_tamusorders',
 				),
-				'map_meta_cap'       => true,
-				'rewrite'            => array(
+				'map_meta_cap' => true,
+				'rewrite'      => array(
 					'with_front' => false,
 					'slug'       => 'orders',
 				),
-				'has_archive'        => false,
+				'has_archive'  => false,
 				// 'publicly_queryable' => false,
 			)
 		);
@@ -909,7 +909,7 @@ class WSOrder_PostType {
 		$post_type = get_post_type( $post_id );
 		$json_out  = array( 'errors' => array() );
 
-		if ( 'wsorder' === $post_type && 'publish' === get_post_status( $post_id ) ) {
+		if ( 'tamusorder' === $post_type && 'publish' === get_post_status( $post_id ) ) {
 			return;
 		}
 
@@ -922,8 +922,8 @@ class WSOrder_PostType {
 				 * Handle quote fields and file uploads.
 				 */
 				// These files need to be included as dependencies when on the front end.
-				require_once CLA_WORKSTATION_ORDER_DIR_PATH . '/src/class-order-form-helper.php';
-				$order_form_helper = new \CLA_Workstation_Order\Order_Form_Helper();
+				require_once TAMUS_ORDER_DIR_PATH . '/src/class-order-form-helper.php';
+				$order_form_helper = new \TAMUS\Order\Order_Form_Helper();
 				$quote_fields = array();
 				for ( $i = 0; $i < $quote_count; $i++ ) {
 					// Handle uploading quote file.
@@ -941,7 +941,7 @@ class WSOrder_PostType {
 			}
 		}
 
-		if ( 'wsorder' !== $post_type ) {
+		if ( 'tamusorder' !== $post_type ) {
 
 			// Make a new order.
 			// Get current user and user ID.
@@ -956,7 +956,7 @@ class WSOrder_PostType {
 				if ( $unfunded_program->ID !== $program_id ) {
 					// Validate the program ID.
 					$author_post_args = array(
-						'post_type'      => 'wsorder',
+						'post_type'      => 'tamusorder',
 						'author'         => $user_id,
 						'posts_per_page' => 1,
 						'meta_key'       => 'program',
@@ -977,9 +977,9 @@ class WSOrder_PostType {
 			}
 			$program_prefix = get_post_meta( $program_id, 'prefix', true );
 
-			// Get new wsorder ID.
-			$last_wsorder_id = $this->get_last_order_id( $program_id );
-			$wsorder_id      = $last_wsorder_id + 1;
+			// Get new tamusorder ID.
+			$last_tamusorder_id = $this->get_last_order_id( $program_id );
+			$tamusorder_id      = $last_tamusorder_id + 1;
 
 			// Get user's department.
 			$user_department_post    = get_field( 'department', "user_{$user_id}" );
@@ -995,9 +995,9 @@ class WSOrder_PostType {
 			$postarr = array(
 				'post_author'    => $user_id,
 				'post_status'    => 'action_required',
-				'post_type'      => 'wsorder',
+				'post_type'      => 'tamusorder',
 				'comment_status' => 'closed',
-				'post_title'     => "{$program_prefix}-{$wsorder_id}",
+				'post_title'     => "{$program_prefix}-{$tamusorder_id}",
 				'post_content'   => '',
 			);
 			$post_id = wp_insert_post( $postarr, true );
@@ -1018,7 +1018,7 @@ class WSOrder_PostType {
 			}
 
 			// Update ACF fields.
-			update_field( 'order_id', $wsorder_id, $post_id );
+			update_field( 'order_id', $tamusorder_id, $post_id );
 			update_field( 'order_author', $user_id, $post_id );
 			update_field( 'author_department', $user_department_post_id, $post_id );
 			update_field( 'affiliated_it_reps', $affiliated_it_reps, $post_id );
@@ -1202,8 +1202,8 @@ class WSOrder_PostType {
 
 			// Remove all product IDs not included in the program.
 			if ( ! isset( $cla_form_helper ) ) {
-				require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
-				$cla_form_helper = new \CLA_Workstation_Order\Order_Form_Helper();
+				require_once TAMUS_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
+				$cla_form_helper = new \TAMUS\Order\Order_Form_Helper();
 			}
 			$products_and_bundles = $cla_form_helper->get_product_post_objects_for_program_by_user_dept( $program_id );
 			$restack_product_ids  = false;
@@ -1290,7 +1290,7 @@ class WSOrder_PostType {
 		}
 
 		// Do custom action.
-		do_action( 'wsorder_submitted', $post_id );
+		do_action( 'tamusorder_submitted', $post_id );
 
 		echo wp_json_encode( $json_out );
 		die();
@@ -1312,11 +1312,11 @@ class WSOrder_PostType {
 		$post_type = get_post_type( $post_id );
 		$json_out  = array( 'status' => 'You do not have sufficient privileges' );
 
-		if ( 'wsorder' !== $post_type ) {
+		if ( 'tamusorder' !== $post_type ) {
 			return;
 		}
 
-		if ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
+		if ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
 			$ordered_all = true;
 			$was_checked = false;
 			// Update products.
@@ -1386,7 +1386,7 @@ class WSOrder_PostType {
 		$post_type = get_post_type( $post_id );
 		$json_out  = array( 'status' => 'failed' );
 
-		if ( 'wsorder' === $post_type && 'publish' === get_post_status( $post_id ) ) {
+		if ( 'tamusorder' === $post_type && 'publish' === get_post_status( $post_id ) ) {
 			echo wp_json_encode( $json_out );
 			die();
 		}
@@ -1415,8 +1415,8 @@ class WSOrder_PostType {
 		/**
 		 * Get the CLA Form Helper class.
 		 */
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
-		$cla_form_helper = new \CLA_Workstation_Order\Order_Form_Helper();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
+		$cla_form_helper = new \TAMUS\Order\Order_Form_Helper();
 
 		/**
 		 * Get product categories.
@@ -1529,13 +1529,13 @@ class WSOrder_PostType {
 	 */
 	public function register_custom_fields() {
 
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'fields/wsorder-admin-fields.php';
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'fields/wsorder-fields.php';
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'fields/wsorder-return-to-user-fields.php';
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'fields/order-department-comments-fields.php';
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'fields/it-rep-status-order-fields.php';
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'fields/business-staff-status-order-fields.php';
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'fields/it-logistics-status-order-fields.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'fields/tamusorder-admin-fields.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'fields/tamusorder-fields.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'fields/tamusorder-return-to-user-fields.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'fields/order-department-comments-fields.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'fields/it-rep-status-order-fields.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'fields/business-staff-status-order-fields.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'fields/it-logistics-status-order-fields.php';
 
 	}
 
@@ -1549,7 +1549,7 @@ class WSOrder_PostType {
 		if (
 			'edit.php' === $pagenow
 			&& isset( $_GET['post_type'] ) //phpcs:ignore
-			&& 'wsorder' === $_GET['post_type'] //phpcs:ignore
+			&& 'tamusorder' === $_GET['post_type'] //phpcs:ignore
 			&& ! isset( $_GET['program'] ) //phpcs:ignore
 			&& isset( $_SERVER['QUERY_STRING'] )
 		) {
@@ -1564,7 +1564,7 @@ class WSOrder_PostType {
 	/**
 	 * Determine if business approval is required.
 	 *
-	 * @param int $post_id The wsorder post ID to check.
+	 * @param int $post_id The tamusorder post ID to check.
 	 *
 	 * @return boolean
 	 */
@@ -1612,14 +1612,14 @@ class WSOrder_PostType {
 	}
 
 	/**
-	 * Add JS for edit wsorder pages in admin.
+	 * Add JS for edit tamusorder pages in admin.
 	 *
 	 * @return void
 	 */
 	public function admin_script() {
 		global $post_type;
-		if ( 'wsorder' === $post_type ) {
-			wp_enqueue_script( 'cla-workstation-order-admin-script' );
+		if ( 'tamusorder' === $post_type ) {
+			wp_enqueue_script( 'tamus-order-plugin-wp-admin-script' );
 		}
 	}
 
@@ -1631,7 +1631,7 @@ class WSOrder_PostType {
 	public function post_status_add_to_dropdown() {
 
 		global $post;
-		if ( 'wsorder' !== $post->post_type ) {
+		if ( 'tamusorder' !== $post->post_type ) {
 			return;
 		}
 
@@ -1658,8 +1658,8 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 
 		$subscriber_disabled = '';
 		if (
-			! current_user_can( 'wso_logistics' )
-			&& ! current_user_can( 'wso_logistics_admin' )
+			! current_user_can( 'logistics' )
+			&& ! current_user_can( 'logistics_admin' )
 			&& ! current_user_can( 'wso_it_rep' )
 			&& ! current_user_can( 'wso_business_admin' )
 			&& ! current_user_can( 'wso_admin' )
@@ -1669,8 +1669,8 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 
 		$it_rep_disabled = '';
 		if (
-			! current_user_can( 'wso_logistics' )
-			&& ! current_user_can( 'wso_logistics_admin' )
+			! current_user_can( 'logistics' )
+			&& ! current_user_can( 'logistics_admin' )
 			&& ! current_user_can( 'wso_business_admin' )
 			&& ! current_user_can( 'wso_admin' )
 		) {
@@ -1681,8 +1681,8 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 
 		$non_logistics_disabled = '';
 		if (
-			! current_user_can( 'wso_logistics' )
-			&& ! current_user_can( 'wso_logistics_admin' )
+			! current_user_can( 'logistics' )
+			&& ! current_user_can( 'logistics_admin' )
 			&& ! current_user_can( 'wso_admin' )
 		) {
 			$non_logistics_disabled = ' disabled="disabled"';
@@ -1716,7 +1716,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 
 		global $post;
 		global $pagenow;
-		if ( 'edit.php' === $pagenow && 'wsorder' === $post->post_type ) {
+		if ( 'edit.php' === $pagenow && 'tamusorder' === $post->post_type ) {
 			$arg = get_query_var( 'post_status' );
 			switch ( $post->post_status ) {
 				case 'action_required':
@@ -1756,7 +1756,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 	public function get_last_order_id( $program_post_id ) {
 
 		$args  = array(
-			'post_type'      => 'wsorder',
+			'post_type'      => 'tamusorder',
 			'post_status'    => 'any',
 			'posts_per_page' => 1,
 			'fields'         => 'ids',
@@ -1777,12 +1777,12 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 		);
 		$posts = get_posts( $args );
 		if ( ! empty( $posts ) ) {
-			$last_wsorder_id = (int) get_post_meta( $posts[0], 'order_id', true );
+			$last_tamusorder_id = (int) get_post_meta( $posts[0], 'order_id', true );
 		} else {
-			$last_wsorder_id = 0;
+			$last_tamusorder_id = 0;
 		}
 
-		return $last_wsorder_id;
+		return $last_tamusorder_id;
 
 	}
 
@@ -1863,7 +1863,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 				$business_status  = get_field( 'business_staff_status', $post_id );
 				$logistics_status = get_field( 'it_logistics_status', $post_id );
 				if (
-					( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) )
+					( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) )
 					&& (
 						empty( $it_status['confirmed'] )
 						|| (
@@ -1929,14 +1929,14 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 	 */
 	public function pre_get_posts( $query ) {
 
-		if ( 'wsorder' === $query->get( 'post_type' ) ) {
+		if ( 'tamusorder' === $query->get( 'post_type' ) ) {
 			// Allow admins and logistics to see all orders.
 			// Do not limit views in admin.
 			if (
 				current_user_can( 'administrator' )
 				|| current_user_can( 'wso_admin' )
-				|| current_user_can( 'wso_logistics' )
-				|| current_user_can( 'wso_logistics_admin' )
+				|| current_user_can( 'logistics' )
+				|| current_user_can( 'logistics_admin' )
 			) {
 				return;
 			}
@@ -1997,18 +1997,18 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 			$business_admin_ids = get_field( 'affiliated_business_staff', $post_id );
 			$post_type          = get_post_type( $post_id );
 			if (
-				'wsorder' === $post_type
+				'tamusorder' === $post_type
 				&& ! current_user_can( 'administrator' )
 				&& ! current_user_can( 'wso_admin' ) // Not an admin.
-				&& ! current_user_can( 'wso_logistics' ) // Not a logistics user.
-				&& ! current_user_can( 'wso_logistics_admin' )
+				&& ! current_user_can( 'logistics' ) // Not a logistics user.
+				&& ! current_user_can( 'logistics_admin' )
 				&& $current_user_id !== $author_id // Not the author.
 				&& ! in_array( $current_user_id, $it_rep_ids, true ) // Not the IT rep.
 				&& ! in_array( $current_user_id, $business_admin_ids, true ) // Not the business admin.
 			) {
 				// User isn't involved with this order and should be redirected away.
 				$post_program_id = (int) get_field( 'program', $post_id );
-				$location        = admin_url() . 'edit.php?post_type=wsorder&program=' . $post_program_id;
+				$location        = admin_url() . 'edit.php?post_type=tamusorder&program=' . $post_program_id;
 				wp_safe_redirect( $location );
 				exit();
 			}
@@ -2025,7 +2025,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 	public function change_order_list_status_link_counts_and_urls( $views ) {
 
 		if (
-			'wsorder' === get_query_var( 'post_type' )
+			'tamusorder' === get_query_var( 'post_type' )
 			&& get_query_var( 'program', false )
 		) {
 
@@ -2034,7 +2034,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 			$current_user_id = $user->ID;
 			// All link.
 			$args            = array(
-				'post_type'      => 'wsorder',
+				'post_type'      => 'tamusorder',
 				'posts_per_page' => -1,
 				'meta_query'     => array( //phpcs:ignore
 					array(
@@ -2044,7 +2044,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 				),
 				'fields'         => 'ids',
 			);
-			if ( ! current_user_can( 'wso_admin' ) && ! current_user_can( 'wso_logistics' ) && ! current_user_can( 'wso_logistics_admin' ) ) {
+			if ( ! current_user_can( 'wso_admin' ) && ! current_user_can( 'logistics' ) && ! current_user_can( 'logistics_admin' ) ) {
 				$args['meta_query'][] = array(
 					'relation' => 'OR',
 					array(
@@ -2066,11 +2066,11 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 			$query        = new \WP_Query( $args );
 			$count        = $query->post_count;
 			$views['all'] = preg_replace( '/<span class="count">\(\d+\)<\/span>/', '<span class="count">(' . $count . ')</span></a>', $views['all'] );
-			$views['all'] = str_replace( 'edit.php?post_type=wsorder', "edit.php?post_type=wsorder&program={$program_id}", $views['all'] );
+			$views['all'] = str_replace( 'edit.php?post_type=tamusorder', "edit.php?post_type=tamusorder&program={$program_id}", $views['all'] );
 			// Mine link.
 			if ( isset( $views['mine'] ) ) {
 				$mine_args     = array(
-					'post_type'      => 'wsorder',
+					'post_type'      => 'tamusorder',
 					'post_status'    => 'any',
 					'author'         => $current_user_id,
 					'posts_per_page' => -1,
@@ -2078,7 +2078,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 				$mine_query    = new \WP_Query( $mine_args );
 				$count         = $mine_query->post_count;
 				$views['mine'] = preg_replace( '/<span class="count">\(\d+\)<\/span>/', '<span class="count">(' . $count . ')</span></a>', $views['mine'] );
-				$views['mine'] = str_replace( 'post_type=wsorder', "post_type=wsorder&program=0", $views['mine'] );
+				$views['mine'] = str_replace( 'post_type=tamusorder', "post_type=tamusorder&program=0", $views['mine'] );
 			}
 			// Publish link.
 			if ( isset( $views['publish'] ) ) {
@@ -2087,7 +2087,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 				$pub_query               = new \WP_Query( $pub_args );
 				$count                   = $pub_query->post_count;
 				$views['publish']        = preg_replace( '/<span class="count">\(\d+\)<\/span>/', '<span class="count">(' . $count . ')</span></a>', $views['publish'] );
-				$views['publish']        = str_replace( 'post_type=wsorder', "post_type=wsorder&program={$program_id}", $views['publish'] );
+				$views['publish']        = str_replace( 'post_type=tamusorder', "post_type=tamusorder&program={$program_id}", $views['publish'] );
 			}
 			// Action Required link.
 			if ( isset( $views['action_required'] ) ) {
@@ -2095,7 +2095,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 				$ar_query                 = new \WP_Query( $args );
 				$count                    = $ar_query->post_count;
 				$views['action_required'] = preg_replace( '/<span class="count">\(\d+\)<\/span>/', '<span class="count">(' . $count . ')</span></a>', $views['action_required'] );
-				$views['action_required'] = str_replace( 'post_type=wsorder', "post_type=wsorder&program={$program_id}", $views['action_required'] );
+				$views['action_required'] = str_replace( 'post_type=tamusorder', "post_type=tamusorder&program={$program_id}", $views['action_required'] );
 			}
 			// Returned link.
 			if ( isset( $views['returned'] ) ) {
@@ -2103,7 +2103,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 				$ar_query            = new \WP_Query( $args );
 				$count               = $ar_query->post_count;
 				$views['returned']   = preg_replace( '/<span class="count">\(\d+\)<\/span>/', '<span class="count">(' . $count . ')</span></a>', $views['returned'] );
-				$views['returned']   = str_replace( 'post_type=wsorder', "post_type=wsorder&program={$program_id}", $views['returned'] );
+				$views['returned']   = str_replace( 'post_type=tamusorder', "post_type=tamusorder&program={$program_id}", $views['returned'] );
 			}
 			// Completed link.
 			if ( isset( $views['completed'] ) ) {
@@ -2111,7 +2111,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 				$ar_query            = new \WP_Query( $args );
 				$count               = $ar_query->post_count;
 				$views['completed']  = preg_replace( '/<span class="count">\(\d+\)<\/span>/', '<span class="count">(' . $count . ')</span></a>', $views['completed'] );
-				$views['completed']  = str_replace( 'post_type=wsorder', "post_type=wsorder&program={$program_id}", $views['completed'] );
+				$views['completed']  = str_replace( 'post_type=tamusorder', "post_type=tamusorder&program={$program_id}", $views['completed'] );
 			}
 			// Trash link.
 			if ( isset( $views['trash'] ) ) {
@@ -2119,7 +2119,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 				$trash_query         = new \WP_Query( $args );
 				$count               = $trash_query->post_count;
 				$views['trash']      = preg_replace( '/<span class="count">\(\d+\)<\/span>/', '<span class="count">(' . $count . ')</span></a>', $views['trash'] );
-				$views['trash']      = str_replace( 'post_type=wsorder', "post_type=wsorder&program={$program_id}", $views['trash'] );
+				$views['trash']      = str_replace( 'post_type=tamusorder', "post_type=tamusorder&program={$program_id}", $views['trash'] );
 			}
 		}
 		return $views;
@@ -2134,7 +2134,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 
 		if (
 			'edit.php' === $pagenow
-			&& 'wsorder' === get_query_var( 'post_type' )
+			&& 'tamusorder' === get_query_var( 'post_type' )
 			&& ! empty( get_query_var( 'program' ) )
 		) {
 			$program_id   = get_query_var( 'program' );
@@ -2166,7 +2166,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 	 */
 	public function add_admin_post_program_filter( $post_type ) {
 
-		if ( 'wsorder' !== $post_type ){
+		if ( 'tamusorder' !== $post_type ){
 		  return; // Do not filter this post.
 		}
 		$selected     = '';
@@ -2182,7 +2182,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 		$results = get_posts( $args );
 		// Build a custom dropdown list of values to filter by.
 		echo '<select id="program" name="program">';
-		echo '<option value="0">' . __( 'Show all Programs', 'cla-workstation-order' ) . ' </option>';
+		echo '<option value="0">' . __( 'Show all Programs', 'tamus-order-plugin-wp' ) . ' </option>';
 		foreach( $results as $program ) {
 			if ( ! empty( $program ) ) {
 				$select = ($program == $selected) ? ' selected="selected"':'';
@@ -2207,7 +2207,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 			return $query;
 		}
 		//we want to modify the query for the targeted custom post and filter option
-		if( !('wsorder' === $query->query['post_type'] AND isset($_REQUEST['program']) ) ){
+		if( !('tamusorder' === $query->query['post_type'] AND isset($_REQUEST['program']) ) ){
 			return $query;
 		}
 		//for the default value of our filter no modification is required

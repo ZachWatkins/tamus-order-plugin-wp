@@ -2,11 +2,11 @@
 /**
  * My Account page template.
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/templates/my-account.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/templates/my-account.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/templates
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/templates
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
@@ -39,18 +39,18 @@ function cla_workstation_order_account_scripts() {
 	}
 
 	wp_register_script(
-		'cla-workstation-order-account-scripts',
-		CLA_WORKSTATION_ORDER_DIR_URL . 'js/update-account.js',
+		'tamus-order-plugin-wp-account-scripts',
+		TAMUS_ORDER_DIR_URL . 'js/update-account.js',
 		array('jquery'),
-		filemtime( CLA_WORKSTATION_ORDER_DIR_PATH . 'js/update-account.js' ),
+		filemtime( TAMUS_ORDER_DIR_PATH . 'js/update-account.js' ),
 		true
 	);
 
-	wp_enqueue_script( 'cla-workstation-order-account-scripts' );
+	wp_enqueue_script( 'tamus-order-plugin-wp-account-scripts' );
 	// Include admin ajax URL and nonce.
 	$script_variables = 'var WSOAjax = {"ajaxurl":"'.admin_url('admin-ajax.php').'","nonce":"'.wp_create_nonce('update_account').'"};';
 
-	wp_add_inline_script( 'cla-workstation-order-account-scripts', $script_variables, 'before' );
+	wp_add_inline_script( 'tamus-order-plugin-wp-account-scripts', $script_variables, 'before' );
 
 }
 add_action( 'wp_enqueue_scripts', 'cla_workstation_order_account_scripts', 1 );

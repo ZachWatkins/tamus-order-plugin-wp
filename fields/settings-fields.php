@@ -2,11 +2,11 @@
 /**
  * The file that defines Advanced Custom Fields for the settings page.
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/fields/settings-fields.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/fields/settings-fields.php
  * @author:    Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/fields
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/fields
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
@@ -104,7 +104,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 					array(
 						'param'    => 'options_page',
 						'operator' => '==',
-						'value'    => 'wsorder-settings',
+						'value'    => 'tamusorder-settings',
 					),
 				),
 			),

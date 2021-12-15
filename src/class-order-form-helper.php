@@ -2,15 +2,15 @@
 /**
  * The file that defines helper functions for order forms.
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/src/class-order-form-helper.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/src/class-order-form-helper.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.0.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/src
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/src
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
-namespace CLA_Workstation_Order;
+namespace TAMUS\Order;
 
 /**
  * The core plugin class
@@ -89,7 +89,7 @@ class Order_Form_Helper {
 	private function get_last_order_id( $program_post_id ) {
 
 		$args  = array(
-			'post_type'      => 'wsorder',
+			'post_type'      => 'tamusorder',
 			'post_status'    => 'any',
 			'posts_per_page' => 1,
 			'fields'         => 'ids',
@@ -110,12 +110,12 @@ class Order_Form_Helper {
 		);
 		$posts = get_posts( $args );
 		if ( ! empty( $posts ) ) {
-			$last_wsorder_id = (int) get_post_meta( $posts[0], 'order_id', true );
+			$last_tamusorder_id = (int) get_post_meta( $posts[0], 'order_id', true );
 		} else {
-			$last_wsorder_id = 0;
+			$last_tamusorder_id = 0;
 		}
 
-		return $last_wsorder_id;
+		return $last_tamusorder_id;
 
 	}
 

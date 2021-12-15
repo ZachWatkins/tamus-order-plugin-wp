@@ -1,16 +1,16 @@
 <?php
 /**
- * Workstation Ordering Application
+ * TAMUS Ordering Application Plugin
  *
- * @package      Workstation Ordering Application
+ * @package      TAMUS Ordering Application Plugin
  * @since        0.1.0
  * @author       Zachary Watkins <zwatkins2@tamu.edu>
- * @link         https://github.tamu.edu/liberalarts-web/cla-workstation-order
+ * @link         https://github.com/zachwatkins/tamus-order-plugin-wp
  * @license      https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  *
- * @cla-workstation-order
- * Plugin Name:  Workstation Ordering Application
- * Plugin URI:   https://github.tamu.edu/liberalarts-web/cla-workstation-order
+ * @tamus-order-plugin-wp
+ * Plugin Name:  TAMUS Ordering Application Plugin
+ * Plugin URI:   https://github.com/zachwatkins/tamus-order-plugin-wp
  * Description:  A GNU GPL 2.0 (or later) WordPress Plugin to facilitate product ordering within a robust, multi-role return / approve workflow using team-based settings.
  * Version:      1.1.0
  * Author:       Zachary Watkins
@@ -27,22 +27,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /* Define some useful constants */
-define( 'CLA_WORKSTATION_ORDER_DIRNAME', 'cla-workstation-order' );
-define( 'CLA_WORKSTATION_ORDER_TEXTDOMAIN', 'cla-wso-textdomain' );
-define( 'CLA_WORKSTATION_ORDER_DIR_PATH', plugin_dir_path( __FILE__ ) );
-define( 'CLA_WORKSTATION_ORDER_DIR_FILE', __FILE__ );
-define( 'CLA_WORKSTATION_ORDER_DIR_URL', plugin_dir_url( __FILE__ ) );
-define( 'CLA_WORKSTATION_ORDER_TEMPLATE_PATH', CLA_WORKSTATION_ORDER_DIR_PATH . 'templates' );
+define( 'TAMUS_ORDER_DIRNAME', 'tamus-order-plugin-wp' );
+define( 'TAMUS_ORDER_TEXTDOMAIN', 'cla-wso-textdomain' );
+define( 'TAMUS_ORDER_DIR_PATH', plugin_dir_path( __FILE__ ) );
+define( 'TAMUS_ORDER_DIR_FILE', __FILE__ );
+define( 'TAMUS_ORDER_DIR_URL', plugin_dir_url( __FILE__ ) );
+define( 'TAMUS_ORDER_TEMPLATE_PATH', TAMUS_ORDER_DIR_PATH . 'templates' );
 
 /**
  * The core plugin class that is used to initialize the plugin.
  */
-require CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-cla-workstation-order.php';
-new CLA_Workstation_Order();
+require TAMUS_ORDER_DIR_PATH . 'src/class-tamus-order-plugin-wp.php';
+new \TAMUS\Order();
 
 /* Activation hooks */
-register_deactivation_hook( CLA_WORKSTATION_ORDER_DIR_FILE, 'cla_workstation_deactivation' );
-register_activation_hook( CLA_WORKSTATION_ORDER_DIR_FILE, 'cla_workstation_activation' );
+register_deactivation_hook( TAMUS_ORDER_DIR_FILE, 'cla_workstation_deactivation' );
+register_activation_hook( TAMUS_ORDER_DIR_FILE, 'cla_workstation_activation' );
 
 /**
  * Helper option flag to indicate rewrite rules need flushing
@@ -61,7 +61,7 @@ function cla_workstation_activation() {
 			/* translators: %s: URL for plugins dashboard page */
 			__(
 				'Plugin NOT activated: The <strong>WordPress Plugin</strong> plugin needs the <strong>Advanced Custom Fields Pro</strong> and <strong>Gravity Forms</strong> plugins to be activated first. <a href="%s">Back to plugins page</a>',
-				'cla-workstation-order'
+				'tamus-order-plugin-wp'
 			),
 			get_admin_url( null, '/plugins.php' )
 		);
@@ -72,8 +72,8 @@ function cla_workstation_activation() {
 		flush_rewrite_rules();
 
 		// Add user roles.
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-user-roles.php';
-		$new_roles = new \CLA_Workstation_Order\User_Roles();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-user-roles.php';
+		$new_roles = new \TAMUS\Order\User_Roles();
 		$new_roles->register();
 
 	}
@@ -90,7 +90,7 @@ function cla_workstation_deactivation() {
 	flush_rewrite_rules();
 
 	// Add user roles.
-		require_once CLA_WORKSTATION_ORDER_DIR_PATH . 'src/class-user-roles.php';
-		$new_roles = new \CLA_Workstation_Order\User_Roles();
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-user-roles.php';
+		$new_roles = new \TAMUS\Order\User_Roles();
 		$new_roles->unregister();
 }

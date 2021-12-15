@@ -2,20 +2,20 @@
 /**
  * The file that applies TAMU conventions to WordPress user information management.
  *
- * @link       https://github.tamu.edu/liberalarts-web/cla-workstation-order/blob/master/src/class-user-tamu.php
+ * @link       https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/src/class-user-tamu.php
  * @author     Zachary Watkins <zwatkins2@tamu.edu>
  * @since      1.1.0
- * @package    cla-workstation-order
- * @subpackage cla-workstation-order/src
+ * @package    tamus-order-plugin-wp
+ * @subpackage tamus-order-plugin-wp/src
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
-namespace CLA_Workstation_Order;
+namespace TAMUS\Order;
 
 /**
  * TAMU User information handling.
  *
- * @package cla-workstation-order
+ * @package tamus-order-plugin-wp
  * @since 1.1.0
  */
 class User_Tamu {
