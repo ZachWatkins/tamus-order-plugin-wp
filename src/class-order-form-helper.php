@@ -126,23 +126,14 @@ class Order_Form_Helper {
 	private function get_program_department_fields( $department_id, $program_id ) {
 
 		// Get users assigned to active user's department for current program, as array.
-		$program_meta_keys_departments = array(
-			'assign_political_science_department_post_id',
-			'assign_sociology_department_post_id',
-			'assign_philosophy_humanities_department_post_id',
-			'assign_performance_studies_department_post_id',
-			'assign_international_studies_department_post_id',
-			'assign_history_department_post_id',
-			'assign_hispanic_studies_department_post_id',
-			'assign_english_department_post_id',
-			'assign_economics_department_post_id',
-			'assign_communication_department_post_id',
-			'assign_anthropology_department_post_id',
-			'assign_psychology_department_post_id',
-			'assign_dean_department_post_id',
-		);
-		$current_program_post_meta     = get_post_meta( $program_id );
-		$value                         = array();
+		// Get the list dynamically based on the department list configuration.
+		$departments = include dirname( __FILE__, 2 ) . '/config/department/dept-data.php';
+		$program_meta_keys_departments = array();
+		foreach ( $departments as $department ) {
+			$program_meta_keys_departments[] = "assign_{$department['name']}_department_post_id";
+		}
+		$current_program_post_meta = get_post_meta( $program_id );
+		$value                     = array();
 
 		foreach ( $program_meta_keys_departments as $meta_key ) {
 			$assigned_dept = (int) $current_program_post_meta[ $meta_key ][0];
