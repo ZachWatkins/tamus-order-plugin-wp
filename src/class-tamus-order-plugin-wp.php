@@ -141,17 +141,17 @@ class Order {
 	 * @return void
 	 */
 	public function register_custom_fields() {
-
+		
 		if ( function_exists( 'acf_add_options_page' ) ) {
-
+			
 			require_once TAMUS_ORDER_DIR_PATH . 'fields/settings-fields.php';
-
+			
 			acf_add_options_page(
 				array(
-					'page_title' => 'Workstation Order Settings',
-					'menu_title' => 'WSO Settings',
+					'page_title' => 'Order Application Settings',
+					'menu_title' => 'App Settings',
 					'menu_slug'  => 'tamusorder-settings',
-					'capability' => 'manage_wso_options',
+					'capability' => 'wso_manage_options',
 					'redirect'   => false,
 				)
 			);

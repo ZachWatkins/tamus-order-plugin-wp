@@ -15,7 +15,7 @@ if ( function_exists( 'acf_add_local_field_group' ) ) :
 	acf_add_local_field_group(
 		array(
 			'key'                   => 'group_60099bc1ded11',
-			'title'                 => 'Workstation Order Settings',
+			'title'                 => 'TAMUS Ordering Application Settings',
 			'fields'                => array(
 				array(
 					'key'               => 'field_60099c44333b3',

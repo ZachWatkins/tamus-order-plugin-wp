@@ -20,7 +20,7 @@ A GNU GPL 2.0 (or later) WordPress Application in two parts (a [plugin](https://
 ### Custom User Capabilities
 
 1. `wso_manage_acf_options`: Can see the Advanced Custom Fields options page.
-2. `manage_wso_options`: Can see the Workstation Ordering App options page.
+2. `wso_manage_options`: Can see the Workstation Ordering App options page.
 3. `wso_email_logs`: Can view email logs.
 4. `wso_email_opts`: Can view and change SMTP email settings. Currently only supports the Post SMTP plugin.
 5. `wso_history_logs`: Can view history logs.

@@ -34,7 +34,7 @@ class User_Roles {
 	 * @var app_caps
 	 */
 	private $app_caps = array(
-		'manage_wso_options',
+		'wso_manage_options',
 		'wso_manage_acf_options',
 		'wso_email_logs',
 		'wso_email_opts',
