@@ -49,7 +49,7 @@ if (
 		&& ! in_array( $current_user_id, $affiliated_business_staff, true )
 		&& $current_user_id !== $author_id
 		&& ! current_user_can( 'logistics' )
-		&& ! current_user_can( 'logistics_admin' )
+		&& ! current_user_can( 'wso_logistics_admin' )
 		&& ! current_user_can( 'wso_admin' )
 	)
 ) {

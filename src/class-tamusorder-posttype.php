@@ -253,7 +253,7 @@ class TAMUS_Order_PostType {
 		} elseif (
 			current_user_can( 'wso_business_admin' )
 			|| (
-				( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) )
+				( current_user_can( 'logistics' ) || current_user_can( 'wso_logistics_admin' ) )
 				&& is_array( $business_staff_status )
 		 		&& is_array( $business_staff_status['business_staff'] )
 		 		&& array_key_exists( 'ID', $business_staff_status['business_staff'] )
@@ -283,7 +283,7 @@ class TAMUS_Order_PostType {
 				update_post_meta( $post_id, 'business_staff_status_date', date('Y-m-d H:i:s') );
 				$json_out['status'] = 'success';
 			}
-		} elseif ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
+		} elseif ( current_user_can( 'logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
 		 	if (
 		 		is_array( $it_logistics_status )
 		 		&& false === $it_logistics_status['confirmed']
@@ -334,7 +334,7 @@ class TAMUS_Order_PostType {
 		if (
 			$current_user_id === $it_rep_id
 			|| $current_user_id === $business_staff_id
-			|| ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) )
+			|| ( current_user_can( 'logistics' ) || current_user_can( 'wso_logistics_admin' ) )
 		) {
 			// Store user ID who returned the order.
 			update_post_meta( $post_id, 'returned_comments', $comments );
@@ -381,7 +381,7 @@ class TAMUS_Order_PostType {
 		$json_out = array();
 
 		// Decide what kind of user this is.
-		if ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
+		if ( current_user_can( 'logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
 			// Save the post status.
 			$args = array(
 				'ID'          => $post_id,
@@ -432,7 +432,7 @@ class TAMUS_Order_PostType {
 		$json_out = array( 'status' => 'The post was not deleted due to an error.' );
 
 		// Decide what kind of user this is.
-		if ( current_user_can( 'logistics_admin' ) || current_user_can( 'logistics' ) || current_user_can( 'wso_admin' ) ) {
+		if ( current_user_can( 'wso_logistics_admin' ) || current_user_can( 'logistics' ) || current_user_can( 'wso_admin' ) ) {
 			$deleted = wp_delete_post( $post_id, true );
 			if ( is_object( $deleted ) ) {
 				$json_out['status'] = 'deleted';
@@ -565,7 +565,7 @@ class TAMUS_Order_PostType {
 		}
 		$output .= "</td>";
 		$output .= "<td>";
-		if ( current_user_can( 'administrator' ) || current_user_can( 'wso_admin' ) || current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
+		if ( current_user_can( 'administrator' ) || current_user_can( 'wso_admin' ) || current_user_can( 'logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
 			if ( 'publish' !== $status ) {
 				$output .= '<a class="btn btn-sm btn-outline-yellow" title="Edit this order" href="' . $permalink . '"><span class="dashicons dashicons-welcome-write-blog"></span></a>';
 			}
@@ -648,7 +648,7 @@ class TAMUS_Order_PostType {
 	  	$can_update = false;
 	  	$message    = 'You can only change the order when it is returned to you.';
 	  	// Handle when the order is for the logistics user.
-	  	if ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
+	  	if ( current_user_can( 'logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
 	  		if ( 1 !== $it_rep_confirmed ) {
 					$can_update = false;
 					$message    = 'An IT Rep has not confirmed the order yet.';
@@ -677,7 +677,7 @@ class TAMUS_Order_PostType {
 				$can_update = false;
 				$message    = 'An IT representative has already confirmed the order.';
 			}
-		} elseif ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
+		} elseif ( current_user_can( 'logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
 			// Sometimes the logistics user can be a business admin too.
 			if ( 0 === $it_rep_confirmed && 'returned' !== $post_status ) {
 				$can_update = false;
@@ -722,7 +722,7 @@ class TAMUS_Order_PostType {
   	if (
   		'publish' === $post_status
   		&& ! current_user_can( 'wso_admin' )
-  		&& ( ! current_user_can( 'logistics' ) || ! current_user_can( 'logistics_admin' ) )
+  		&& ( ! current_user_can( 'logistics' ) || ! current_user_can( 'wso_logistics_admin' ) )
   	) {
   		$can_update = false;
   		$message    = 'This order is already published and cannot be changed.';
@@ -732,7 +732,7 @@ class TAMUS_Order_PostType {
   			current_user_can( 'wso_it_rep' )
   			|| current_user_can( 'wso_business_admin' )
   			|| current_user_can( 'logistics' )
-  			|| current_user_can( 'logistics_admin' )
+  			|| current_user_can( 'wso_logistics_admin' )
   			|| current_user_can( 'wso_admin' )
   			|| current_user_can( 'administrator' )
   		)
@@ -756,7 +756,7 @@ class TAMUS_Order_PostType {
   			$can_update = false;
   			$message    = 'You have already confirmed the order.';
   		}
-    } elseif ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
+    } elseif ( current_user_can( 'logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
   		$it_rep_confirmed   = (int) get_post_meta( $post_id, 'it_rep_status_confirmed', true );
   		$bus_user           = (int) get_post_meta( $post_id, 'business_staff_status_business_staff', true );
   		$bus_user_confirmed = (int) get_post_meta( $post_id, 'business_staff_status_confirmed', true );
@@ -811,7 +811,7 @@ class TAMUS_Order_PostType {
       acf_reset_validation_errors();
     }
 
-    if ( ! current_user_can('logistics') || ! current_user_can( 'logistics_admin' ) ) {
+    if ( ! current_user_can('logistics') || ! current_user_can( 'wso_logistics_admin' ) ) {
       acf_add_validation_error( false, 'You cannot update the order.' );
     }
 
@@ -1316,7 +1316,7 @@ class TAMUS_Order_PostType {
 			return;
 		}
 
-		if ( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) ) {
+		if ( current_user_can( 'logistics' ) || current_user_can( 'wso_logistics_admin' ) ) {
 			$ordered_all = true;
 			$was_checked = false;
 			// Update products.
@@ -1659,7 +1659,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 		$subscriber_disabled = '';
 		if (
 			! current_user_can( 'logistics' )
-			&& ! current_user_can( 'logistics_admin' )
+			&& ! current_user_can( 'wso_logistics_admin' )
 			&& ! current_user_can( 'wso_it_rep' )
 			&& ! current_user_can( 'wso_business_admin' )
 			&& ! current_user_can( 'wso_admin' )
@@ -1670,7 +1670,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 		$it_rep_disabled = '';
 		if (
 			! current_user_can( 'logistics' )
-			&& ! current_user_can( 'logistics_admin' )
+			&& ! current_user_can( 'wso_logistics_admin' )
 			&& ! current_user_can( 'wso_business_admin' )
 			&& ! current_user_can( 'wso_admin' )
 		) {
@@ -1682,7 +1682,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 		$non_logistics_disabled = '';
 		if (
 			! current_user_can( 'logistics' )
-			&& ! current_user_can( 'logistics_admin' )
+			&& ! current_user_can( 'wso_logistics_admin' )
 			&& ! current_user_can( 'wso_admin' )
 		) {
 			$non_logistics_disabled = ' disabled="disabled"';
@@ -1863,7 +1863,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 				$business_status  = get_field( 'business_staff_status', $post_id );
 				$logistics_status = get_field( 'it_logistics_status', $post_id );
 				if (
-					( current_user_can( 'logistics' ) || current_user_can( 'logistics_admin' ) )
+					( current_user_can( 'logistics' ) || current_user_can( 'wso_logistics_admin' ) )
 					&& (
 						empty( $it_status['confirmed'] )
 						|| (
@@ -1928,15 +1928,16 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 	 * @return void
 	 */
 	public function pre_get_posts( $query ) {
-
+		
 		if ( 'tamusorder' === $query->get( 'post_type' ) ) {
+			
 			// Allow admins and logistics to see all orders.
 			// Do not limit views in admin.
 			if (
 				current_user_can( 'administrator' )
 				|| current_user_can( 'wso_admin' )
 				|| current_user_can( 'logistics' )
-				|| current_user_can( 'logistics_admin' )
+				|| current_user_can( 'wso_logistics_admin' )
 			) {
 				return;
 			}
@@ -2001,7 +2002,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 				&& ! current_user_can( 'administrator' )
 				&& ! current_user_can( 'wso_admin' ) // Not an admin.
 				&& ! current_user_can( 'logistics' ) // Not a logistics user.
-				&& ! current_user_can( 'logistics_admin' )
+				&& ! current_user_can( 'wso_logistics_admin' )
 				&& $current_user_id !== $author_id // Not the author.
 				&& ! in_array( $current_user_id, $it_rep_ids, true ) // Not the IT rep.
 				&& ! in_array( $current_user_id, $business_admin_ids, true ) // Not the business admin.
@@ -2044,7 +2045,7 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 				),
 				'fields'         => 'ids',
 			);
-			if ( ! current_user_can( 'wso_admin' ) && ! current_user_can( 'logistics' ) && ! current_user_can( 'logistics_admin' ) ) {
+			if ( ! current_user_can( 'wso_admin' ) && ! current_user_can( 'logistics' ) && ! current_user_can( 'wso_logistics_admin' ) ) {
 				$args['meta_query'][] = array(
 					'relation' => 'OR',
 					array(
