@@ -122,7 +122,7 @@ dl.horizontal {
 	}
 }
 
-.cla-print-order {
+.tamus-print-order {
 	margin-left: .5rem;
 }
 
@@ -213,7 +213,7 @@ dl.horizontal {
 	border-color: #0062CC;
 }
 
-input#cla_submit[type="submit"],
+input#tamus_submit[type="submit"],
 .button-submit,
 .btn-primary {
 	@extend %button;
@@ -250,7 +250,7 @@ input#cla_submit[type="submit"],
 }
 
 .logistics-approval-buttons {
-	#cla_publish {
+	#tamus_publish {
 		margin-top: .5rem;
 	}
 }

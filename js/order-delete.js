@@ -71,6 +71,6 @@
     }
   };
 
-	$('.cla-delete-order').on('click', ajaxDeleteOrder);
+	$('.tamus-delete-order').on('click', ajaxDeleteOrder);
 
 })(jQuery);

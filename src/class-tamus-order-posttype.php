@@ -569,7 +569,7 @@ class TAMUS_Order_PostType {
 			if ( 'publish' !== $status ) {
 				$output .= '<a class="btn btn-sm btn-outline-yellow" title="Edit this order" href="' . $permalink . '"><span class="dashicons dashicons-welcome-write-blog"></span></a>';
 			}
-			$output .= '<button class="cla-delete-order btn btn-sm btn-outline-red" data-post-id="' . $post_id . '" data-clear-container="true" type="button" title="Delete this order"><span class="dashicons dashicons-trash"></span></button>';
+			$output .= '<button class="tamus-delete-order btn btn-sm btn-outline-red" data-post-id="' . $post_id . '" data-clear-container="true" type="button" title="Delete this order"><span class="dashicons dashicons-trash"></span></button>';
 		}
 		$output .= "</td>";
 		$output .= "</tr>";
@@ -914,8 +914,8 @@ class TAMUS_Order_PostType {
 		}
 
 		// Validate the file uploads, if present.
-		if ( isset( $_POST['cla_quote_count'] ) && 0 < intval( $_POST['cla_quote_count'] ) ) {
-			$quote_count = (int) sanitize_text_field( wp_unslash( $_POST['cla_quote_count'] ) );
+		if ( isset( $_POST['tamus_quote_count'] ) && 0 < intval( $_POST['tamus_quote_count'] ) ) {
+			$quote_count = (int) sanitize_text_field( wp_unslash( $_POST['tamus_quote_count'] ) );
 			if ( $quote_count > 0 ) {
 
 				/**
@@ -927,8 +927,8 @@ class TAMUS_Order_PostType {
 				$quote_fields = array();
 				for ( $i = 0; $i < $quote_count; $i++ ) {
 					// Handle uploading quote file.
-					if ( array_key_exists( "cla_quote_{$i}_file", $_FILES ) ) {
-						$validate_file = $order_form_helper->validate_file_field( $_FILES["cla_quote_{$i}_file"], $i );
+					if ( array_key_exists( "tamus_quote_{$i}_file", $_FILES ) ) {
+						$validate_file = $order_form_helper->validate_file_field( $_FILES["tamus_quote_{$i}_file"], $i );
 						if ( ! $validate_file['passed'] ) {
 							$json_out['errors'][] = $validate_file['message'];
 						}
@@ -949,9 +949,9 @@ class TAMUS_Order_PostType {
 			$user_id = $user->get( 'ID' );
 
 			// Get current program meta.
-			$maybe_program_id = (int) isset( $_POST['cla_funding_program'] ) ? sanitize_text_field( wp_unslash( $_POST['cla_funding_program'] ) ) : 0;
+			$maybe_program_id = (int) isset( $_POST['tamus_funding_program'] ) ? sanitize_text_field( wp_unslash( $_POST['tamus_funding_program'] ) ) : 0;
 			if ( $maybe_program_id ) {
-				$program_id = (int) sanitize_text_field( wp_unslash( $_POST['cla_funding_program'] ) );
+				$program_id = (int) sanitize_text_field( wp_unslash( $_POST['tamus_funding_program'] ) );
 				$unfunded_program = get_field( 'unfunded_program', 'option' );
 				if ( $unfunded_program->ID !== $program_id ) {
 					// Validate the program ID.
@@ -1056,7 +1056,7 @@ class TAMUS_Order_PostType {
 			$user_department_post_id = $user_department_post->ID;
 
 			// Update program choice.
-			$maybe_program_id = (int) isset( $_POST['cla_funding_program'] ) ? sanitize_text_field( wp_unslash( $_POST['cla_funding_program'] ) ) : get_post_meta( $post_id, 'program', true );
+			$maybe_program_id = (int) isset( $_POST['tamus_funding_program'] ) ? sanitize_text_field( wp_unslash( $_POST['tamus_funding_program'] ) ) : get_post_meta( $post_id, 'program', true );
 			if ( 0 !== $maybe_program_id ) {
 				$program_post = get_post( $maybe_program_id );
 			} else {
@@ -1083,44 +1083,44 @@ class TAMUS_Order_PostType {
 		 */
 
 		// Save building location.
-		if ( isset( $_POST['cla_building_name'] ) ) {
-			$value = sanitize_text_field( wp_unslash( $_POST['cla_building_name'] ) );
+		if ( isset( $_POST['tamus_building_name'] ) ) {
+			$value = sanitize_text_field( wp_unslash( $_POST['tamus_building_name'] ) );
 			update_field( 'building', $value, $post_id );
 		}
 
 		// Save office location.
-		if ( isset( $_POST['cla_room_number'] ) ) {
-			$value = sanitize_text_field( wp_unslash( $_POST['cla_room_number'] ) );
+		if ( isset( $_POST['tamus_room_number'] ) ) {
+			$value = sanitize_text_field( wp_unslash( $_POST['tamus_room_number'] ) );
 			update_field( 'office_location', $value, $post_id );
 		}
 
 		// Save contribution amount.
-		if ( isset( $_POST['cla_contribution_amount'] ) ) {
-			$value = sanitize_text_field( wp_unslash( $_POST['cla_contribution_amount'] ) );
+		if ( isset( $_POST['tamus_contribution_amount'] ) ) {
+			$value = sanitize_text_field( wp_unslash( $_POST['tamus_contribution_amount'] ) );
 			update_field( 'contribution_amount', $value, $post_id );
 		}
 
 		// Save account number.
-		if ( isset( $_POST['cla_account_number'] ) ) {
-			$value = sanitize_text_field( wp_unslash( $_POST['cla_account_number'] ) );
+		if ( isset( $_POST['tamus_account_number'] ) ) {
+			$value = sanitize_text_field( wp_unslash( $_POST['tamus_account_number'] ) );
 			update_field( 'contribution_account', $value, $post_id );
 		}
 
 		// Save order comment.
-		if ( isset( $_POST['cla_order_comments'] ) ) {
-			$value = sanitize_textarea_field( wp_unslash( $_POST['cla_order_comments'] ) );
+		if ( isset( $_POST['tamus_order_comments'] ) ) {
+			$value = sanitize_textarea_field( wp_unslash( $_POST['tamus_order_comments'] ) );
 			update_field( 'order_comment', $value, $post_id );
 		}
 
 		// Save current asset.
-		if ( isset( $_POST['cla_current_asset_number'] ) ) {
-			$value = sanitize_text_field( wp_unslash( $_POST['cla_current_asset_number'] ) );
+		if ( isset( $_POST['tamus_current_asset_number'] ) ) {
+			$value = sanitize_text_field( wp_unslash( $_POST['tamus_current_asset_number'] ) );
 			update_field( 'current_asset', $value, $post_id );
 		}
 
 		// Save no computer yet field.
-		if ( isset( $_POST['cla_no_computer_yet'] ) ) {
-			$value = sanitize_key( wp_unslash( $_POST['cla_no_computer_yet'] ) );
+		if ( isset( $_POST['tamus_no_computer_yet'] ) ) {
+			$value = sanitize_key( wp_unslash( $_POST['tamus_no_computer_yet'] ) );
 			if ( 'on' === $value ) {
 				$value = 1;
 			} else {
@@ -1130,9 +1130,9 @@ class TAMUS_Order_PostType {
 		}
 
 		// Save department IT Rep.
-		if ( isset( $_POST['cla_it_rep_id'] ) ) {
+		if ( isset( $_POST['tamus_it_rep_id'] ) ) {
 			$value           = get_field( 'it_rep_status', $post_id );
-			$it_rep          = sanitize_text_field( wp_unslash( $_POST['cla_it_rep_id'] ) );
+			$it_rep          = sanitize_text_field( wp_unslash( $_POST['tamus_it_rep_id'] ) );
 			$value['it_rep'] = $it_rep;
 			update_field( 'it_rep_status', $value, $post_id );
 		}
@@ -1141,11 +1141,11 @@ class TAMUS_Order_PostType {
 		$product_subtotal = 0;
 
 		// Let WordPress handle the upload.
-		// Remember, 'cla_quote_0_file' is the name of our file input in our form above.
+		// Remember, 'tamus_quote_0_file' is the name of our file input in our form above.
 		// Here post_id is 0 because we are not going to attach the media to any post.
-		if ( isset( $_POST['cla_quote_count'] ) && 0 < intval( $_POST['cla_quote_count'] ) ) {
+		if ( isset( $_POST['tamus_quote_count'] ) && 0 < intval( $_POST['tamus_quote_count'] ) ) {
 
-			$quote_count = sanitize_text_field( wp_unslash( $_POST['cla_quote_count'] ) );
+			$quote_count = sanitize_text_field( wp_unslash( $_POST['tamus_quote_count'] ) );
 
 			if ( $quote_count > 0 ) {
 
@@ -1161,21 +1161,21 @@ class TAMUS_Order_PostType {
 				for ( $i = 0; $i < $quote_count; $i++ ) {
 
 					if (
-						isset( $_POST[ "cla_quote_{$i}_name" ] )
-						&& isset( $_POST[ "cla_quote_{$i}_price" ] )
-						&& isset( $_POST[ "cla_quote_{$i}_description" ] )
+						isset( $_POST[ "tamus_quote_{$i}_name" ] )
+						&& isset( $_POST[ "tamus_quote_{$i}_price" ] )
+						&& isset( $_POST[ "tamus_quote_{$i}_description" ] )
 					) {
 						$quote_fields[ $i ] = array(
-							'name'        => sanitize_text_field( wp_unslash( $_POST[ "cla_quote_{$i}_name" ] ) ),
-							'price'       => sanitize_text_field( wp_unslash( $_POST[ "cla_quote_{$i}_price" ] ) ),
-							'description' => sanitize_textarea_field( wp_unslash( $_POST[ "cla_quote_{$i}_description" ] ) ),
+							'name'        => sanitize_text_field( wp_unslash( $_POST[ "tamus_quote_{$i}_name" ] ) ),
+							'price'       => sanitize_text_field( wp_unslash( $_POST[ "tamus_quote_{$i}_price" ] ) ),
+							'description' => sanitize_textarea_field( wp_unslash( $_POST[ "tamus_quote_{$i}_description" ] ) ),
 						);
-						$product_subtotal += floatval( sanitize_text_field( wp_unslash( $_POST[ "cla_quote_{$i}_price" ] ) ) );
+						$product_subtotal += floatval( sanitize_text_field( wp_unslash( $_POST[ "tamus_quote_{$i}_price" ] ) ) );
 					}
 
 					// Handle uploading quote file.
-					if ( array_key_exists( "cla_quote_{$i}_file", $_FILES ) ) {
-						$attachment_id = media_handle_upload( "cla_quote_{$i}_file", 0 );
+					if ( array_key_exists( "tamus_quote_{$i}_file", $_FILES ) ) {
+						$attachment_id = media_handle_upload( "tamus_quote_{$i}_file", 0 );
 						if ( ! is_wp_error( $attachment_id ) ) {
 							// Attach file.
 							$quote_fields[ $i ]['file'] = $attachment_id;
@@ -1195,17 +1195,17 @@ class TAMUS_Order_PostType {
 		 * Save product information.
 		 */
 		// Validate data.
-		if ( isset( $_POST['cla_product_ids'] ) && ! empty( $_POST['cla_product_ids'] ) ) {
+		if ( isset( $_POST['tamus_product_ids'] ) && ! empty( $_POST['tamus_product_ids'] ) ) {
 
-			$product_post_ids = sanitize_text_field( wp_unslash( $_POST['cla_product_ids'] ) );
+			$product_post_ids = sanitize_text_field( wp_unslash( $_POST['tamus_product_ids'] ) );
 			$product_post_ids = explode( ',', $product_post_ids );
 
 			// Remove all product IDs not included in the program.
-			if ( ! isset( $cla_form_helper ) ) {
+			if ( ! isset( $form_helper ) ) {
 				require_once TAMUS_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
-				$cla_form_helper = new \TAMUS\Order\Order_Form_Helper();
+				$form_helper = new \TAMUS\Order\Order_Form_Helper();
 			}
-			$products_and_bundles = $cla_form_helper->get_product_post_objects_for_program_by_user_dept( $program_id );
+			$products_and_bundles = $form_helper->get_product_post_objects_for_program_by_user_dept( $program_id );
 			$restack_product_ids  = false;
 			foreach ( $product_post_ids as $key => $id ) {
 				if ( ! array_key_exists( $id, $products_and_bundles ) ) {
@@ -1323,9 +1323,9 @@ class TAMUS_Order_PostType {
 			$products = get_field( 'order_items', $post_id );
 			foreach ( $products as $key => $product ) {
 				$was_checked                            = true;
-				$req_number                             = sanitize_text_field( wp_unslash( $_POST["cla_item_{$key}_req_number"] ) );
-				$req_date                               = sanitize_text_field( wp_unslash( $_POST["cla_item_{$key}_req_date"] ) );
-				$asset_number                           = sanitize_text_field( wp_unslash( $_POST["cla_item_{$key}_asset_number"] ) );
+				$req_number                             = sanitize_text_field( wp_unslash( $_POST["tamus_item_{$key}_req_number"] ) );
+				$req_date                               = sanitize_text_field( wp_unslash( $_POST["tamus_item_{$key}_req_date"] ) );
+				$asset_number                           = sanitize_text_field( wp_unslash( $_POST["tamus_item_{$key}_asset_number"] ) );
 				$products[ $key ]['requisition_number'] = $req_number;
 				$products[ $key ]['requisition_date']   = $req_date;
 				$products[ $key ]['asset_number']       = $asset_number;
@@ -1338,9 +1338,9 @@ class TAMUS_Order_PostType {
 			$quotes = get_field( 'quotes', $post_id );
 			foreach ( $quotes as $key => $quote ) {
 				$was_checked                          = true;
-				$req_number                           = sanitize_text_field( wp_unslash( $_POST["cla_quote_{$key}_req_number"] ) );
-				$req_date                             = sanitize_text_field( wp_unslash( $_POST["cla_quote_{$key}_req_date"] ) );
-				$asset_number                         = sanitize_text_field( wp_unslash( $_POST["cla_quote_{$key}_asset_number"] ) );
+				$req_number                           = sanitize_text_field( wp_unslash( $_POST["tamus_quote_{$key}_req_number"] ) );
+				$req_date                             = sanitize_text_field( wp_unslash( $_POST["tamus_quote_{$key}_req_date"] ) );
+				$asset_number                         = sanitize_text_field( wp_unslash( $_POST["tamus_quote_{$key}_asset_number"] ) );
 				$quotes[ $key ]['requisition_number'] = $req_number;
 				$quotes[ $key ]['requisition_date']   = $req_date;
 				$quotes[ $key ]['asset_number']       = $asset_number;
@@ -1413,23 +1413,23 @@ class TAMUS_Order_PostType {
 		}
 
 		/**
-		 * Get the CLA Form Helper class.
+		 * Get the Form Helper class.
 		 */
 		require_once TAMUS_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
-		$cla_form_helper = new \TAMUS\Order\Order_Form_Helper();
+		$form_helper = new \TAMUS\Order\Order_Form_Helper();
 
 		/**
 		 * Get product categories.
 		 */
 		// Retrieve product categories used by products in the Program.
-		$json_out['apple']  = $cla_form_helper->cla_get_products( 'apple', $program_id, false, $selected_products );
-		$json_out['pc']     = $cla_form_helper->cla_get_products( 'pc', $program_id, false, $selected_products );
-		$json_out['addons'] = $cla_form_helper->cla_get_products( 'add-on', $program_id, false, $selected_products );
+		$json_out['apple']  = $form_helper->get_products( 'apple', $program_id, false, $selected_products );
+		$json_out['pc']     = $form_helper->get_products( 'pc', $program_id, false, $selected_products );
+		$json_out['addons'] = $form_helper->get_products( 'add-on', $program_id, false, $selected_products );
 
 		/**
 		 * Get product prices.
 		 */
-		$products_and_bundles = $cla_form_helper->get_product_post_objects_for_program_by_user_dept( $program_id );
+		$products_and_bundles = $form_helper->get_product_post_objects_for_program_by_user_dept( $program_id );
 		foreach ( $products_and_bundles as $post_id => $post_title ) {
 			$products_and_bundles[$post_id] = get_post_meta( $post_id, 'price', true );
 		}

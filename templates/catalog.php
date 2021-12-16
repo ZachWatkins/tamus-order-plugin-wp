@@ -16,7 +16,7 @@
  * @since 1.0.0
  * @return void
  */
-function cla_workstation_order_form_styles() {
+function tamus_workstation_order_form_styles() {
 
 	wp_register_style(
 		'tamus-order-plugin-wp-form-template',
@@ -29,7 +29,7 @@ function cla_workstation_order_form_styles() {
 	wp_enqueue_style( 'tamus-order-plugin-wp-form-template' );
 
 }
-add_action( 'wp_enqueue_scripts', 'cla_workstation_order_form_styles', 1 );
+add_action( 'wp_enqueue_scripts', 'tamus_workstation_order_form_styles', 1 );
 
 /**
  * Registers and enqueues template scripts.
@@ -37,7 +37,7 @@ add_action( 'wp_enqueue_scripts', 'cla_workstation_order_form_styles', 1 );
  * @since 1.0.0
  * @return void
  */
-function cla_workstation_order_form_scripts() {
+function tamus_workstation_order_form_scripts() {
 
 	if ( ! is_user_logged_in() ) {
 		return;
@@ -55,7 +55,7 @@ function cla_workstation_order_form_scripts() {
 	wp_enqueue_script( 'tamus-order-plugin-wp-form-scripts' );
 
 }
-add_action( 'wp_enqueue_scripts', 'cla_workstation_order_form_scripts', 1 );
+add_action( 'wp_enqueue_scripts', 'tamus_workstation_order_form_scripts', 1 );
 
 add_action( 'the_content', function(){
 
@@ -64,18 +64,18 @@ add_action( 'the_content', function(){
 	}
 
 	/**
-	 * Get the CLA Form Helper class.
+	 * Get the Form Helper class.
 	 */
 	require_once TAMUS_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
-	$cla_form_helper = new \TAMUS\Order\Order_Form_Helper();
+	$form_helper = new \TAMUS\Order\Order_Form_Helper();
 
 	/**
 	 * Get product categories.
 	 */
-	$apple_list  = $cla_form_helper->cla_get_products( 'apple', false, true );
-	$pc_list     = $cla_form_helper->cla_get_products( 'pc', false, true );
-	$addons_list = $cla_form_helper->cla_get_products( 'add-on', false, true );
-	$output = "<div id=\"cla-order-form\"><div id=\"products\" class=\"cell small-12 medium-auto\">{$apple_list}{$pc_list}{$addons_list}</div></div>";
+	$apple_list  = $form_helper->get_products( 'apple', false, true );
+	$pc_list     = $form_helper->get_products( 'pc', false, true );
+	$addons_list = $form_helper->get_products( 'add-on', false, true );
+	$output = "<div id=\"tamus-order-form\"><div id=\"products\" class=\"cell small-12 medium-auto\">{$apple_list}{$pc_list}{$addons_list}</div></div>";
 	echo $output;
 });
 

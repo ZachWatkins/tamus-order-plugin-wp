@@ -16,7 +16,7 @@
  * @since 1.0.0
  * @return void
  */
-function cla_workstation_order_styles() {
+function tamus_workstation_order_styles() {
 
 	wp_register_style(
 		'tamus-order-plugin-wp',
@@ -29,7 +29,7 @@ function cla_workstation_order_styles() {
 	wp_enqueue_style( 'tamus-order-plugin-wp' );
 
 }
-add_action( 'wp_enqueue_scripts', 'cla_workstation_order_styles', 1 );
+add_action( 'wp_enqueue_scripts', 'tamus_workstation_order_styles', 1 );
 
 /**
  * Registers and enqueues order deletion scripts.
@@ -37,7 +37,7 @@ add_action( 'wp_enqueue_scripts', 'cla_workstation_order_styles', 1 );
  * @since 1.0.0
  * @return void
  */
-function cla_workstation_order_delete_scripts() {
+function tamus_workstation_order_delete_scripts() {
 
 	if ( ! is_user_logged_in() ) {
 		return;
@@ -63,20 +63,20 @@ function cla_workstation_order_delete_scripts() {
 	}
 
 }
-add_action( 'wp_enqueue_scripts', 'cla_workstation_order_delete_scripts', 1 );
+add_action( 'wp_enqueue_scripts', 'tamus_workstation_order_delete_scripts', 1 );
 
 /**
  * Empty the edit link for this page.
  *
  * @return string
  */
-function cla_empty_edit_link( $link ) {
+function tamus_empty_edit_link( $link ) {
 	if ( ! current_user_can( 'wso_admin' ) ) {
 		$link = '';
 	}
 	return $link;
 }
-add_filter( 'edit_post_link', 'cla_empty_edit_link' );
+add_filter( 'edit_post_link', 'tamus_empty_edit_link' );
 
 /**
  * Modify post title.
@@ -121,14 +121,14 @@ add_action( 'genesis_entry_header', function(){
 
 	$output = '';
 	if ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) || current_user_can( 'wso_admin' ) ) {
-		$output .= '<div class="cell shrink"><button class="cla-delete-order btn btn-square btn-outline-red" type="button" title="Delete this order"><span class="dashicons dashicons-trash"></span></button></div>';
+		$output .= '<div class="cell shrink"><button class="tamus-delete-order btn btn-square btn-outline-red" type="button" title="Delete this order"><span class="dashicons dashicons-trash"></span></button></div>';
 	}
 
 	// Print button.
 	global $post;
 	$bare_url     = TAMUS_ORDER_DIR_URL . 'order-receipt.php?postid=' . $post->ID;
 	$complete_url = wp_nonce_url( $bare_url, 'auth-post_' . $post->ID, 'token' );
-	$output       .= "<div class=\"cell shrink\"><a class=\"cla-print-order btn btn-square btn-outline-dark\" href=\"{$complete_url}\" target=\"_blank\"><span class=\"dashicons dashicons-printer\"></span></a></div>";
+	$output       .= "<div class=\"cell shrink\"><a class=\"tamus-print-order btn btn-square btn-outline-dark\" href=\"{$complete_url}\" target=\"_blank\"><span class=\"dashicons dashicons-printer\"></span></a></div>";
 
 	if ( ! empty( $output ) ) {
 		$output = "<div class=\"cell shrink\"><div class=\"grid-x\">{$output}</div></div>";
@@ -238,7 +238,7 @@ function can_current_user_update_order_public( $post_id ) {
  *
  * @return void
  */
-function cla_render_order( $content ) {
+function tamus_render_order( $content ) {
 
 	if ( ! is_user_logged_in() ) {
 		return $content;
@@ -472,7 +472,7 @@ function cla_render_order( $content ) {
 	return $content;
 
 }
-add_filter( 'the_content', 'cla_render_order' );
+add_filter( 'the_content', 'tamus_render_order' );
 
 if ( function_exists( 'genesis' ) ) {
 	genesis();

@@ -52,7 +52,7 @@
 	display: none;
 }
 
-#cla_order_form_wrap {
+#tamus_order_form_wrap {
 	margin-left: auto;
 	margin-right: auto;
 
@@ -61,14 +61,14 @@
 	}
 }
 
-#cla_order_form,
+#tamus_order_form,
 #products,
 #shopping_cart {
 	// sass-lint:disable-block max-line-length
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
-#cla_order_form {
+#tamus_order_form {
 
 	input:not([type="checkbox"]),
 	select {
@@ -187,7 +187,7 @@
 		}
 	}
 
-	.cla-quote-item ~ .cla-quote-item {
+	.tamus-quote-item ~ .tamus-quote-item {
 		border-top: 1px solid #000;
 		margin-top: 1rem;
 	}
@@ -380,7 +380,7 @@
 	line-height: 1.5;
 	font-weight: 700;
 
-	input#cla_submit[type="submit"] {
+	input#tamus_submit[type="submit"] {
 		@extend %button;
 		margin: 1rem 0;
 

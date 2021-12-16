@@ -117,7 +117,7 @@ On two different models of Dell Windows 10 machines (Inspiron and Latitude) a Wi
 
 ## Original Application Credits
 
-1. The original application used very different technology, was programmed by Joseph Rafferty <jrafferty@tamu.edu>, and was authored by Joseph Rafferty and Pamela Luckenbill: <https://github.tamu.edu/liberalarts-web/cla-workstation-order>.
+1. The original application used very different technology, was programmed by Joseph Rafferty <jrafferty@tamu.edu>, and was authored by Joseph Rafferty and Pamela Luckenbill: <https://github.tamu.edu/liberalarts-web/tamus-workstation-order>.
 
 ## Footnotes
 

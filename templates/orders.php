@@ -16,7 +16,7 @@ if ( ! current_user_can( 'administrator' ) && ! current_user_can( 'wso_admin' ) 
 	wp_redirect( $url );
 }
 
-function cla_get_selected_program_id() {
+function tamus_get_selected_program_id() {
 
 	$program_id = false;
 	if ( isset( $_REQUEST['program_id'] ) ) {
@@ -53,10 +53,10 @@ function cla_get_selected_program_id() {
  *
  * @return string
  */
-function cla_empty_edit_link() {
+function tamus_empty_edit_link() {
 	return '';
 }
-add_filter( 'edit_post_link', 'cla_empty_edit_link' );
+add_filter( 'edit_post_link', 'tamus_empty_edit_link' );
 
 /**
  * Modify post title.
@@ -67,7 +67,7 @@ function program_title( $title, $post_id ) {
 
 	if ( 'page' === $post_type ) {
 		$program_prefix = '';
-		$program_id     = cla_get_selected_program_id();
+		$program_id     = tamus_get_selected_program_id();
 
 		if ( 0 !== $program_id ) {
 			$program_prefix = get_post_meta( $program_id, 'prefix', true );
@@ -91,7 +91,7 @@ add_filter( 'the_title', 'program_title', 11, 2 );
  * @since 1.0.0
  * @return void
  */
-function cla_order_search_scripts() {
+function tamus_order_search_scripts() {
 
 	wp_register_script(
 		'tamus-order-plugin-wp-search-script',
@@ -108,7 +108,7 @@ function cla_order_search_scripts() {
 	wp_add_inline_script( 'tamus-order-plugin-wp-search-script', $script_variables, 'before' );
 
 }
-add_action( 'wp_enqueue_scripts', 'cla_order_search_scripts', 1 );
+add_action( 'wp_enqueue_scripts', 'tamus_order_search_scripts', 1 );
 
 /**
  * Registers and enqueues order deletion scripts.
@@ -116,7 +116,7 @@ add_action( 'wp_enqueue_scripts', 'cla_order_search_scripts', 1 );
  * @since 1.0.0
  * @return void
  */
-function cla_workstation_order_delete_scripts() {
+function tamus_workstation_order_delete_scripts() {
 
 	if ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_admin' ) || current_user_can( 'wso_logistics_admin' ) ) {
 
@@ -138,14 +138,14 @@ function cla_workstation_order_delete_scripts() {
 	}
 
 }
-add_action( 'wp_enqueue_scripts', 'cla_workstation_order_delete_scripts', 1 );
+add_action( 'wp_enqueue_scripts', 'tamus_workstation_order_delete_scripts', 1 );
 
 /**
  * Get the dropdown for program posts.
  */
 function get_program_dropdown() {
 
-	$program_id = cla_get_selected_program_id();
+	$program_id = tamus_get_selected_program_id();
 	$selected   = $program_id;
 
 	// Get values to filter by.
@@ -212,8 +212,8 @@ function get_status_dropdown() {
 	return $output;
 }
 
-add_action( 'genesis_before_loop', 'cla_before_loop' );
-function cla_before_loop(){
+add_action( 'genesis_before_loop', 'tamus_before_loop' );
+function tamus_before_loop(){
 
 	$permalink        = get_permalink();
 	$program_dropdown = get_program_dropdown();
@@ -222,7 +222,7 @@ function cla_before_loop(){
 	$output = '<div class="grid-x grid-margin-x">';
 	$output .= '<div class="order-sidebar cell small-12 medium-2">';
 	$output .= '<a class="btn btn-outline-success" href="/new-order/">New Order</a>';
-	$output .= '<div id="order-search-filters" class="search-filters"><form method="post" enctype="multipart/form-data" id="cla_search_order_form" action="' . $permalink . '">';
+	$output .= '<div id="order-search-filters" class="search-filters"><form method="post" enctype="multipart/form-data" id="tamus_search_order_form" action="' . $permalink . '">';
 	$output .= $program_dropdown;
 	$output .= $status_dropdown;
 	$output .= '<button type="button" class="btn btn-primary" id="reset-button">Reset Filter</button>';
@@ -244,15 +244,15 @@ function cla_before_loop(){
 
 }
 
-add_action( 'genesis_after_loop', 'cla_after_loop' );
-function cla_after_loop(){
+add_action( 'genesis_after_loop', 'tamus_after_loop' );
+function tamus_after_loop(){
 
 	echo '</div>';
 
 }
 
-add_filter( 'genesis_attr_entry', 'cla_entry_atts' );
-function cla_entry_atts( $attributes ){
+add_filter( 'genesis_attr_entry', 'tamus_entry_atts' );
+function tamus_entry_atts( $attributes ){
 	$attributes['class'] .= ' order-search-results cell small-12 medium-10';
 	return $attributes;
 }
@@ -319,15 +319,15 @@ function get_order_output( $post_id ) {
 		if ( 'publish' !== $status ) {
 			$output .= '<a class="btn btn-sm btn-outline-yellow" title="Edit this order" href="' . $permalink . '"><span class="dashicons dashicons-welcome-write-blog"></span></a>';
 		}
-		$output .= '<button class="cla-delete-order btn btn-sm btn-outline-red" data-post-id="' . $post_id . '" data-clear-container="true" type="button" title="Delete this order"><span class="dashicons dashicons-trash"></span></button>';
+		$output .= '<button class="tamus-delete-order btn btn-sm btn-outline-red" data-post-id="' . $post_id . '" data-clear-container="true" type="button" title="Delete this order"><span class="dashicons dashicons-trash"></span></button>';
 	}
 	$output .= "</td>";
 	$output .= "</tr>";
 	return $output;
 }
 
-add_action( 'the_content', 'cla_my_orders' );
-function cla_my_orders() {
+add_action( 'the_content', 'tamus_my_orders' );
+function tamus_my_orders() {
 
 	$order_args = array(
 		'post_type'      => 'tamusorder',
@@ -336,7 +336,7 @@ function cla_my_orders() {
 	);
 
 	// Determine the program ID.
-	$program_id = cla_get_selected_program_id();
+	$program_id = tamus_get_selected_program_id();
 
 	if ( 0 !== $program_id ) {
 		$order_args['meta_key']   = 'program';

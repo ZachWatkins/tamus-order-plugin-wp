@@ -10,25 +10,25 @@
  */
 (function($){
 
-	var $form           = $('#cla_order_form');
+	var $form           = $('#tamus_order_form');
 	var admin_ajax      = typeof WSOAjax === 'undefined' ? {} : WSOAjax;
 	var product_prices  = {};
 	var programs        = {};
 	var cost_allocation = 0;
 	var cost_threshold  = 0;
-	var is_order        = typeof cla_is_order === 'undefined' ? '' : cla_is_order;
-	var post_status     = typeof cla_status === 'undefined' ? '' : cla_status;
+	var is_order        = typeof tamus_is_order === 'undefined' ? '' : tamus_is_order;
+	var post_status     = typeof tamus_status === 'undefined' ? '' : tamus_status;
 	var product_html    = {};
 
-	if ( typeof cla_programs !== 'undefined' ) {
-		var choice      = cla_programs['choice'];
-		programs        = cla_programs;
-		cost_allocation = cla_programs[choice].allocation;
-		cost_threshold  = cla_programs[choice].threshold;
+	if ( typeof tamus_programs !== 'undefined' ) {
+		var choice      = tamus_programs['choice'];
+		programs        = tamus_programs;
+		cost_allocation = tamus_programs[choice].allocation;
+		cost_threshold  = tamus_programs[choice].threshold;
 		product_html[choice] = $form.find('.products-apple').prop('outerHTML');
 		product_html[choice] += $form.find('.products-pc').prop('outerHTML');
 		product_html[choice] += $form.find('.products-addons').prop('outerHTML');
-		product_prices[choice] = cla_product_prices;
+		product_prices[choice] = tamus_product_prices;
 	}
 
 	var changeProgram = function(e){
@@ -63,7 +63,7 @@
 			$program_ajax_message.html('');
 	    var form_data = new FormData();
 	    form_data.append('program_id', program_id);
-	    form_data.append('selected_products', $form.find('#cla_product_ids').val());
+	    form_data.append('selected_products', $form.find('#tamus_product_ids').val());
 	    form_data.append('action', 'get_program_products');
 	    form_data.append('_ajax_nonce', admin_ajax.nonce);
 	    jQuery.ajax({
@@ -105,7 +105,7 @@
 	};
 
 	var validateProductsInProgram = function(){
-		var cart_products = $form.find('#cla_product_ids').val();
+		var cart_products = $form.find('#tamus_product_ids').val();
 		if ( '' !== cart_products ) {
 			cart_products = cart_products.split(',');
 			var prices = product_prices[programs['choice']];
@@ -131,7 +131,7 @@
 		// Get variables used to update the shopping cart.
 		var productID = this.getAttribute('data-product-id');
 		// Remove product ID from form field.
-		var $productIDsField = $('#cla_product_ids');
+		var $productIDsField = $('#tamus_product_ids');
 		var newProductIDs = $productIDsField.val().replace( productID, '' ).replace( /,+/g, ',' ).replace( /^,|,$/, '' );
 		$productIDsField.val(newProductIDs);
 
@@ -153,12 +153,12 @@
 		var $this = $(this);
 		var productID = $this.attr('data-product-id');
 		var productName = $('#product-' + productID + ' .card-header').html();
-		var programPrices = product_prices[cla_programs['choice']];
+		var programPrices = product_prices[tamus_programs['choice']];
 		var productPrice = formatDollars( programPrices[productID] );
 		var $thumb = $('#product-'+productID+'.card .wp-post-image');
 
 		// Add product ID to form field.
-		var $productIDsField = $('#cla_product_ids');
+		var $productIDsField = $('#tamus_product_ids');
 		var products         = $productIDsField.val();
 		if ( products.indexOf(',') >= 0 ) {
 			products = products.split(',');
@@ -203,8 +203,8 @@
 	var getTotal = function(){
 
 		// Get array of post IDs for product post type.
-		var $productIDsField = $('#cla_product_ids');
-		var programPrices = product_prices[cla_programs['choice']];
+		var $productIDsField = $('#tamus_product_ids');
+		var programPrices = product_prices[tamus_programs['choice']];
 		var ids = $productIDsField.val();
 				ids = ids.replace(/^,|,$/g,'');
 
@@ -228,7 +228,7 @@
 		}
 
 		// Get quote items total.
-		var $quotePrices = $form.find('.products-custom-quote .cla-quote-price');
+		var $quotePrices = $form.find('.products-custom-quote .tamus-quote-price');
 		$quotePrices.each(function(){
 
 			if ( this.value === '' || this.value === '.' ) {
@@ -246,7 +246,7 @@
 
 		// Get numbers involved.
 		var total = getTotal();
-		var contributionMade = '' === $('#cla_contribution_amount').val() ? 0 : parseFloat( $('#cla_contribution_amount').val() );
+		var contributionMade = '' === $('#tamus_contribution_amount').val() ? 0 : parseFloat( $('#tamus_contribution_amount').val() );
 		var returnVal = {
 			needsContribution: false,
 			difference: 0
@@ -303,22 +303,22 @@
 		// Remove this item from the DOM.
 		var $this = $(this);
 		var index = $this.attr('data-quote-index');
-		var $item = $form.find('.cla-quote-item[data-quote-index="'+index+'"]');
+		var $item = $form.find('.tamus-quote-item[data-quote-index="'+index+'"]');
 		var $cartItem = $form.find('.cart-item.quote-item-'+index);
 		$item.remove();
 		$cartItem.remove();
 
 		// Update all indexes on existing elements in the form fields.
-		$form.find('.cla-quote-item').each(function( index ){
+		$form.find('.tamus-quote-item').each(function( index ){
 
 			var $this = $(this);
 			$this.attr('data-quote-index', index);
 
-			$this.find('label[for="cla_quote_"]').each(function(){
+			$this.find('label[for="tamus_quote_"]').each(function(){
 				this.for = this.for.replace(/\d+/, index);
 			});
 
-			$this.find('input[name="cla_quote_"],textarea[name="cla_quote_"]').each(function(){
+			$this.find('input[name="tamus_quote_"],textarea[name="tamus_quote_"]').each(function(){
 				var newid = this.id.replace(/\d+/, index);
 				this.id = newid;
 				this.name = newid;
@@ -333,8 +333,8 @@
 		});
 
 		// Decrement quote counter.
-		var count = parseInt( $form.find('#cla_quote_count').val() );
-		$form.find('#cla_quote_count').val( count - 1 );
+		var count = parseInt( $form.find('#tamus_quote_count').val() );
+		$form.find('#tamus_quote_count').val( count - 1 );
 
 		// Update totals.
 		updateTotals();
@@ -360,7 +360,7 @@
 	var updateQuoteCartItem = function(e) {
 
 		var $this = $(this); // The price form field.
-		var index = parseInt( $this.parents('.cla-quote-item').attr('data-quote-index') );
+		var index = parseInt( $this.parents('.tamus-quote-item').attr('data-quote-index') );
 		var $cartItem = $( '#list_purchases .quote-item-' + index );
 		var price = $this.val();
 				price = formatDollars( price );
@@ -371,12 +371,12 @@
 	var addQuoteFieldset = function(){
 
 		// Create HTML.
-		var newIndex = $form.find('.cla-quote-item').length;
-		var html = '<div class="cla-quote-item grid-x grid-margin-x" data-quote-index="'+newIndex+'">';
-				html += '<div class="cell small-12 medium-4"><label for="cla_quote_'+newIndex+'_name">Name</label><input name="cla_quote_'+newIndex+'_name" id="cla_quote_'+newIndex+'_name" class="cla-quote-name" type="text" />';
-				html += '<label for="cla_quote_'+newIndex+'_price">Price</label><input name="cla_quote_'+newIndex+'_price" id="cla_quote_'+newIndex+'_price" class="cla-quote-price" type="number" min="0" step="0.01" /></div>';
-				html += '<div class="cell small-12 medium-4"><label for="cla_quote_'+newIndex+'_description">Description</label><textarea name="cla_quote_'+newIndex+'_description" id="cla_quote_'+newIndex+'_description" class="cla-quote-description" name="cla_quote_'+newIndex+'_description"></textarea></div>'
-				html += '<div class="cell small-12 medium-auto"><label for="cla_quote_'+newIndex+'_file">File</label><input name="cla_quote_'+newIndex+'_file" id="cla_quote_'+newIndex+'_file" class="cla-quote-file" type="file" accept=".pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"/></div>';
+		var newIndex = $form.find('.tamus-quote-item').length;
+		var html = '<div class="tamus-quote-item grid-x grid-margin-x" data-quote-index="'+newIndex+'">';
+				html += '<div class="cell small-12 medium-4"><label for="tamus_quote_'+newIndex+'_name">Name</label><input name="tamus_quote_'+newIndex+'_name" id="tamus_quote_'+newIndex+'_name" class="tamus-quote-name" type="text" />';
+				html += '<label for="tamus_quote_'+newIndex+'_price">Price</label><input name="tamus_quote_'+newIndex+'_price" id="tamus_quote_'+newIndex+'_price" class="tamus-quote-price" type="number" min="0" step="0.01" /></div>';
+				html += '<div class="cell small-12 medium-4"><label for="tamus_quote_'+newIndex+'_description">Description</label><textarea name="tamus_quote_'+newIndex+'_description" id="tamus_quote_'+newIndex+'_description" class="tamus-quote-description" name="tamus_quote_'+newIndex+'_description"></textarea></div>'
+				html += '<div class="cell small-12 medium-auto"><label for="tamus_quote_'+newIndex+'_file">File</label><input name="tamus_quote_'+newIndex+'_file" id="tamus_quote_'+newIndex+'_file" class="tamus-quote-file" type="file" accept=".pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"/></div>';
 				html += '<div class="cell small-12 medium-shrink"><button type="button" class="remove" data-quote-index="'+newIndex+'">Remove this quote item</button></div>';
 				html += '</div>';
 
@@ -384,15 +384,15 @@
 		$form.find('.products-custom-quote #list_quotes').append(html);
 
 		// Add event handlers.
-		$item = $form.find('.cla-quote-item[data-quote-index="'+newIndex+'"]');
+		$item = $form.find('.tamus-quote-item[data-quote-index="'+newIndex+'"]');
 		$item.find('.remove').on('click', removeQuoteFieldset);
-		$item.find('.cla-quote-price').on('keyup', updateQuoteCartItem);
-		$item.find('.cla-quote-price').on('keyup', updateTotals);
+		$item.find('.tamus-quote-price').on('keyup', updateQuoteCartItem);
+		$item.find('.tamus-quote-price').on('keyup', updateTotals);
 
 		// Add element to shopping cart.
 		// Get elements and values.
 		var productName = 'Advanced Teaching/Research Item';
-		var strProductPrice = $item.find('.cla-quote-price').val();
+		var strProductPrice = $item.find('.tamus-quote-price').val();
 		if ( strProductPrice.length === 0 || strProductPrice === '.' ) {
 			strProductPrice = '$0.00';
 		} else {
@@ -413,8 +413,8 @@
 		// $('#list_purchases').find('.quote-item-'+newIndex+' .trash').on('click', removeQuoteFieldset);
 
 		// Increment quote counter.
-		var count = parseInt( $form.find('#cla_quote_count').val() );
-		$form.find('#cla_quote_count').val( count + 1 );
+		var count = parseInt( $form.find('#tamus_quote_count').val() );
+		$form.find('#tamus_quote_count').val( count + 1 );
 
 		// Update total purchase price.
 		updateTotals();
@@ -430,62 +430,62 @@
 		$form.find('.flagged').removeClass('flagged');
 
 		// IT Representative
-		$itRep = $form.find('#cla_it_rep_id');
+		$itRep = $form.find('#tamus_it_rep_id');
 		if ( $itRep.val() === '-1' ) {
 			valid = false;
-			$form.find('label[for="cla_it_rep_id"]').addClass('flagged');
+			$form.find('label[for="tamus_it_rep_id"]').addClass('flagged');
 			message += '<li>Please choose an IT Representative.</li>';
 		}
 
 		// Building name.
-		$buildingName = $form.find('#cla_building_name');
+		$buildingName = $form.find('#tamus_building_name');
 		if ( $buildingName.val() === '' ) {
 			valid = false;
-			$form.find('label[for="cla_building_name"]').addClass('flagged');
+			$form.find('label[for="tamus_building_name"]').addClass('flagged');
 			message += '<li>Please provide a building name.</li>';
 		}
 
 		// Room number.
-		$roomNumber = $form.find('#cla_room_number');
+		$roomNumber = $form.find('#tamus_room_number');
 		if ( $roomNumber.val() === '' ) {
 			valid = false;
-			$form.find('label[for="cla_room_number"]').addClass('flagged');
+			$form.find('label[for="tamus_room_number"]').addClass('flagged');
 			message += '<li>Please provide a room number.</li>';
 		}
 
 		// Current workstation.
-		$assetNumber = $form.find('#cla_current_asset_number');
-		$noComputer = $form.find('#cla_no_computer_yet');
+		$assetNumber = $form.find('#tamus_current_asset_number');
+		$noComputer = $form.find('#tamus_no_computer_yet');
 		if ( $assetNumber.val() === '' ) {
 			if ( ! $noComputer.is(':checked') ) {
 				valid = false;
-				$form.find('label[for="cla_current_asset_number"]').addClass('flagged');
+				$form.find('label[for="tamus_current_asset_number"]').addClass('flagged');
 				message += '<li>Please provide an asset number.</li>';
 			}
 		} else if ( $noComputer.is(':checked') ) {
 			valid = false;
-			$form.find('label[for="cla_current_asset_number"]').addClass('flagged');
+			$form.find('label[for="tamus_current_asset_number"]').addClass('flagged');
 			message += '<li>Please either uncheck "I don\'t have a computer yet" or clear the field labeled "Current Workstation Asset Number".</li>';
 		}
 
 		// Account Number.
-		var $accountNumber = $form.find('#cla_account_number');
-		var contributionAmount = parseFloat( $form.find('#cla_contribution_amount').val() );
+		var $accountNumber = $form.find('#tamus_account_number');
+		var contributionAmount = parseFloat( $form.find('#tamus_contribution_amount').val() );
 		var contribution = validateContribution();
 		if ( contribution.needsContribution === true && $accountNumber.val() === '' ) {
 			// Contribution and account number don't match up.
 			valid = false;
-			$form.find('label[for="cla_account_number"]').addClass('flagged');
+			$form.find('label[for="tamus_account_number"]').addClass('flagged');
 			message += '<li>Please provide a contribution account.</li>';
 		}
 		if ( contribution.difference > 0 ) {
 			// Contribution still needed.
 			valid = false;
-			$form.find('label[for="cla_contribution_amount"]').addClass('flagged');
+			$form.find('label[for="tamus_contribution_amount"]').addClass('flagged');
 			message += '<li>You must contribute more funds.</li>';
 		} else if ( contribution.difference < 0 ) {
 			valid = false;
-			$form.find('label[for="cla_contribution_amount"]').addClass('flagged');
+			$form.find('label[for="tamus_contribution_amount"]').addClass('flagged');
 			message += '<li>You must reduce your funds contribution.</li>';
 		}
 
@@ -497,8 +497,8 @@
 			message += '<li>Please select one or more products.</li>';
 		} else if ( $form.find('#list_purchases .product-item').length > 0 ){
 			// Ensure all products are present within the selected program.
-			var program_id = $form.find('#cla_funding_program').val();
-			var product_ids = $form.find('#cla_product_ids').val().split(',');
+			var program_id = $form.find('#tamus_funding_program').val();
+			var product_ids = $form.find('#tamus_product_ids').val().split(',');
 			for ( var i=0; i<product_ids.length; i++ ) {
 				if ( ! product_prices[program_id].hasOwnProperty( product_ids[i] ) ) {
 					valid = false;
@@ -509,7 +509,7 @@
 		}
 
 		// Quote Items.
-		$form.find('.cla-quote-price,.cla-quote-name,.cla-quote-description,.cla-quote-file').each(function(){
+		$form.find('.tamus-quote-price,.tamus-quote-name,.tamus-quote-description,.tamus-quote-file').each(function(){
 			if ( this.value.length === 0 ) {
 				valid = false;
 				$(this).parent().find('label[for="' + this.id + '"]').addClass('flagged');
@@ -519,7 +519,7 @@
 		});
 
 		// Validate custom quote file selection.
-		$form.find('.cla-quote-file').each(function(){
+		$form.find('.tamus-quote-file').each(function(){
 			// Validate file extension ('pdf', 'doc', 'docx').
 			var filename  = this.value;
 			if ( '' !== filename ) {
@@ -562,7 +562,7 @@
 			.val('');
 		// Remove HTML elements representing products.
 		$form
-			.find('.cla-quote-item, #list-purchases .cart-item')
+			.find('.tamus-quote-item, #list-purchases .cart-item')
 			.remove();
 		// Uncheck checkboxes.
 		$form
@@ -570,7 +570,7 @@
 			.prop('checked',false);
 		// Reset select elements.
 		$form
-			.find('#cla_it_rep_id')[0]
+			.find('#tamus_it_rep_id')[0]
 			.selectedIndex = 0;
 	};
 
@@ -579,11 +579,11 @@
 	$('#list_purchases').on( 'click', '.trash-quote', removeQuoteFieldset );
 	$('#list_quotes').on( 'click', '.remove', removeQuoteFieldset );
 	$('#products').on('click', '.add-product', addProductToCart);
-	$('#cla_contribution_amount').on('keyup', updateTotals);
-	$('#cla_funding_program').on('change', changeProgram);
-	$form.find('#cla_add_quote').on('click', addQuoteFieldset);
+	$('#tamus_contribution_amount').on('keyup', updateTotals);
+	$('#tamus_funding_program').on('change', changeProgram);
+	$form.find('#tamus_add_quote').on('click', addQuoteFieldset);
 	// Add submit event handler.
-	jQuery('#cla_order_form').submit(ajaxSubmit);
+	jQuery('#tamus_order_form').submit(ajaxSubmit);
 	function ajaxSubmit(e) {
     e.preventDefault();
  		var validation = validateForm();

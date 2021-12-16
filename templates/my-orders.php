@@ -10,29 +10,29 @@
  * @license    https://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU General Public License v2.0 or later
  */
 
-add_action( 'genesis_before_loop', 'cla_before_loop' );
-function cla_before_loop(){
+add_action( 'genesis_before_loop', 'tamus_before_loop' );
+function tamus_before_loop(){
 
 	echo '<div class="grid-x grid-margin-x">';
 	echo '<div class="cell small-12 medium-2"><a class="button" href="/new-order/">New Order</a></div>';
 
 }
 
-add_action( 'genesis_after_loop', 'cla_after_loop' );
-function cla_after_loop(){
+add_action( 'genesis_after_loop', 'tamus_after_loop' );
+function tamus_after_loop(){
 
 	echo '</div>';
 
 }
 
-add_filter( 'genesis_attr_entry', 'cla_entry_atts' );
-function cla_entry_atts( $attributes ){
+add_filter( 'genesis_attr_entry', 'tamus_entry_atts' );
+function tamus_entry_atts( $attributes ){
 	$attributes['class'] .= ' cell small-12 medium-10';
 	return $attributes;
 }
 
-add_action( 'the_content', 'cla_my_orders' );
-function cla_my_orders() {
+add_action( 'the_content', 'tamus_my_orders' );
+function tamus_my_orders() {
 
 	if ( ! is_user_logged_in() ) {
 		return;

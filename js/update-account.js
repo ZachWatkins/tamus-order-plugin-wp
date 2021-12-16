@@ -11,22 +11,22 @@
  (function($){
 
 	var admin_ajax = WSOAjax;
-	var $form      = jQuery('#cla_update_account_form');
+	var $form      = jQuery('#tamus_update_account_form');
   var $response  = $form.find('.ajax-response');
   var values     = {
-    first_name: $form.find('#cla_first_name').val(),
-    last_name: $form.find('#cla_last_name').val(),
-    email: $form.find('#cla_email').val(),
-    department: $form.find('#cla_department').val(),
+    first_name: $form.find('#tamus_first_name').val(),
+    last_name: $form.find('#tamus_last_name').val(),
+    email: $form.find('#tamus_email').val(),
+    department: $form.find('#tamus_department').val(),
   };
 
 	var ajaxUpdateAccount = function(e){
     e.preventDefault();
     var form_data = new FormData();
-    var first_name = $form.find('#cla_first_name').val();
-    var last_name  = $form.find('#cla_last_name').val();
-    var email      = $form.find('#cla_email').val();
-    var department = $form.find('#cla_department').val();
+    var first_name = $form.find('#tamus_first_name').val();
+    var last_name  = $form.find('#tamus_last_name').val();
+    var email      = $form.find('#tamus_email').val();
+    var department = $form.find('#tamus_department').val();
     // Determine if we need to make an AJAX call to update the user account details.
     if (
       first_name === values.first_name
@@ -81,6 +81,6 @@
     });
   };
 
-	$form.find('#cla_update_account').on('click', ajaxUpdateAccount);
+	$form.find('#tamus_update_account').on('click', ajaxUpdateAccount);
 
 })(jQuery);

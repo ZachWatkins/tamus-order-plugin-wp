@@ -92,15 +92,15 @@ class Taxonomy {
 		$labels = array(
 			'name'              => $plural,
 			'singular_name'     => $singular,
-			'search_items'      => __( 'Search', 'cla-wso-textdomain' ) . " $plural",
-			'all_items'         => __( 'All', 'cla-wso-textdomain' ) . " $plural",
-			'parent_item'       => __( 'Parent', 'cla-wso-textdomain' ) . " $singular",
-			'parent_item_colon' => __( 'Parent', 'cla-wso-textdomain' ) . " {$singular}:",
-			'edit_item'         => __( 'Edit', 'cla-wso-textdomain' ) . " $singular",
-			'update_item'       => __( 'Update', 'cla-wso-textdomain' ) . " $singular",
-			'add_new_item'      => __( 'Add New', 'cla-wso-textdomain' ) . " $singular",
+			'search_items'      => __( 'Search', 'tamus-wso-textdomain' ) . " $plural",
+			'all_items'         => __( 'All', 'tamus-wso-textdomain' ) . " $plural",
+			'parent_item'       => __( 'Parent', 'tamus-wso-textdomain' ) . " $singular",
+			'parent_item_colon' => __( 'Parent', 'tamus-wso-textdomain' ) . " {$singular}:",
+			'edit_item'         => __( 'Edit', 'tamus-wso-textdomain' ) . " $singular",
+			'update_item'       => __( 'Update', 'tamus-wso-textdomain' ) . " $singular",
+			'add_new_item'      => __( 'Add New', 'tamus-wso-textdomain' ) . " $singular",
 			/* translators: placeholder is the singular taxonomy name */
-			'new_item_name'     => sprintf( esc_html__( 'New %d Name', 'cla-wso-textdomain' ), $singular ),
+			'new_item_name'     => sprintf( esc_html__( 'New %d Name', 'tamus-wso-textdomain' ), $singular ),
 			'menu_name'         => $plural,
 		);
 
@@ -235,7 +235,7 @@ class Taxonomy {
 						default:
 							$value  = $term_meta ? stripslashes( $term_meta ) : '';
 							$value  = html_entity_decode( $value );
-							$output = "<input type=\"text\" name=\"term_meta_{$slug}\" id=\"term_meta_{$slug}\" value=\"{$value}\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'cla-wso-textdomain' ) . '</p>';
+							$output = "<input type=\"text\" name=\"term_meta_{$slug}\" id=\"term_meta_{$slug}\" value=\"{$value}\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'tamus-wso-textdomain' ) . '</p>';
 							echo wp_kses(
 								$output,
 								array(

@@ -16,7 +16,7 @@
  * Author:       Zachary Watkins
  * Author Email: zwatkins2@tamu.edu
  * Author URI:   https://github.com/zachwatkins
- * Text Domain:  cla-wso-textdomain
+ * Text Domain:  tamus-wso-textdomain
  * License:      GPL-2.0+
  * License URI:  https://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  */
@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /* Define some useful constants */
 define( 'TAMUS_ORDER_DIRNAME', 'tamus-order-plugin-wp' );
-define( 'TAMUS_ORDER_TEXTDOMAIN', 'cla-wso-textdomain' );
+define( 'TAMUS_ORDER_TEXTDOMAIN', 'tamus-wso-textdomain' );
 define( 'TAMUS_ORDER_DIR_PATH', plugin_dir_path( __FILE__ ) );
 define( 'TAMUS_ORDER_DIR_FILE', __FILE__ );
 define( 'TAMUS_ORDER_DIR_URL', plugin_dir_url( __FILE__ ) );
@@ -41,8 +41,8 @@ require TAMUS_ORDER_DIR_PATH . 'src/class-tamus-order-plugin-wp.php';
 new \TAMUS\Order();
 
 /* Activation hooks */
-register_deactivation_hook( TAMUS_ORDER_DIR_FILE, 'cla_workstation_deactivation' );
-register_activation_hook( TAMUS_ORDER_DIR_FILE, 'cla_workstation_activation' );
+register_deactivation_hook( TAMUS_ORDER_DIR_FILE, 'tamus_workstation_deactivation' );
+register_activation_hook( TAMUS_ORDER_DIR_FILE, 'tamus_workstation_activation' );
 
 /**
  * Helper option flag to indicate rewrite rules need flushing
@@ -50,7 +50,7 @@ register_activation_hook( TAMUS_ORDER_DIR_FILE, 'cla_workstation_activation' );
  * @since 1.0.0
  * @return void
  */
-function cla_workstation_activation() {
+function tamus_workstation_activation() {
 
 	// Check for missing dependencies.
 	$acf_pro = is_plugin_active( 'advanced-custom-fields-pro/acf.php' );
@@ -86,7 +86,7 @@ function cla_workstation_activation() {
  * @since 0.1.0
  * @return void
  */
-function cla_workstation_deactivation() {
+function tamus_workstation_deactivation() {
 	flush_rewrite_rules();
 
 	// Add user roles.

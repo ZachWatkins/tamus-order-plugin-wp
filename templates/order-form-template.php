@@ -15,13 +15,13 @@
  *
  * @return string
  */
-function cla_empty_edit_link( $link ) {
+function tamus_empty_edit_link( $link ) {
 	if ( ! current_user_can( 'wso_admin' ) ) {
 		$link = '';
 	}
 	return $link;
 }
-add_filter( 'edit_post_link', 'cla_empty_edit_link' );
+add_filter( 'edit_post_link', 'tamus_empty_edit_link' );
 
 /**
  * Remove entry meta.
@@ -49,7 +49,7 @@ add_filter(
  * @since 1.0.0
  * @return void
  */
-function cla_workstation_order_form_styles() {
+function tamus_workstation_order_form_styles() {
 
 	wp_register_style(
 		'tamus-order-plugin-wp-form-template',
@@ -62,7 +62,7 @@ function cla_workstation_order_form_styles() {
 	wp_enqueue_style( 'tamus-order-plugin-wp-form-template' );
 
 }
-add_action( 'wp_enqueue_scripts', 'cla_workstation_order_form_styles', 1 );
+add_action( 'wp_enqueue_scripts', 'tamus_workstation_order_form_styles', 1 );
 
 /**
  * Registers and enqueues template scripts.
@@ -70,7 +70,7 @@ add_action( 'wp_enqueue_scripts', 'cla_workstation_order_form_styles', 1 );
  * @since 1.0.0
  * @return void
  */
-function cla_workstation_order_form_scripts() {
+function tamus_workstation_order_form_scripts() {
 
 	if ( ! is_user_logged_in() ) {
 		return;
@@ -92,9 +92,9 @@ function cla_workstation_order_form_scripts() {
 	$is_order  = 'tamusorder' === $post_type ? 'true' : 'false';
 	// The assumed type for the "current_program" field's return value is object WP_Post.
 	$current_program_post = get_field( 'current_program', 'option' );
-	$script_variables     = "var cla_is_order = $is_order;";
+	$script_variables     = "var tamus_is_order = $is_order;";
 	$script_variables    .= "\n";
-	$script_variables    .= 'var cla_status = "' . get_post_status( $post_id ) . '";';
+	$script_variables    .= 'var tamus_status = "' . get_post_status( $post_id ) . '";';
 	$script_variables    .= "\n";
 	// Include admin ajax URL and nonce.
 	$script_variables .= 'var WSOAjax = {"ajaxurl":"' . admin_url( 'admin-ajax.php' ) . '","nonce":"' . wp_create_nonce( 'make_order' ) . '"};';
@@ -126,24 +126,24 @@ function cla_workstation_order_form_scripts() {
 	}
 	$script_variables .= '
 ';
-	$script_variables .= "var cla_programs = {\"choice\":{$program_id}{$current_program_json}{$unfunded_json}};";
+	$script_variables .= "var tamus_programs = {\"choice\":{$program_id}{$current_program_json}{$unfunded_json}};";
 	$script_variables .= '
 ';
 	// Include products and prices.
 	require_once TAMUS_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
-	$cla_form_helper      = new \TAMUS\Order\Order_Form_Helper();
-	$products_and_bundles = $cla_form_helper->get_product_post_objects_for_program_by_user_dept( $program_info['choice'] );
+	$form_helper      = new \TAMUS\Order\Order_Form_Helper();
+	$products_and_bundles = $form_helper->get_product_post_objects_for_program_by_user_dept( $program_info['choice'] );
 	foreach ( $products_and_bundles as $post_id => $post_title ) {
 		$products_and_bundles[ $post_id ] = get_post_meta( $post_id, 'price', true );
 	}
 	$script_variables .= '
 ';
-	$script_variables .= 'var cla_product_prices = ' . wp_json_encode( $products_and_bundles );
+	$script_variables .= 'var tamus_product_prices = ' . wp_json_encode( $products_and_bundles );
 
 	wp_add_inline_script( 'tamus-order-plugin-wp-form-scripts', $script_variables, 'before' );
 
 }
-add_action( 'wp_enqueue_scripts', 'cla_workstation_order_form_scripts', 1 );
+add_action( 'wp_enqueue_scripts', 'tamus_workstation_order_form_scripts', 1 );
 
 /**
  * Render the order form.
@@ -152,7 +152,7 @@ add_action( 'wp_enqueue_scripts', 'cla_workstation_order_form_scripts', 1 );
  *
  * @return void
  */
-function cla_render_order_form( $content ) {
+function tamus_render_order_form( $content ) {
 
 	if ( ! is_user_logged_in() ) {
 		return $content;
@@ -238,7 +238,7 @@ function cla_render_order_form( $content ) {
 		}
 		$order_info .= "<div class=\"outline-fields notice notice-red\">Your order was returned by $returning_user_name: \"$returned_message\"</div>";
 	}
-	$order_info .= '<div id="cla_order_info"><h2>Order Information</h2><p>Please verify your information below. If you need to update anything, please <a href="/my-account/">update your info</a>.</p><dl>';
+	$order_info .= '<div id="tamus_order_info"><h2>Order Information</h2><p>Please verify your information below. If you need to update anything, please <a href="/my-account/">update your info</a>.</p><dl>';
 	$order_info .= '<dt>First Name</dt><dd>' . $user_meta['first_name'][0] . '</dd>';
 	$order_info .= '<dt>Last Name</dt><dd>' . $user_meta['last_name'][0] . '</dd>';
 	$order_info .= '<dt>Email Address</dt><dd>' . $user->data->user_email . '</dd>';
@@ -256,10 +256,10 @@ function cla_render_order_form( $content ) {
 	if ( empty( $contribution_account ) ) {
 		$contribution_account = '';
 	}
-	$additional_funding  = '<div id="cla_add_funding"><h3>Additional Funding</h3><p>Enter any additional funds that you would like to contribute on top of your base allowance.<br>Your cart calculations will include this amount. It\'s also required if your cart total exceeds the base allowance.</p>';
-	$additional_funding .= '<div class="form-group"><label for="cla_contribution_amount">Contribution Amount</label> <div class="grid-x"><div class="cell shrink dollar-field">$</div><div class="cell auto"><input id="cla_contribution_amount" name="cla_contribution_amount" type="number" min="0" step="0.01" value="' . $contribution_amount . '" step="any" /></div></div></div>';
-	$additional_funding .= '<div class="form-group"><label for="cla_account_number">Account</label> <input id="cla_account_number" name="cla_account_number" type="text" value="' . $contribution_account . '"/><small>Research, Bursary, etc. or the Acct #</small></div>';
-	$additional_funding .= '<div class="form-group"><label for="cla_funding_program">Program <span class="program-ajax-message"></span></label> <select id="cla_funding_program" name="cla_funding_program">';
+	$additional_funding  = '<div id="tamus_add_funding"><h3>Additional Funding</h3><p>Enter any additional funds that you would like to contribute on top of your base allowance.<br>Your cart calculations will include this amount. It\'s also required if your cart total exceeds the base allowance.</p>';
+	$additional_funding .= '<div class="form-group"><label for="tamus_contribution_amount">Contribution Amount</label> <div class="grid-x"><div class="cell shrink dollar-field">$</div><div class="cell auto"><input id="tamus_contribution_amount" name="tamus_contribution_amount" type="number" min="0" step="0.01" value="' . $contribution_amount . '" step="any" /></div></div></div>';
+	$additional_funding .= '<div class="form-group"><label for="tamus_account_number">Account</label> <input id="tamus_account_number" name="tamus_account_number" type="text" value="' . $contribution_account . '"/><small>Research, Bursary, etc. or the Acct #</small></div>';
+	$additional_funding .= '<div class="form-group"><label for="tamus_funding_program">Program <span class="program-ajax-message"></span></label> <select id="tamus_funding_program" name="tamus_funding_program">';
 	// Limit users to 1 order per regular program.
 	// Determine if this is the order form and if a user has already placed an order for the program.
 	$disable_current_program = '';
@@ -317,7 +317,7 @@ function cla_render_order_form( $content ) {
 		$it_rep_args  = array(
 			'echo'              => false,
 			'include'           => $it_rep_ids,
-			'name'              => 'cla_it_rep_id',
+			'name'              => 'tamus_it_rep_id',
 			'role'              => 'wso_it_rep',
 			'show_option_none'  => 'Select a representative',
 			'option_none_value' => '-1',
@@ -336,7 +336,7 @@ function cla_render_order_form( $content ) {
 		if ( ! $logistics_email ) {
 			$logistics_email = 'us';
 		}
-		$it_rep_dropdown = '<select name="cla_it_rep_id" id="cla_it_rep_id" class="" disabled><option value="-1">No IT Representatives are available, please contact ' . $logistics_email . ' for assistance.</option></select>';
+		$it_rep_dropdown = '<select name="tamus_it_rep_id" id="tamus_it_rep_id" class="" disabled><option value="-1">No IT Representatives are available, please contact ' . $logistics_email . ' for assistance.</option></select>';
 	}
 
 	/**
@@ -345,23 +345,23 @@ function cla_render_order_form( $content ) {
 	$selected_products_and_bundles = get_field( 'selected_products_and_bundles', $post->ID );
 
 	/**
-	 * Get the CLA Form Helper class.
+	 * Get the Form Helper class.
 	 */
 	require_once TAMUS_ORDER_DIR_PATH . 'src/class-order-form-helper.php';
-	$cla_form_helper = new \TAMUS\Order\Order_Form_Helper();
+	$form_helper = new \TAMUS\Order\Order_Form_Helper();
 
 	/**
 	 * Get product categories.
 	 */
 	$selected_array = ! empty( $selected_products_and_bundles ) ? $selected_products_and_bundles : array();
-	$apple_list     = $cla_form_helper->cla_get_products( 'apple', $program_id, false, $selected_array );
-	$pc_list        = $cla_form_helper->cla_get_products( 'pc', $program_id, false, $selected_array );
-	$addons_list    = $cla_form_helper->cla_get_products( 'add-on', $program_id, false, $selected_array );
+	$apple_list     = $form_helper->get_products( 'apple', $program_id, false, $selected_array );
+	$pc_list        = $form_helper->get_products( 'pc', $program_id, false, $selected_array );
+	$addons_list    = $form_helper->get_products( 'add-on', $program_id, false, $selected_array );
 
 	/**
 	 * Add advanced quote button.
 	 */
-	$button_add_quote = '<button class="button" type="button" id="cla_add_quote">Add an Advanced Teaching/Research Quote</button>';
+	$button_add_quote = '<button class="button" type="button" id="tamus_add_quote">Add an Advanced Teaching/Research Quote</button>';
 
 	/**
 	 * Shopping cart items.
@@ -389,7 +389,7 @@ function cla_render_order_form( $content ) {
 			$purchase_list_items .= $item;
 		}
 	}
-	$purchase_field = '<input type="hidden" id="cla_product_ids" name="cla_product_ids" value="' . $selected_pab_value . '" />';
+	$purchase_field = '<input type="hidden" id="tamus_product_ids" name="tamus_product_ids" value="' . $selected_pab_value . '" />';
 
 	/**
 	 * Store number of quotes.
@@ -404,13 +404,13 @@ function cla_render_order_form( $content ) {
 			if ( ! empty( $quote['file'] ) ) {
 				$file_field = '<a target="_blank" href="' . $quote['file']['url'] . '">' . $quote['file']['filename'] . '</a>';
 			} else {
-				$file_field = '<input name="cla_quote_' . $key . '_file" id="cla_quote_' . $key . '_file" class="cla-quote-file" type="file" accept=".pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"/>';
+				$file_field = '<input name="tamus_quote_' . $key . '_file" id="tamus_quote_' . $key . '_file" class="tamus-quote-file" type="file" accept=".pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"/>';
 			}
-			$quote_html .= '<div class="cla-quote-item grid-x grid-margin-x" data-quote-index="' . $key . '">';
-			$quote_html .= '<div class="cell small-12 medium-4"><label for="cla_quote_' . $key . '_name">Name</label><input name="cla_quote_' . $key . '_name" id="cla_quote_' . $key . '_name" class="cla-quote-name" type="text" value="' . $quote['name'] . '" />';
-			$quote_html .= '<label for="cla_quote_' . $key . '_price">Price</label><input name="cla_quote_' . $key . '_price" id="cla_quote_' . $key . '_price" class="cla-quote-price" type="number" min="0" step="0.01" value="' . $quote['price'] . '" /></div>';
-			$quote_html .= '<div class="cell small-12 medium-4"><label for="cla_quote_' . $key . '_description">Description</label><textarea name="cla_quote_' . $key . '_description" id="cla_quote_' . $key . '_description" class="cla-quote-description" name="cla_quote_' . $key . '_description">' . $quote['description'] . '</textarea></div>';
-			$quote_html .= '<div class="cell small-12 medium-auto"><label for="cla_quote_' . $key . '_file">File</label>' . $file_field . '</div>';
+			$quote_html .= '<div class="tamus-quote-item grid-x grid-margin-x" data-quote-index="' . $key . '">';
+			$quote_html .= '<div class="cell small-12 medium-4"><label for="tamus_quote_' . $key . '_name">Name</label><input name="tamus_quote_' . $key . '_name" id="tamus_quote_' . $key . '_name" class="tamus-quote-name" type="text" value="' . $quote['name'] . '" />';
+			$quote_html .= '<label for="tamus_quote_' . $key . '_price">Price</label><input name="tamus_quote_' . $key . '_price" id="tamus_quote_' . $key . '_price" class="tamus-quote-price" type="number" min="0" step="0.01" value="' . $quote['price'] . '" /></div>';
+			$quote_html .= '<div class="cell small-12 medium-4"><label for="tamus_quote_' . $key . '_description">Description</label><textarea name="tamus_quote_' . $key . '_description" id="tamus_quote_' . $key . '_description" class="tamus-quote-description" name="tamus_quote_' . $key . '_description">' . $quote['description'] . '</textarea></div>';
+			$quote_html .= '<div class="cell small-12 medium-auto"><label for="tamus_quote_' . $key . '_file">File</label>' . $file_field . '</div>';
 			$quote_html .= '<div class="cell small-12 medium-shrink"><button type="button" class="remove" data-quote-index="' . $key . '">Remove this quote item</button></div>';
 			$quote_html .= '</div>';
 
@@ -424,7 +424,7 @@ function cla_render_order_form( $content ) {
 			$purchase_list_items .= $item;
 		}
 	}
-	$count_quotes = '<input type="hidden" id="cla_quote_count" name="cla_quote_count" value="' . $quote_count . '" />';
+	$count_quotes = '<input type="hidden" id="tamus_quote_count" name="tamus_quote_count" value="' . $quote_count . '" />';
 	$list_quotes  = "<div id=\"list_quotes\">{$quote_html}</div>";
 
 	/**
@@ -454,7 +454,7 @@ function cla_render_order_form( $content ) {
 	} else {
 		$submit_text = 'Place Order';
 	}
-	$submit_button = '<input type="submit" id="cla_submit" name="cla_submit" value="' . $submit_text . '">';
+	$submit_button = '<input type="submit" id="tamus_submit" name="tamus_submit" value="' . $submit_text . '">';
 
 	/**
 	 * Nonce field.
@@ -468,7 +468,7 @@ function cla_render_order_form( $content ) {
 	if ( empty( $building ) ) {
 		$building = '';
 	}
-	$building_field = "<input id=\"cla_building_name\" name=\"cla_building_name\" type=\"text\" value=\"{$building}\"/>";
+	$building_field = "<input id=\"tamus_building_name\" name=\"tamus_building_name\" type=\"text\" value=\"{$building}\"/>";
 
 	/**
 	 * Room number.
@@ -477,7 +477,7 @@ function cla_render_order_form( $content ) {
 	if ( empty( $room_number ) ) {
 		$room_number = '';
 	}
-	$room_number_field = "<input id=\"cla_room_number\" name=\"cla_room_number\" type=\"text\" value=\"{$room_number}\"/>";
+	$room_number_field = "<input id=\"tamus_room_number\" name=\"tamus_room_number\" type=\"text\" value=\"{$room_number}\"/>";
 
 	/**
 	 * Asset number.
@@ -486,7 +486,7 @@ function cla_render_order_form( $content ) {
 	if ( empty( $asset_number ) ) {
 		$asset_number = '';
 	}
-	$asset_number_field = "<input id=\"cla_current_asset_number\" name=\"cla_current_asset_number\" type=\"text\" value=\"{$asset_number}\"/>";
+	$asset_number_field = "<input id=\"tamus_current_asset_number\" name=\"tamus_current_asset_number\" type=\"text\" value=\"{$asset_number}\"/>";
 
 	/**
 	 * No computer yet.
@@ -497,7 +497,7 @@ function cla_render_order_form( $content ) {
 	} else {
 		$no_computer = '';
 	}
-	$no_computer_field = "<input id=\"cla_no_computer_yet\" name=\"cla_no_computer_yet\" type=\"checkbox\"$no_computer />";
+	$no_computer_field = "<input id=\"tamus_no_computer_yet\" name=\"tamus_no_computer_yet\" type=\"checkbox\"$no_computer />";
 
 	/**
 	 * Order comment.
@@ -506,24 +506,24 @@ function cla_render_order_form( $content ) {
 	if ( empty( $order_comment ) ) {
 		$order_comment = '';
 	}
-	$order_comment_field = "<textarea id=\"cla_order_comments\" name=\"cla_order_comments\" rows=\"5\">{$order_comment}</textarea>";
+	$order_comment_field = "<textarea id=\"tamus_order_comments\" name=\"tamus_order_comments\" rows=\"5\">{$order_comment}</textarea>";
 
 	/**
 	 * Form
 	 */
 	$permalink  = get_permalink();
-	$order_form = "{$pre}<div id=\"cla_order_form_wrap\">
-<form method=\"post\" enctype=\"multipart/form-data\" id=\"cla_order_form\" action=\"{$permalink}\">
+	$order_form = "{$pre}<div id=\"tamus_order_form_wrap\">
+<form method=\"post\" enctype=\"multipart/form-data\" id=\"tamus_order_form\" action=\"{$permalink}\">
 <div class=\"grid-x grid-margin-x\"><div class=\"cell medium-6\">{$order_info}</div><div class=\"cell medium-6\">{$additional_funding}</div></div><div class=\"grid-x grid-margin-x\"><div class=\"cell small-12\"><hr /></div></div>
 <div class=\"grid-x grid-margin-x\"><div class=\"cell medium-6\">
-<div class=\"form-group\"><label for=\"cla_it_rep_id\">IT Representative *</label> {$it_rep_dropdown}<small>To whom in IT should your order be sent to for confirmation?</small></div>
-<div class=\"form-group grid-x grid-margin-x\"><div class=\"building-name cell medium-6\"><label for=\"cla_building_name\">Building *</label> {$building_field}<small>What building is your primary office located in?</small></div><div class=\"room-number cell medium-6\">
-<label for=\"cla_room_number\">Room Number *</label> {$room_number_field}<small>What is the room number of your primary office?</small></div>
+<div class=\"form-group\"><label for=\"tamus_it_rep_id\">IT Representative *</label> {$it_rep_dropdown}<small>To whom in IT should your order be sent to for confirmation?</small></div>
+<div class=\"form-group grid-x grid-margin-x\"><div class=\"building-name cell medium-6\"><label for=\"tamus_building_name\">Building *</label> {$building_field}<small>What building is your primary office located in?</small></div><div class=\"room-number cell medium-6\">
+<label for=\"tamus_room_number\">Room Number *</label> {$room_number_field}<small>What is the room number of your primary office?</small></div>
 </div>
-<div class=\"form-group\"><label for=\"cla_current_asset_number\">Current Workstation Asset Number *</label> {$asset_number_field}<small>What is the TAMU asset number of your current workstation computer? Example: 021500123456</small></div>
-<div class=\"nobreak\">{$no_computer_field}<label for=\"cla_no_computer_yet\">I don't have a computer yet.</label></div>
+<div class=\"form-group\"><label for=\"tamus_current_asset_number\">Current Workstation Asset Number *</label> {$asset_number_field}<small>What is the TAMU asset number of your current workstation computer? Example: 021500123456</small></div>
+<div class=\"nobreak\">{$no_computer_field}<label for=\"tamus_no_computer_yet\">I don't have a computer yet.</label></div>
 </div><div class=\"cell medium-6\">
-<div class=\"form-group\"><label for=\"cla_order_comments\">Order Comment</label> {$order_comment_field}<small>Any additional information that would be helpful to pass along.
+<div class=\"form-group\"><label for=\"tamus_order_comments\">Order Comment</label> {$order_comment_field}<small>Any additional information that would be helpful to pass along.
 </small></div>
 </div>
 </div>
@@ -641,7 +641,7 @@ function cla_render_order_form( $content ) {
 	);
 	return wp_kses( $order_form, $allowed_html );
 }
-add_filter( 'the_content', 'cla_render_order_form' );
+add_filter( 'the_content', 'tamus_render_order_form' );
 
 if ( function_exists( 'genesis' ) ) {
 	genesis();

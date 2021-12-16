@@ -362,13 +362,13 @@ class Dashboard {
 		$program_id = (int) get_site_option( 'options_current_program' );
 		$program_post = get_post( $program_id );
 		wp_add_dashboard_widget(
-			'cla_dashboard_subscribers', // Widget slug.
+			'tamus_dashboard_subscribers', // Widget slug.
 			'Quick Links', // Title.
 			array( $this, 'dashboard_widget_subscribers' ) // Display function.
 		);
 		if ( ! current_user_can( 'subscriber' ) ) {
 			wp_add_dashboard_widget(
-				'cla_dashboard_todo', // Widget slug.
+				'tamus_dashboard_todo', // Widget slug.
 				'Orders requiring your attention', // Title.
 				array( $this, 'dashboard_widget_todo' ) // Display function.
 			);

@@ -10,7 +10,7 @@
  */
  (function($){
 	var admin_ajax = WSOSearchOrderAJAX;
-	var $form      = $('#cla_search_order_form');
+	var $form      = $('#tamus_search_order_form');
 	var $view      = $('#ajax-results');
 	var $response  = $form.find('.ajax-response');
 	var $programs  = $form.find('#search-program');

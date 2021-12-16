@@ -16,7 +16,7 @@
  * @since 1.0.0
  * @return void
  */
-function cla_workstation_order_styles() {
+function tamus_workstation_order_styles() {
 
 	wp_register_style(
 		'tamus-order-plugin-wp',
@@ -29,7 +29,7 @@ function cla_workstation_order_styles() {
 	wp_enqueue_style( 'tamus-order-plugin-wp' );
 
 }
-add_action( 'wp_enqueue_scripts', 'cla_workstation_order_styles', 1 );
+add_action( 'wp_enqueue_scripts', 'tamus_workstation_order_styles', 1 );
 
 /**
  * Registers and enqueues template scripts.
@@ -37,7 +37,7 @@ add_action( 'wp_enqueue_scripts', 'cla_workstation_order_styles', 1 );
  * @since 1.0.0
  * @return void
  */
-function cla_workstation_order_approval_scripts() {
+function tamus_workstation_order_approval_scripts() {
 
 	if ( ! is_user_logged_in() ) {
 		return;
@@ -62,7 +62,7 @@ function cla_workstation_order_approval_scripts() {
 	wp_add_inline_script( 'tamus-order-plugin-wp-approval-scripts', $script_variables, 'before' );
 
 }
-add_action( 'wp_enqueue_scripts', 'cla_workstation_order_approval_scripts', 1 );
+add_action( 'wp_enqueue_scripts', 'tamus_workstation_order_approval_scripts', 1 );
 
 /**
  * Registers and enqueues order deletion scripts.
@@ -70,7 +70,7 @@ add_action( 'wp_enqueue_scripts', 'cla_workstation_order_approval_scripts', 1 );
  * @since 1.0.0
  * @return void
  */
-function cla_workstation_order_delete_scripts() {
+function tamus_workstation_order_delete_scripts() {
 
 	if ( ! is_user_logged_in() ) {
 		return;
@@ -96,20 +96,20 @@ function cla_workstation_order_delete_scripts() {
 	}
 
 }
-add_action( 'wp_enqueue_scripts', 'cla_workstation_order_delete_scripts', 1 );
+add_action( 'wp_enqueue_scripts', 'tamus_workstation_order_delete_scripts', 1 );
 
 /**
  * Empty the edit link for this page.
  *
  * @return string
  */
-function cla_empty_edit_link( $link ) {
+function tamus_empty_edit_link( $link ) {
 	if ( ! current_user_can( 'wso_admin' ) ) {
 		$link = '';
 	}
 	return $link;
 }
-add_filter( 'edit_post_link', 'cla_empty_edit_link' );
+add_filter( 'edit_post_link', 'tamus_empty_edit_link' );
 
 /**
  * Modify post title.
@@ -154,14 +154,14 @@ add_action( 'genesis_entry_header', function(){
 
 	$output = '';
 	if ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) || current_user_can( 'wso_admin' ) ) {
-		$output .= '<div class="cell shrink"><button class="cla-delete-order btn btn-square btn-outline-red" type="button" title="Delete this order"><span class="dashicons dashicons-trash"></span></button></div>';
+		$output .= '<div class="cell shrink"><button class="tamus-delete-order btn btn-square btn-outline-red" type="button" title="Delete this order"><span class="dashicons dashicons-trash"></span></button></div>';
 	}
 
 	// Print button.
 	global $post;
 	$bare_url     = TAMUS_ORDER_DIR_URL . 'order-receipt.php?postid=' . $post->ID;
 	$complete_url = wp_nonce_url( $bare_url, 'auth-post_' . $post->ID, 'token' );
-	$output       .= "<div class=\"cell shrink\"><a class=\"cla-print-order btn btn-square btn-outline-dark\" href=\"{$complete_url}\" target=\"_blank\"><span class=\"dashicons dashicons-printer\"></span></a></div>";
+	$output       .= "<div class=\"cell shrink\"><a class=\"tamus-print-order btn btn-square btn-outline-dark\" href=\"{$complete_url}\" target=\"_blank\"><span class=\"dashicons dashicons-printer\"></span></a></div>";
 
 	if ( ! empty( $output ) ) {
 		$output = "<div class=\"cell shrink\"><div class=\"grid-x\">{$output}</div></div>";
@@ -175,7 +175,7 @@ add_action( 'genesis_entry_header', function(){
  *
  * @return void
  */
-function cla_render_order( $content ) {
+function tamus_render_order( $content ) {
 
 	if ( ! is_user_logged_in() ) {
 		return $content;
@@ -324,16 +324,16 @@ function cla_render_order( $content ) {
 		} elseif ( $current_user_id === $business_admin_id && 1 !== $business_admin_approved ) {
 			$show_approval_form = true;
 			$label = 'business staff';
-			$extra_fields = "<input type=\"text\" name=\"cla_account_number\" id=\"cla_account_number\" placeholder=\"Account Number\" />";
+			$extra_fields = "<input type=\"text\" name=\"tamus_account_number\" id=\"tamus_account_number\" placeholder=\"Account Number\" />";
 		} elseif ( ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) ) && 1 !== $logistics_confirmed ) {
 			$show_approval_form = true;
 			$label = 'logistics';
 		}
 		if ( true === $show_approval_form ) {
-			$content .= "<div id=\"approval-fields\" class=\"outline-fields\"><form method=\"post\" enctype=\"multipart/form-data\" id=\"cla_order_approval_form\" action=\"{$permalink}\"><div class=\"ajax-response\"></div><div class=\"grid-x\"><div class=\"cell auto\"><label for=\"approval_comments\"><strong>This order is pending confirmation by {$label}</strong></label><div>Please look it over for any errors or ommissions then confirm or return.</div></div><div class=\"cell shrink\"><button class=\"button btn btn-outline-green\" type=\"button\" id=\"cla_confirm\">Confirm</button> <button class=\"button btn btn-outline-red\" type=\"button\" id=\"cla_return\">Return</button></div></div>{$extra_fields}<textarea id=\"approval_comments\" name=\"approval_comments\" placeholder=\"Comment\"></textarea></form></div>";
+			$content .= "<div id=\"approval-fields\" class=\"outline-fields\"><form method=\"post\" enctype=\"multipart/form-data\" id=\"tamus_order_approval_form\" action=\"{$permalink}\"><div class=\"ajax-response\"></div><div class=\"grid-x\"><div class=\"cell auto\"><label for=\"approval_comments\"><strong>This order is pending confirmation by {$label}</strong></label><div>Please look it over for any errors or ommissions then confirm or return.</div></div><div class=\"cell shrink\"><button class=\"button btn btn-outline-green\" type=\"button\" id=\"tamus_confirm\">Confirm</button> <button class=\"button btn btn-outline-red\" type=\"button\" id=\"tamus_return\">Return</button></div></div>{$extra_fields}<textarea id=\"approval_comments\" name=\"approval_comments\" placeholder=\"Comment\"></textarea></form></div>";
 		}
 	} elseif ( true === $is_aff_it_rep || true === $is_aff_business_staff ) {
-		$content .= "<div id=\"approval-fields\" class=\"p\"><form method=\"post\" enctype=\"multipart/form-data\" id=\"cla_order_reassign_form\" action=\"{$permalink}\"><h4>This order was not sent to you, but can be reassigned if necessary.</h4><button class=\"btn btn-warning\" type=\"button\" id=\"cla_reassign\">Reassign to me</button><div class=\"ajax-response\"></div></form></div>";
+		$content .= "<div id=\"approval-fields\" class=\"p\"><form method=\"post\" enctype=\"multipart/form-data\" id=\"tamus_order_reassign_form\" action=\"{$permalink}\"><h4>This order was not sent to you, but can be reassigned if necessary.</h4><button class=\"btn btn-warning\" type=\"button\" id=\"tamus_reassign\">Reassign to me</button><div class=\"ajax-response\"></div></form></div>";
 	}
 	$content .= '<dl class="row horizontal">';
 	$content .= "<dt>IT Staff ({$switch_user_open['it_rep']}{$it_rep->data->display_name}{$switch_user_close['it_rep']})</dt><dd>{$it_rep_date}</dd>";
@@ -370,7 +370,7 @@ function cla_render_order( $content ) {
 
 	// Logistics user can edit product acquisition fields.
 	if ( ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) ) && 1 === $logistics_confirmed ) {
-		$content .= "<form method=\"post\" enctype=\"multipart/form-data\" id=\"cla_acquisition_form\" action=\"{$permalink}\">";
+		$content .= "<form method=\"post\" enctype=\"multipart/form-data\" id=\"tamus_acquisition_form\" action=\"{$permalink}\">";
 	}
 
 	// Products.
@@ -384,14 +384,14 @@ function cla_render_order( $content ) {
 			$requisition_date   = $item['requisition_date'];
 			$asset_number       = $item['asset_number'];
 			if ( ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) ) && 1 === $logistics_confirmed ) {
-				$requisition_number = "<input type=\"text\" name=\"cla_item_{$key}_req_number\" value=\"{$requisition_number}\" />";
-				$requisition_date   = "<input type=\"date\" name=\"cla_item_{$key}_req_date\" value=\"{$requisition_date}\" />";
-				$asset_number       = "<input type=\"text\" name=\"cla_item_{$key}_asset_number\" value=\"{$asset_number}\" />";
+				$requisition_number = "<input type=\"text\" name=\"tamus_item_{$key}_req_number\" value=\"{$requisition_number}\" />";
+				$requisition_date   = "<input type=\"date\" name=\"tamus_item_{$key}_req_date\" value=\"{$requisition_date}\" />";
+				$asset_number       = "<input type=\"text\" name=\"tamus_item_{$key}_asset_number\" value=\"{$asset_number}\" />";
 			} else if ( ! empty( $requisition_date ) ) {
 				preg_match( '/(\d+)-(\d+)-(\d+)/', $requisition_date, $matches );
 				$requisition_date = "{$matches[2]}/{$matches[3]}/{$matches[1]}";
 			}
-			$content .= "<tr class=\"cla-order-item\"><td>{$item['sku']}</td>";
+			$content .= "<tr class=\"tamus-order-item\"><td>{$item['sku']}</td>";
 			$content .= "<td colspan=\"2\">{$item['item']}</td>";
 			$content .= "<td>{$requisition_number}</td>";
 			$content .= "<td>{$requisition_date}</td>";
@@ -412,14 +412,14 @@ function cla_render_order( $content ) {
 			$requisition_date   = $item['requisition_date'];
 			$asset_number       = $item['asset_number'];
 			if ( ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) ) && 1 === $logistics_confirmed ) {
-				$requisition_number = "<input type=\"text\" name=\"cla_quote_{$key}_req_number\" value=\"{$requisition_number}\" />";
-				$requisition_date   = "<input type=\"date\" name=\"cla_quote_{$key}_req_date\" value=\"{$requisition_date}\" />";
-				$asset_number       = "<input type=\"text\" name=\"cla_quote_{$key}_asset_number\" value=\"{$asset_number}\" />";
+				$requisition_number = "<input type=\"text\" name=\"tamus_quote_{$key}_req_number\" value=\"{$requisition_number}\" />";
+				$requisition_date   = "<input type=\"date\" name=\"tamus_quote_{$key}_req_date\" value=\"{$requisition_date}\" />";
+				$asset_number       = "<input type=\"text\" name=\"tamus_quote_{$key}_asset_number\" value=\"{$asset_number}\" />";
 			} else if ( ! empty( $requisition_date ) ) {
 				preg_match( '/(\d+)-(\d+)-(\d+)/', $requisition_date, $matches );
 				$requisition_date = "{$matches[2]}/{$matches[3]}/{$matches[1]}";
 			}
-			$content .= "<tr class=\"cla-quote-item\"><td>{$item['name']}</td>";
+			$content .= "<tr class=\"tamus-quote-item\"><td>{$item['name']}</td>";
 			$content .= "<td>{$item['description']}</td>";
 			$content .= "<td><a class=\"btn btn-outline-dark\" target=\"_blank\" href=\"{$item['file']['url']}\" title=\"{$item['file']['title']}\"><span class=\"dashicons dashicons-media-text\"></span></a></td>";
 			$content .= "<td>{$requisition_number}</td>";
@@ -449,8 +449,8 @@ function cla_render_order( $content ) {
 	}
 
 	if ( ( current_user_can( 'wso_logistics' ) || current_user_can( 'wso_logistics_admin' ) ) && 1 === $logistics_confirmed ) {
-		$content .= "<tr><td colspan=\"6\" class=\"text-right\"><div class=\"ajax-response\"></div></td><td class=\"logistics-approval-buttons\"><input type=\"submit\" id=\"cla_submit\" value=\"Update\" />";
-		$content .= "<br><button type=\"button\" class=\"button button-submit button-green\" id=\"cla_publish\">Publish</button>";
+		$content .= "<tr><td colspan=\"6\" class=\"text-right\"><div class=\"ajax-response\"></div></td><td class=\"logistics-approval-buttons\"><input type=\"submit\" id=\"tamus_submit\" value=\"Update\" />";
+		$content .= "<br><button type=\"button\" class=\"button button-submit button-green\" id=\"tamus_publish\">Publish</button>";
 		$content .= "</td></tr>";
 	}
 
@@ -463,7 +463,7 @@ function cla_render_order( $content ) {
 	return $content;
 
 }
-add_filter( 'the_content', 'cla_render_order' );
+add_filter( 'the_content', 'tamus_render_order' );
 
 if ( function_exists( 'genesis' ) ) {
 	genesis();

@@ -11,9 +11,9 @@
 (function($){
 
 	var admin_ajax        = WSOAjax;
-	var $approval_form    = jQuery('#cla_order_approval_form');
-	var $acquisition_form = jQuery('#cla_acquisition_form');
-	var $reassign_form    = jQuery('#cla_order_reassign_form');
+	var $approval_form    = jQuery('#tamus_order_approval_form');
+	var $acquisition_form = jQuery('#tamus_acquisition_form');
+	var $reassign_form    = jQuery('#tamus_order_reassign_form');
 
 	var validateLogisticsFields = function(){
 		var valid = true;
@@ -30,8 +30,8 @@
 	var ajaxConfirm = function(e){
     e.preventDefault();
     var form_data = new FormData();
-    if ( $approval_form.find('#cla_account_number').length > 0 ) {
-    	form_data.append('account_number', $approval_form.find('#cla_account_number').val());
+    if ( $approval_form.find('#tamus_account_number').length > 0 ) {
+    	form_data.append('account_number', $approval_form.find('#tamus_account_number').val());
     }
     form_data.append('approval_comments', $approval_form.find('#approval_comments').val());
     form_data.append('action', 'confirm_order');
@@ -103,16 +103,16 @@
     var field_selector = [];
     if ( admin_ajax.item_count > 0 ) {
     	for ( var i=0; i < admin_ajax.item_count; i++ ) {
-    		field_selector.push('input[name="cla_item_' + i + '_req_number"]');
-    		field_selector.push('input[name="cla_item_' + i + '_req_date"]');
-    		field_selector.push('input[name="cla_item_' + i + '_asset_number"]');
+    		field_selector.push('input[name="tamus_item_' + i + '_req_number"]');
+    		field_selector.push('input[name="tamus_item_' + i + '_req_date"]');
+    		field_selector.push('input[name="tamus_item_' + i + '_asset_number"]');
     	}
     }
     if ( admin_ajax.quote_count > 0 ) {
     	for ( var i=0; i < admin_ajax.item_count; i++ ) {
-    		field_selector.push('input[name="cla_quote_' + i + '_req_number"]');
-    		field_selector.push('input[name="cla_quote_' + i + '_req_date"]');
-    		field_selector.push('input[name="cla_quote_' + i + '_asset_number"]');
+    		field_selector.push('input[name="tamus_quote_' + i + '_req_number"]');
+    		field_selector.push('input[name="tamus_quote_' + i + '_req_date"]');
+    		field_selector.push('input[name="tamus_quote_' + i + '_asset_number"]');
     	}
     }
     field_selector = field_selector.join(',');
@@ -234,10 +234,10 @@
     });
   };
 
-	$approval_form.find('#cla_confirm').on('click', ajaxConfirm);
-	$approval_form.find('#cla_return').on('click', ajaxReturn);
+	$approval_form.find('#tamus_confirm').on('click', ajaxConfirm);
+	$approval_form.find('#tamus_return').on('click', ajaxReturn);
 	$acquisition_form.submit(ajaxLogistics);
-	$acquisition_form.find('#cla_publish').on('click', ajaxLogisticsPublish);
-	$reassign_form.find('#cla_reassign').on('click', ajaxReassign);
+	$acquisition_form.find('#tamus_publish').on('click', ajaxLogisticsPublish);
+	$reassign_form.find('#tamus_reassign').on('click', ajaxReassign);
 
 })(jQuery);
