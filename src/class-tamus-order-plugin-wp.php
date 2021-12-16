@@ -66,7 +66,7 @@ class Order {
 		new \TAMUS\Order\Assets();
 
 		// Create post types.
-		require_once TAMUS_ORDER_DIR_PATH . 'src/class-order-posttype.php';
+		require_once TAMUS_ORDER_DIR_PATH . 'src/class-tamusorder-posttype.php';
 		new \TAMUS\Order\TAMUS_Order_PostType();
 
 		require_once TAMUS_ORDER_DIR_PATH . 'src/class-product-posttype.php';

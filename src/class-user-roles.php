@@ -56,7 +56,7 @@ class User_Roles {
 				'wso_admin',
 			),
 		),
-		'duplicate-posts' => array(
+		'duplicate-post' => array(
 			'copy'   => array(
 				'wso_admin',
 				'wso_logistics_admin',
@@ -139,20 +139,20 @@ class User_Roles {
 		// WSO Admin role.
 		$wso_admin_caps = array(
 			'level_9'                      => true, // Just below a true administrator.
-			'create_tamusorders'              => true, // This is needed to edit others orders for some reason.
-			'read_tamusorder'                 => true,
-			'read_private_tamusorders'        => true,
-			'edit_tamusorder'                 => true,
-			'edit_tamusorders'                => true,
-			'edit_others_tamusorders'         => true,
-			'edit_private_tamusorders'        => true,
-			'edit_published_tamusorders'      => true, // Required to read published tamusorders.
-			'publish_tamusorders'             => true, // Required for changing the post status.
-			'delete_tamusorder'               => true,
-			'delete_tamusorders'              => true,
-			'delete_others_tamusorders'       => true,
-			'delete_private_tamusorders'      => true,
-			'delete_published_tamusorders'    => true,
+			'create_tamusorders'           => true, // This is needed to edit others orders for some reason.
+			'read_tamusorder'              => true,
+			'read_private_tamusorders'     => true,
+			'edit_tamusorder'              => true,
+			'edit_tamusorders'             => true,
+			'edit_others_tamusorders'      => true,
+			'edit_private_tamusorders'     => true,
+			'edit_published_tamusorders'   => true, // Required to read published tamusorders.
+			'publish_tamusorders'          => true, // Required for changing the post status.
+			'delete_tamusorder'            => true,
+			'delete_tamusorders'           => true,
+			'delete_others_tamusorders'    => true,
+			'delete_private_tamusorders'   => true,
+			'delete_published_tamusorders' => true,
 			'create_programs'              => true,
 			'read_program'                 => true,
 			'read_private_programs'        => true,
@@ -249,20 +249,20 @@ class User_Roles {
 		// Logistics role.
 		$logistics_caps = array(
 			'level_8'                      => true, // Just below a true administrator.
-			'create_tamusorders'              => true, // This is needed to edit others orders for some reason.
-			'read_tamusorder'                 => true,
-			'read_private_tamusorders'        => true,
-			'edit_tamusorder'                 => true,
-			'edit_tamusorders'                => true,
-			'edit_others_tamusorders'         => true,
-			'edit_private_tamusorders'        => true,
-			'edit_published_tamusorders'      => true, // Required to read published tamusorders.
-			'publish_tamusorders'             => true, // Required for changing the post status.
-			'delete_tamusorder'               => true,
-			'delete_tamusorders'              => true,
-			'delete_others_tamusorders'       => true,
-			'delete_private_tamusorders'      => true,
-			'delete_published_tamusorders'    => true,
+			'create_tamusorders'           => true, // This is needed to edit others orders for some reason.
+			'read_tamusorder'              => true,
+			'read_private_tamusorders'     => true,
+			'edit_tamusorder'              => true,
+			'edit_tamusorders'             => true,
+			'edit_others_tamusorders'      => true,
+			'edit_private_tamusorders'     => true,
+			'edit_published_tamusorders'   => true, // Required to read published tamusorders.
+			'publish_tamusorders'          => true, // Required for changing the post status.
+			'delete_tamusorder'            => true,
+			'delete_tamusorders'           => true,
+			'delete_others_tamusorders'    => true,
+			'delete_private_tamusorders'   => true,
+			'delete_published_tamusorders' => true,
 			'create_programs'              => true,
 			'read_program'                 => true,
 			'read_private_programs'        => true,
