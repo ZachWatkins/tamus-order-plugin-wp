@@ -303,8 +303,7 @@ class Order_Form_Helper {
 		 */
 		$product_posts = $this->get_product_post_objects_for_program_by_user_dept( $program_id, $category );
 		if ( 0 === count( $product_posts ) ) {
-			$cat = false === $category ? '' : " \"{$category}\"";
-			return wp_kses_post( "<p>No{$cat} products found.</p>" );
+			return '';
 		}
 
 		// Output posts.
