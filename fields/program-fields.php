@@ -92,8 +92,18 @@ if( function_exists('acf_add_local_field_group') ):
 		),
 	);
 
-	// Build each department subfield.
-	$departments = include dirname( __FILE__, 2 ) . '/config/department/dept-data.php';
+	// Build each department subfield from the Department posts.
+	$department_objs = new \WP_Query( array(
+		'post_type' => 'department',
+	) );
+	$departments = array();
+	foreach ( $department_objs->posts as $key => $dept_post ) {
+		$departments[ $key ] = array(
+			'label' => get_the_title( $dept_post ),
+			'name' => get_post_field( 'post_name', $dept_post ),
+			'default_value' => $dept_post,
+		);
+	}
 	$department_subfields = array();
 	foreach ( $departments as $department ) {
 		$dept_subfield = $subfield;
@@ -105,8 +115,9 @@ if( function_exists('acf_add_local_field_group') ):
 		// Randomize the keys.
 		$dept_subfield['key'] = 'field_' . uniqid();
 		foreach ( $dept_subfield['sub_fields'] as $key => $subsubfield ) {
-			$dept_subfield['subfields'][ $key ] = 'field_' . uniqid();
+			$dept_subfield['sub_fields'][ $key ]['key'] = 'field_' . uniqid();
 		}
+		$department_subfields[] = $dept_subfield;
 	}
 
 	acf_add_local_field_group(array(
