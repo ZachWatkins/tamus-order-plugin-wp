@@ -11,114 +11,6 @@
  */
 
 if( function_exists('acf_add_local_field_group') ):
-	
-	$subfield = array(
-		'key'   => 'field_6009cxxxxxxxx',
-		'label' => '{Title}',
-		'name'  => '{slug}',
-		'type'  => 'group',
-		'instructions' => '',
-		'required' => 0,
-		'conditional_logic' => 0,
-		'wrapper' => array(
-			'width' => '',
-			'class' => '',
-			'id'    => '',
-		),
-		'layout' => 'block',
-		'sub_fields' => array(
-			array(
-				'key'   => 'field_6009cxxxxxxxx',
-				'label' => 'Department',
-				'name'  => 'department_post_id',
-				'type'  => 'post_object',
-				'instructions' => '',
-				'required' => 0,
-				'conditional_logic' => 0,
-				'wrapper' => array(
-					'width' => '',
-					'class' => '',
-					'id'    => '',
-				),
-				'post_type' => array(
-					0 => 'department',
-				),
-				'taxonomy' => '',
-				'allow_null' => 0,
-				'multiple'   => 0,
-				'return_format' => 'id',
-				'ui' => 1,
-			),
-			array(
-				'key' => 'field_6009cxxxxxxxx',
-				'label' => 'IT Representatives',
-				'name' => 'it_reps',
-				'type' => 'user',
-				'instructions' => '',
-				'required' => 0,
-				'conditional_logic' => 0,
-				'wrapper' => array(
-					'width' => '',
-					'class' => '',
-					'id' => '',
-				),
-				'role' => array(
-					0 => 'wso_it_rep',
-				),
-				'allow_null' => 0,
-				'multiple' => 1,
-				'return_format' => 'id',
-			),
-			array(
-				'key' => 'field_6009cxxxxxxxx',
-				'label' => 'Business Admins',
-				'name' => 'business_admins',
-				'type' => 'user',
-				'instructions' => '',
-				'required' => 0,
-				'conditional_logic' => 0,
-				'wrapper' => array(
-					'width' => '',
-					'class' => '',
-					'id' => '',
-				),
-				'role' => array(
-					0 => 'wso_business_admin',
-				),
-				'allow_null' => 0,
-				'multiple' => 1,
-				'return_format' => 'id',
-			),
-		),
-	);
-
-	// Build each department subfield from the Department posts.
-	$department_objs = new \WP_Query( array(
-		'post_type' => 'department',
-	) );
-	$departments = array();
-	foreach ( $department_objs->posts as $key => $dept_post ) {
-		$departments[ $key ] = array(
-			'label' => get_the_title( $dept_post ),
-			'name' => get_post_field( 'post_name', $dept_post ),
-			'default_value' => $dept_post,
-		);
-	}
-	$department_subfields = array();
-	foreach ( $departments as $department ) {
-		$dept_subfield = $subfield;
-		// Change the subfield label.
-		// Change the name.
-		foreach ( $department as $key => $value ) {
-			$dept_subfield[ $key ] = $value;
-		}
-		// Randomize the keys.
-		$dept_subfield['key'] = 'field_' . uniqid();
-		foreach ( $dept_subfield['sub_fields'] as $key => $subsubfield ) {
-			$dept_subfield['sub_fields'][ $key ]['key'] = 'field_' . uniqid();
-		}
-		$department_subfields[] = $dept_subfield;
-	}
 
 	acf_add_local_field_group(array(
 		'key' => 'group_5fff77f0910ae',
@@ -320,7 +212,482 @@ if( function_exists('acf_add_local_field_group') ):
 					'id' => '',
 				),
 				'layout' => 'block',
-				'sub_fields' => $department_subfields,
+				'sub_fields' => array(
+					array(
+						'key' => 'field_6009c33c9d0ab',
+						'label' => 'Network and Information Systems',
+						'name' => 'network_and_information_systems',
+						'type' => 'group',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'layout' => 'block',
+						'sub_fields' => array(
+							array(
+								'key' => 'field_6009c5780f28b',
+								'label' => 'Department',
+								'name' => 'department_post_id',
+								'type' => 'post_object',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'post_type' => array(
+									0 => 'department',
+								),
+								'taxonomy' => '',
+								'allow_null' => 0,
+								'multiple' => 0,
+								'return_format' => 'id',
+								'ui' => 1,
+							),
+							array(
+								'key' => 'field_6009c33c9d0ac',
+								'label' => 'IT Representatives',
+								'name' => 'it_reps',
+								'type' => 'user',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'role' => array(
+									0 => 'wso_it_rep',
+								),
+								'allow_null' => 0,
+								'multiple' => 1,
+								'return_format' => '',
+							),
+							array(
+								'key' => 'field_6009c33c9d0ad',
+								'label' => 'Business Admins',
+								'name' => 'business_admins',
+								'type' => 'user',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'role' => array(
+									0 => 'wso_business_admin',
+								),
+								'allow_null' => 0,
+								'multiple' => 1,
+								'return_format' => '',
+							),
+						),
+					),
+					array(
+						'key' => 'field_6009c1ac9d09c',
+						'label' => 'Communications',
+						'name' => 'communications',
+						'type' => 'group',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'layout' => 'block',
+						'sub_fields' => array(
+							array(
+								'key' => 'field_6009c4a40f286',
+								'label' => 'Department',
+								'name' => 'department_post_id',
+								'type' => 'post_object',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'post_type' => array(
+									0 => 'department',
+								),
+								'taxonomy' => '',
+								'allow_null' => 0,
+								'multiple' => 0,
+								'return_format' => 'id',
+								'ui' => 1,
+							),
+							array(
+								'key' => 'field_6009c2389d09d',
+								'label' => 'IT Representatives',
+								'name' => 'it_reps',
+								'type' => 'user',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'role' => array(
+									0 => 'wso_it_rep',
+								),
+								'allow_null' => 0,
+								'multiple' => 1,
+								'return_format' => '',
+							),
+							array(
+								'key' => 'field_6009c2aa9d09e',
+								'label' => 'Business Admins',
+								'name' => 'business_admins',
+								'type' => 'user',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'role' => array(
+									0 => 'wso_business_admin',
+								),
+								'allow_null' => 0,
+								'multiple' => 1,
+								'return_format' => '',
+							),
+						),
+					),
+					array(
+						'key' => 'field_6009c2e99d09f',
+						'label' => 'Research and Development',
+						'name' => 'research_and_development',
+						'type' => 'group',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'layout' => 'block',
+						'sub_fields' => array(
+							array(
+								'key' => 'field_6009c5020f287',
+								'label' => 'Department',
+								'name' => 'department_post_id',
+								'type' => 'post_object',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'post_type' => array(
+									0 => 'department',
+								),
+								'taxonomy' => '',
+								'allow_null' => 0,
+								'multiple' => 0,
+								'return_format' => 'id',
+								'ui' => 1,
+							),
+							array(
+								'key' => 'field_6009c2e99d0a0',
+								'label' => 'IT Representatives',
+								'name' => 'it_reps',
+								'type' => 'user',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'role' => array(
+									0 => 'wso_it_rep',
+								),
+								'allow_null' => 0,
+								'multiple' => 1,
+								'return_format' => '',
+							),
+							array(
+								'key' => 'field_6009c2e99d0a1',
+								'label' => 'Business Admins',
+								'name' => 'business_admins',
+								'type' => 'user',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'role' => array(
+									0 => 'wso_business_admin',
+								),
+								'allow_null' => 0,
+								'multiple' => 1,
+								'return_format' => '',
+							),
+						),
+					),
+					array(
+						'key' => 'field_6009c2fa9d0a2',
+						'label' => 'Facilities',
+						'name' => 'facilities',
+						'type' => 'group',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'layout' => 'block',
+						'sub_fields' => array(
+							array(
+								'key' => 'field_6009c5290f288',
+								'label' => 'Department',
+								'name' => 'department_post_id',
+								'type' => 'post_object',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'post_type' => array(
+									0 => 'department',
+								),
+								'taxonomy' => '',
+								'allow_null' => 0,
+								'multiple' => 0,
+								'return_format' => 'id',
+								'ui' => 1,
+							),
+							array(
+								'key' => 'field_6009c2fa9d0a3',
+								'label' => 'IT Representatives',
+								'name' => 'it_reps',
+								'type' => 'user',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'role' => array(
+									0 => 'wso_it_rep',
+								),
+								'allow_null' => 0,
+								'multiple' => 1,
+								'return_format' => '',
+							),
+							array(
+								'key' => 'field_6009c2fa9d0a4',
+								'label' => 'Business Admins',
+								'name' => 'business_admins',
+								'type' => 'user',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'role' => array(
+									0 => 'wso_business_admin',
+								),
+								'allow_null' => 0,
+								'multiple' => 1,
+								'return_format' => '',
+							),
+						),
+					),
+					array(
+						'key' => 'field_6009c31f9d0a5',
+						'label' => 'Events Management',
+						'name' => 'events_management',
+						'type' => 'group',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'layout' => 'block',
+						'sub_fields' => array(
+							array(
+								'key' => 'field_6009c5470f289',
+								'label' => 'Department',
+								'name' => 'department_post_id',
+								'type' => 'post_object',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'post_type' => array(
+									0 => 'department',
+								),
+								'taxonomy' => '',
+								'allow_null' => 0,
+								'multiple' => 0,
+								'return_format' => 'id',
+								'ui' => 1,
+							),
+							array(
+								'key' => 'field_6009c31f9d0a6',
+								'label' => 'IT Representatives',
+								'name' => 'it_reps',
+								'type' => 'user',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'role' => array(
+									0 => 'wso_it_rep',
+								),
+								'allow_null' => 0,
+								'multiple' => 1,
+								'return_format' => '',
+							),
+							array(
+								'key' => 'field_6009c31f9d0a7',
+								'label' => 'Business Admins',
+								'name' => 'business_admins',
+								'type' => 'user',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'role' => array(
+									0 => 'wso_business_admin',
+								),
+								'allow_null' => 0,
+								'multiple' => 1,
+								'return_format' => '',
+							),
+						),
+					),
+					array(
+						'key' => 'field_6009c32a9d0a8',
+						'label' => 'Finance',
+						'name' => 'finance',
+						'type' => 'group',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'layout' => 'block',
+						'sub_fields' => array(
+							array(
+								'key' => 'field_6009c55f0f28a',
+								'label' => 'Department',
+								'name' => 'department_post_id',
+								'type' => 'post_object',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'post_type' => array(
+									0 => 'department',
+								),
+								'taxonomy' => '',
+								'allow_null' => 0,
+								'multiple' => 0,
+								'return_format' => 'id',
+								'ui' => 1,
+							),
+							array(
+								'key' => 'field_6009c32a9d0a9',
+								'label' => 'IT Representatives',
+								'name' => 'it_reps',
+								'type' => 'user',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'role' => array(
+									0 => 'wso_it_rep',
+								),
+								'allow_null' => 0,
+								'multiple' => 1,
+								'return_format' => '',
+							),
+							array(
+								'key' => 'field_6009c32a9d0aa',
+								'label' => 'Business Admins',
+								'name' => 'business_admins',
+								'type' => 'user',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'role' => array(
+									0 => 'wso_business_admin',
+								),
+								'allow_null' => 0,
+								'multiple' => 1,
+								'return_format' => '',
+							),
+						),
+					),
+				),
 			),
 		),
 		'location' => array(
@@ -340,6 +707,7 @@ if( function_exists('acf_add_local_field_group') ):
 		'hide_on_screen' => '',
 		'active' => true,
 		'description' => '',
+		'show_in_rest' => 0,
 	));
-
-endif;
+	
+	endif;
