@@ -826,8 +826,7 @@ class TAMUS_Order_PostType {
 
 		require_once TAMUS_ORDER_DIR_PATH . 'src/class-posttype.php';
 		require_once TAMUS_ORDER_DIR_PATH . 'src/class-taxonomy.php';
-
-		new \TAMUS\Order\TAMUS_Order_PostType(
+		new \TAMUS\Order\PostType(
 			array(
 				'singular' => 'Order',
 				'plural'   => 'Orders',
@@ -858,7 +857,7 @@ class TAMUS_Order_PostType {
 					'with_front' => false,
 					'slug'       => 'orders',
 				),
-				'has_archive'  => false,
+				'has_archive'  => true,
 				// 'publicly_queryable' => false,
 			)
 		);
@@ -1983,12 +1982,14 @@ jQuery( 'select[name=\"post_status\"]' ).val('publish')";
 	 * @return void
 	 */
 	public function redirect_uninvolved_users_from_editing() {
+
 		// Prevent users who aren't on a work order from viewing/editing it.
 		global $pagenow;
 		if (
 			isset( $_GET['post'] )
-			&& 'post.php' === $pagenow
+			&& in_array( $pagenow, array( 'edit.php', 'post.php' ) )
 		) {
+			
 			wp_verify_nonce( 'edit' );
 			$user               = wp_get_current_user();
 			$current_user_id    = $user->ID;
