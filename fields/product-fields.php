@@ -39,28 +39,6 @@ acf_add_local_field_group(array(
 			'ui' => 1,
 		),
 		array(
-			'key' => 'field_6000acc75fa34',
-			'label' => 'Category',
-			'name' => 'product_category',
-			'type' => 'post_object',
-			'instructions' => '',
-			'required' => 0,
-			'conditional_logic' => 0,
-			'wrapper' => array(
-				'width' => '',
-				'class' => '',
-				'id' => '',
-			),
-			'post_type' => array(
-				0 => 'product-category',
-			),
-			'taxonomy' => '',
-			'allow_null' => 0,
-			'multiple' => 0,
-			'return_format' => 'object',
-			'ui' => 1,
-		),
-		array(
 			'key' => 'field_600070f84dfe4',
 			'label' => 'Description',
 			'name' => 'description',
