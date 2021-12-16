@@ -521,7 +521,7 @@ function tamus_render_order_form( $content ) {
 <label for=\"tamus_room_number\">Room Number *</label> {$room_number_field}<small>What is the room number of your primary office?</small></div>
 </div>
 <div class=\"form-group\"><label for=\"tamus_current_asset_number\">Current Workstation Asset Number *</label> {$asset_number_field}<small>What is the TAMU asset number of your current workstation computer? Example: 021500123456</small></div>
-<div class=\"nobreak\">{$no_computer_field}<label for=\"tamus_no_computer_yet\">I don't have a computer yet.</label></div>
+<div class=\"nobreak\">{$no_computer_field}<label for=\"tamus_no_computer_yet\">&nbsp;I don't have a computer yet.</label></div>
 </div><div class=\"cell medium-6\">
 <div class=\"form-group\"><label for=\"tamus_order_comments\">Order Comment</label> {$order_comment_field}<small>Any additional information that would be helpful to pass along.
 </small></div>
