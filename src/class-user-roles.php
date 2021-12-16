@@ -42,6 +42,30 @@ class User_Roles {
 	);
 
 	/**
+	 * Third party plugin capabilities by user role.
+	 * 
+	 * @var plugin_caps
+	 */
+	private $plugin_caps = array(
+		'postman'         => array(
+			'logs'    => array(
+				'wso_admin',
+				'wso_logistics_admin',
+			),
+			'options' => array(
+				'wso_admin',
+			),
+		),
+		'duplicate-posts' => array(
+			'copy'   => array(
+				'wso_admin',
+				'wso_logistics_admin',
+				'wso_logistics',
+			),
+		),
+	);
+
+	/**
 	 * Initialize the class
 	 *
 	 * @since 1.0.0
@@ -333,7 +357,7 @@ class User_Roles {
 			'level_9'            => true, // Just below a true administrator.
 			'wso_manage_options' => true,
 			'wso_email_logs'     => true,
-			'wso_email_opts' => true,
+			'wso_email_opts'     => true,
 		);
 
 		$logistics_admin_caps = array_merge( $logistics_admin_caps, $logistics_caps );
@@ -421,13 +445,8 @@ class User_Roles {
 
 		$postman = array(
 			'active'  => class_exists( 'Postman' ) && is_plugin_active( 'post-smtp/postman-smtp.php' ),
-			'logs'    => array(
-				'wso_admin',
-				'wso_logistics_admin',
-			),
-			'options' => array(
-				'wso_admin',
-			),
+			'logs'    => $this->plugin_caps['postman']['logs'],
+			'options' => $this->plugin_caps['postman']['options'],
 		);
 
 		if ( $postman['active'] ) {
@@ -456,11 +475,7 @@ class User_Roles {
 
 		$duplicate_post = array(
 			'active' => is_plugin_active( 'duplicate-post/duplicate-post.php' ),
-			'copy'   => array(
-				'wso_admin',
-				'wso_logistics_admin',
-				'wso_logistics',
-			),
+			'copy'   => $this->plugin_caps['duplicate-post']['copy'],
 		);
 
 		if ( $duplicate_post['active'] ) {
