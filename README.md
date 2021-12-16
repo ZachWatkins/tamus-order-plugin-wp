@@ -24,23 +24,21 @@ A GNU GPL 2.0 (or later) WordPress Plugin to facilitate product ordering within 
 3. `wso_email_logs`: Can view email logs.
 4. `wso_email_opts`: Can view and change SMTP email settings. Currently only supports the Post SMTP plugin.
 5. `wso_history_logs`: Can view history logs.
-3. All custom post types have each of their capabilities namespaced using their post type slug. Example: `create_tamusorders`
+6. All custom post types have each of their capabilities namespaced using their post type slug. Example: `create_tamusorders`
 
 ## WordPress Requirements
 
-1. Single site install
-2. [Genesis Framework - WordPress Theme](https://www.studiopress.com/themes/genesis/)
-3. Workstation Ordering Application Plugin
-    a. <https://github.com/zachwatkins/tamus-order-plugin-wp>
-    b. <https://github.com/tamulibarts/tamus-order-plugin-wp>
-4. WSOrder WordPress Child Theme
-    a. <https://github.com/zachwatkins/tamus-order>
-    b. <https://github.com/tamulibarts/tamus-order>
-5. [Advanced Custom Fields Pro Plugin](https://www.advancedcustomfields.com/pro/)
+Listed in the order you should activate them on the site:
+
+1. WordPress 5.4+ Single site install
+2. [Advanced Custom Fields Pro Plugin](https://www.advancedcustomfields.com/pro/)
+3. [Genesis Framework - WordPress Theme](https://www.studiopress.com/themes/genesis/)
+4. [TAMUS Order Application Genesis Child Theme](https://github.com/zachwatkins/tamus-order-theme-wp)
+5. [TAMUS Order Application Plugin](https://github.com/zachwatkins/tamus-order-plugin-wp)
 
 ## WordPress Recommendations
 
-1. TAMU NetID authentication plugin of some kind, we use an in-house CAS plugin and may switch to SAML SSO OneLogin.
+1. [OneLogin SAML SSO Plugin](https://wordpress.org/plugins/onelogin-saml-sso/) - for user authentication via Azure Active Directory.
 2. [Post SMTP Plugin](https://wordpress.org/plugins/post-smtp/) - Send emails by SMTP with a logger and one-click resend button in case of failed delivery
 3. [User Switching Plugin](https://github.com/johnbillion/user-switching) - For imitating user accounts in case that is desired functionality. The github.com repository is updated more frequently than the WordPress repository.
 4. [Yoast Duplicate Post Plugin](https://wordpress.org/plugins/duplicate-post/) - Copy custom post types.
@@ -83,17 +81,12 @@ Links to resources:
 ## Command Line Tasks
 
 1. `$ npm start` - Used to initialize the repository; should only be run after downloading the repository for the first time.
-2. `$ npm run configphpcs` - Configure the PHP Code Sniffer module to use WordPress Coding Standards.
-3. `$ npm run checkwp` - Checks the repository's WordPress files against the WordPress Coding Standards and outputs a report into your terminal.
-4. `$ npm run fixwp` - Automatically fixes syntax and whitespace issues with the repository's files according to WordPress Coding Standards.
-5. `$ npm run windows-configphpcs` - The same as `$ npm run configphpcs` but with Powershell-friendly syntax.
-6. `$ npm run windows-start` - The same as `$ npm start` but with Powershell-friendly syntax.
-7. `$ npm run windows-checkwp` - The same as `$ npm run checkwp` but with Powershell-friendly syntax.
-8. `$ npm run windows-fixwp` - The same as `$ npm run fixwp` but with Powershell-friendly syntax.
-9. `$ grunt` - Compile SASS files into compressed, production-ready CSS files.
-10. `$ grunt develop` - Compile SASS files into expanded, sourcemapped CSS files.
-11. `$ grunt watch` - Continuously watch SASS files for changes and compile them into expanded, sourcemapped CSS files every time they are saved.
-12. `$ grunt compress` - Create a compressed package file named `tamus-order-plugin-wp.zip` that can be uploaded to your WordPress website's plugin dashboard.
+2. `$ npm run checkwp` - Checks the repository's WordPress files against the WordPress Coding Standards and outputs a report into your terminal.
+3. `$ npm run fixwp` - Automatically fixes syntax and whitespace issues with the repository's files according to WordPress Coding Standards.
+4. `$ grunt` - Compile SASS files into compressed, production-ready CSS files.
+5. `$ grunt develop` - Compile SASS files into expanded, sourcemapped CSS files.
+6. `$ grunt watch` - Continuously watch SASS files for changes and compile them into expanded, sourcemapped CSS files every time they are saved.
+7. `$ grunt compress` - Create a compressed package file named `tamus-order-plugin-wp.zip` that can be uploaded to your WordPress website's plugin dashboard.
 
 ## To Do
 
@@ -119,10 +112,13 @@ On two different models of Dell Windows 10 machines (Inspiron and Latitude) a Wi
 1. The WordPress plugin was programmed by Zachary Watkins <zwatkins2@tamu.edu> <https://github.com/zachwatkins>.
 2. The WordPress theme was programmed by Zachary Watkins.
 3. The business process workflow and a portion of the UI specifications were designed by Pamela Luckenbill.
-4. The original application used very different technology, was programmed by Joseph Rafferty <jrafferty@tamu.edu>, and was authored by Joseph Rafferty and Pamela Luckenbill: [https://github.com/zachwatkins/workstation-order](https://github.com/zachwatkins/workstation-order).
-5. The majority of the workflow requirements for this version were preserved from the original application. However, the product, bundle, program, and department data creation and management interface is superseded by this application as it is provided by WordPress Core.
-6. The visual design at the start of the project was copied from the original application, and then the icons were replaced.
+4. The majority of the workflow requirements for this version were preserved from the original application. However, the product, bundle, program, and department data creation and management interface is superseded by this application as it is provided by WordPress Core.
+5. The visual design at the start of the project was copied from the original application, and then the icons were replaced.
 
-## Fun Facts
+## Original Application Credits
+
+1. The original application used very different technology, was programmed by Joseph Rafferty <jrafferty@tamu.edu>, and was authored by Joseph Rafferty and Pamela Luckenbill: <https://github.tamu.edu/liberalarts-web/cla-workstation-order>.
+
+## Footnotes
 
 To add an executable file to git version control, do this: `git add --chmod=+x hooks/pre-commit && git commit -m "Add pre-commit executable hook"`
