@@ -1,49 +1,49 @@
 {
-    "name": "liberalarts-web/tamus-order-plugin-wp",
-    "version": "1.1.0",
-    "type": "wordpress-plugin",
-    "homepage": "https://github.com/zachwatkins/tamus-order-plugin-wp",
-    "description": "A GNU GPL 2.0 (or later) WordPress Plugin to facilitate product ordering within a robust, multi-role return / approve workflow using team-based settings.",
-    "license": "GPL-2.0-or-later",
-    "authors": [
-        {
-            "name": "Zachary Watkins",
-            "email": "zwatkins2@tamu.edu",
-            "homepage": "https://github.com/zachwatkins",
-            "role": "Software Developer"
-        },
-        {
-        "name": "Contributors",
-        "homepage": "https://github.com/zachwatkins/tamus-order-plugin-wp/graphs/contributors"
+  "name": "liberalarts-web/tamus-order-plugin-wp",
+  "version": "1.1.0",
+  "type": "wordpress-plugin",
+  "homepage": "https://github.com/zachwatkins/tamus-order-plugin-wp",
+  "description": "A GNU GPL 2.0 (or later) WordPress Plugin to facilitate product ordering within a robust, multi-role return / approve workflow using team-based settings.",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Zachary Watkins",
+      "email": "zwatkins2@tamu.edu",
+      "homepage": "https://github.com/zachwatkins",
+      "role": "Software Developer"
     },
     {
-            "name": "Pamela Luckenbill",
-            "role": "Administrator"
-        }
-    ],
-    "support": {
-        "email": "zwatkins.it@gmail.com",
-        "source": "https://github.com/zachwatkins/tamus-order-plugin-wp",
-        "docs": "https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/README.md"
+      "name": "Contributors",
+      "homepage": "https://github.com/zachwatkins/tamus-order-plugin-wp/graphs/contributors"
     },
-    "minimum-stability": "stable",
-    "require": {
-        "setasign/fpdf": "^1.8"
-    },
-	"require-dev": {
+    {
+      "name": "Pamela Luckenbill",
+      "role": "Administrator"
+    }
+  ],
+  "support": {
+    "email": "zwatkins.it@gmail.com",
+    "source": "https://github.com/zachwatkins/tamus-order-plugin-wp",
+    "docs": "https://github.com/zachwatkins/tamus-order-plugin-wp/blob/master/README.md"
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "setasign/fpdf": "^1.8"
+  },
+  "require-dev": {
     "wp-coding-standards/wpcs": "*",
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
     "squizlabs/php_codesniffer": "^3.7",
     "automattic/vipwpcs": "^2.3"
-	},
-	"scripts": {
+  },
+  "scripts": {
     "config-wpcs": [
-        "./vendor/bin/phpcs --config-set default_standard WordPress-VIP-Go",
-        "./vendor/bin/phpcs --config-set report_format summary",
-        "./vendor/bin/phpcs --config-set colors 1"
-		],
+      "./vendor/bin/phpcs --config-set default_standard WordPress-VIP-Go",
+      "./vendor/bin/phpcs --config-set report_format summary",
+      "./vendor/bin/phpcs --config-set colors 1"
+    ],
     "install-codestandards": [
-        "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
+      "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run"
     ],
     "format": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf --ignore=vendor,node_modules",
     "format:modified": "@format --filter=gitmodified",
@@ -58,8 +58,8 @@
     }
   },
   "autoload": {
-      "classmap": [
-          "src/"
-		]
-	}
+    "classmap": [
+      "src/"
+    ]
+  }
 }
