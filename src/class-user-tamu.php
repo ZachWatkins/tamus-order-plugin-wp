@@ -16,60 +16,64 @@ namespace TAMUS\Order;
  * TAMU User information handling.
  *
  * @package tamus-order-plugin-wp
- * @since 1.1.0
+ * @since   1.1.0
  */
-class User_Tamu {
+class User_Tamu
+{
 
-	/**
-	 * Construct the class object instance.
-	 *
-	 * @return User_Tamu
-	 */
-	public function __construct() {
+    /**
+     * Construct the class object instance.
+     *
+     * @return User_Tamu
+     */
+    public function __construct()
+    {
 
-		add_action( 'admin_head-user-edit.php', array( $this, 'change_profile_labels' ) );
-		add_action( 'admin_head-user-new.php', array( $this, 'change_profile_labels' ) );
+        add_action('admin_head-user-edit.php', array( $this, 'change_profile_labels' ));
+        add_action('admin_head-user-new.php', array( $this, 'change_profile_labels' ));
 
-	}
+    }
 
-	/**
-	 * Replace Username with NetID
-	 *
-	 * @since 1.1.0
-	 *
-	 * @return void
-	 */
-	public function change_profile_labels() {
+    /**
+     * Replace Username with NetID
+     *
+     * @since 1.1.0
+     *
+     * @return void
+     */
+    public function change_profile_labels()
+    {
 
-		add_filter( 'gettext', array( $this, 'change_labels' ) );
+        add_filter('gettext', array( $this, 'change_labels' ));
 
-	}
+    }
 
-	/**
-	 * Filter the Username label.
-	 *
-	 * @since 1.1.0
-	 *
-	 * @param string $input The label input.
-	 *
-	 * @return string
-	 */
-	public function change_labels( $input ) {
+    /**
+     * Filter the Username label.
+     *
+     * @since 1.1.0
+     *
+     * @param string $input The label input.
+     *
+     * @return string
+     */
+    public function change_labels( $input )
+    {
 
-		switch ( $input ) {
+        switch ( $input ) {
 
-			case 'Username':
-				$input = 'NetID';
-				break;
-			case 'First Name':
-			case 'Last Name':
-				$input .= ' (recommended)';
-				break;
-			default:
-				break;
-		}
+        case 'Username':
+            $input = 'NetID';
+            break;
+        case 'First Name':
+        case 'Last Name':
+            $input .= ' (recommended)';
+            break;
+        default:
+            break;
+        }
 
-		return $input;
+        return $input;
 
-	}
+    }
 }

@@ -1,25 +1,20 @@
 {
-	"folders": [
-		{
-			"path": "../"
-		},
-		{
-			"path": "../../../themes/tamus-order"
-		},
-		{
-			"path": "../../../themes/genesis-sample"
-		}
-	],
-	"settings": {
-		"phpcs.enable": true,
-		"phpcs.standard": "WordPress",
-		"phpcs.executablePath": "../vendor/bin/phpcs",
-		"phpcs.showWarnings": true,
-		"phpcs.composerJsonPath": "../composer.json",
-		"files.eol": "\n",
-		"files.insertFinalNewline": true,
-		"files.trimTrailingWhitespace": true,
-        "editor.detectIndentation": false,
-        "editor.insertSpaces": false
-	}
+  "folders": [
+    {
+      "path": "../"
+    },
+    {
+      "path": "../../../themes/tamus-order"
+    },
+    {
+      "path": "../../../themes/genesis-sample"
+    }
+  ],
+  "settings": {
+    "phpcs.enable": true,
+    "phpcs.standard": "WordPress",
+    "phpcs.executablePath": "../vendor/bin/phpcs",
+    "phpcs.showWarnings": true,
+    "phpcs.composerJsonPath": "../composer.json"
+  }
 }

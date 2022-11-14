@@ -16,137 +16,144 @@ namespace TAMUS\Order;
  * Add assets
  *
  * @package tamus-order-plugin-wp
- * @since 1.0.0
+ * @since   1.0.0
  */
-class Program_PostType {
+class Program_PostType
+{
 
-	/**
-	 * Initialize the class.
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public function __construct() {
+    /**
+     * Initialize the class.
+     *
+     * @since  1.0.0
+     * @return void
+     */
+    public function __construct()
+    {
 
-		// Register_post_types.
-		add_action( 'init', array( $this, 'register_post_type' ) );
-		add_action( 'acf/init', array( $this, 'register_custom_fields' ) );
-		add_filter( 'manage_program_posts_columns', array( $this, 'add_list_view_columns' ) );
-		add_action( 'manage_program_posts_custom_column', array( $this, 'output_list_view_columns' ), 10, 2 );
+        // Register_post_types.
+        add_action('init', array( $this, 'register_post_type' ));
+        add_action('acf/init', array( $this, 'register_custom_fields' ));
+        add_filter('manage_program_posts_columns', array( $this, 'add_list_view_columns' ));
+        add_action('manage_program_posts_custom_column', array( $this, 'output_list_view_columns' ), 10, 2);
 
-		add_filter( 'acf/load_value/name=product_category_order', array( $this, 'load_product_categories' ), 10, 3 );
+        add_filter('acf/load_value/name=product_category_order', array( $this, 'load_product_categories' ), 10, 3);
 
-	}
+    }
 
-	/**
-	 * Register the post type.
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public function register_post_type() {
+    /**
+     * Register the post type.
+     *
+     * @since  1.0.0
+     * @return void
+     */
+    public function register_post_type()
+    {
 
-		require_once TAMUS_ORDER_DIR_PATH . 'src/class-posttype.php';
+        include_once TAMUS_ORDER_DIR_PATH . 'src/class-posttype.php';
 
-		new \TAMUS\Order\PostType(
-			array(
-				'singular' => 'Program',
-				'plural'   => 'Programs',
-			),
-			'program',
-			array(),
-			'dashicons-id',
-			array( 'title' ),
-			array(
-				'capability_type'    => array( 'program', 'programs' ),
-				'publicly_queryable' => false,
-				'has_archive'        => false,
-				'rewrite'            => false,
-				'public'             => false,
-			)
-		);
+        new \TAMUS\Order\PostType(
+            array(
+            'singular' => 'Program',
+            'plural'   => 'Programs',
+            ),
+            'program',
+            array(),
+            'dashicons-id',
+            array( 'title' ),
+            array(
+            'capability_type'    => array( 'program', 'programs' ),
+            'publicly_queryable' => false,
+            'has_archive'        => false,
+            'rewrite'            => false,
+            'public'             => false,
+            )
+        );
 
-	}
+    }
 
-	/**
-	 * Register custom fields
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public function register_custom_fields() {
-		require_once TAMUS_ORDER_DIR_PATH . 'fields/program-fields.php';
-	}
+    /**
+     * Register custom fields
+     *
+     * @since  1.0.0
+     * @return void
+     */
+    public function register_custom_fields()
+    {
+        include_once TAMUS_ORDER_DIR_PATH . 'fields/program-fields.php';
+    }
 
-	public function add_list_view_columns( $columns ){
+    public function add_list_view_columns( $columns )
+    {
 
-		array_pop( $columns );
-		$status  = array( 'current' => '' );
-		$columns = array_merge( $status, $columns );
+        array_pop($columns);
+        $status  = array( 'current' => '' );
+        $columns = array_merge($status, $columns);
 
-		$columns['prefix']      = 'Prefix';
-		$columns['allocation']  = 'Allocation';
-		$columns['threshold']   = 'Threshold';
-		$columns['fiscal_year'] = 'Fiscal Year';
-		$columns['orders']      = 'Orders';
-		return $columns;
+        $columns['prefix']      = 'Prefix';
+        $columns['allocation']  = 'Allocation';
+        $columns['threshold']   = 'Threshold';
+        $columns['fiscal_year'] = 'Fiscal Year';
+        $columns['orders']      = 'Orders';
+        return $columns;
 
-	}
+    }
 
-	public function output_list_view_columns( $column_name, $post_id ) {
-		if ( 'current' === $column_name ) {
-			$current_program_post = get_field( 'current_program', 'option' );
-			$current_program_id   = $current_program_post->ID;
-			if ( $post_id === $current_program_id ) {
-				echo '<span class="current-program-marker">*</span>';
-			}
-		} elseif ( 'prefix' === $column_name ) {
-			$prefix = get_field( 'prefix', $post_id );
-			echo $prefix;
-		} elseif ( 'allocation' === $column_name ) {
-			$number = (float) get_field( 'allocation', $post_id );
-			if ( class_exists( 'NumberFormatter' ) ) {
-				$formatter = new \NumberFormatter( 'en_US', \NumberFormatter::CURRENCY );
-				echo $formatter->formatCurrency($number, 'USD');
-			} else {
-				echo '$' . number_format( $number, 2, '.', ',' );
-			}
-		} elseif ( 'threshold' === $column_name ) {
-			$number = (float) get_field( 'threshold', $post_id );
-			if ( class_exists( 'NumberFormatter' ) ) {
-				$formatter = new \NumberFormatter( 'en_US', \NumberFormatter::CURRENCY );
-				echo $formatter->formatCurrency( $number, 'USD' );
-			} else {
-				echo '$' . number_format( $number, 2, '.', ',' );
-			}
-		} elseif ( 'fiscal_year' === $column_name ) {
-			$field = get_field( 'fiscal_year', $post_id );
-			echo $field;
-		} elseif ( 'orders' === $column_name ) {
-			$admin_url = admin_url();
-			echo "<a href=\"{$admin_url}edit.php?post_type=tamusorder&program={$post_id}\">Orders</a>";
-		}
-	}
+    public function output_list_view_columns( $column_name, $post_id )
+    {
+        if ('current' === $column_name ) {
+            $current_program_post = get_field('current_program', 'option');
+            $current_program_id   = $current_program_post->ID;
+            if ($post_id === $current_program_id ) {
+                echo '<span class="current-program-marker">*</span>';
+            }
+        } elseif ('prefix' === $column_name ) {
+            $prefix = get_field('prefix', $post_id);
+            echo $prefix;
+        } elseif ('allocation' === $column_name ) {
+            $number = (float) get_field('allocation', $post_id);
+            if (class_exists('NumberFormatter') ) {
+                $formatter = new \NumberFormatter('en_US', \NumberFormatter::CURRENCY);
+                echo $formatter->formatCurrency($number, 'USD');
+            } else {
+                echo '$' . number_format($number, 2, '.', ',');
+            }
+        } elseif ('threshold' === $column_name ) {
+            $number = (float) get_field('threshold', $post_id);
+            if (class_exists('NumberFormatter') ) {
+                $formatter = new \NumberFormatter('en_US', \NumberFormatter::CURRENCY);
+                echo $formatter->formatCurrency($number, 'USD');
+            } else {
+                echo '$' . number_format($number, 2, '.', ',');
+            }
+        } elseif ('fiscal_year' === $column_name ) {
+            $field = get_field('fiscal_year', $post_id);
+            echo $field;
+        } elseif ('orders' === $column_name ) {
+            $admin_url = admin_url();
+            echo "<a href=\"{$admin_url}edit.php?post_type=tamusorder&program={$post_id}\">Orders</a>";
+        }
+    }
 
-	public function load_product_categories( $value, $post_id, $field ) {
+    public function load_product_categories( $value, $post_id, $field )
+    {
 
-		/**
-		 * If the value is exactly NULL it means the field has never been updated.
-		 * We don't want to change fields that have already been editied.
-		 */
-		// if ( NULL !== $value ) {
-		// 	return $value;
-		// }
+        /**
+         * If the value is exactly NULL it means the field has never been updated.
+         * We don't want to change fields that have already been editied.
+         */
+        // if ( NULL !== $value ) {
+        //     return $value;
+        // }
 
-		$new_field_key = $field['sub_fields'][0]['key'];
-		$args          = array(
-			'taxonomy' => 'product-category',
-			'fields'   => 'ids',
+        $new_field_key = $field['sub_fields'][0]['key'];
+        $args          = array(
+        'taxonomy' => 'product-category',
+        'fields'   => 'ids',
 
-		);
-		$categories    = get_terms( $args );
-		
-		return $value;
+        );
+        $categories    = get_terms($args);
+        
+        return $value;
 
-	}
+    }
 }

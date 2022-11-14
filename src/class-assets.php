@@ -20,116 +20,124 @@ namespace TAMUS\Order;
  *
  * @since 1.0.0
  */
-class Assets {
+class Assets
+{
 
-	/**
-	 * Initialize the class
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public function __construct() {
+    /**
+     * Initialize the class
+     *
+     * @since  1.0.0
+     * @return void
+     */
+    public function __construct()
+    {
 
-		// Register global styles used in the theme.
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_styles' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'register_admin_scripts' ) );
+        // Register global styles used in the theme.
+        add_action('admin_enqueue_scripts', array( $this, 'register_admin_styles' ));
+        add_action('admin_enqueue_scripts', array( $this, 'register_admin_scripts' ));
 
-		// Enqueue admin styles.
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
+        // Enqueue admin styles.
+        add_action('admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ));
 
-		// Enqueue styles.
-		add_action( 'wp_enqueue_scripts', array( $this, 'register_styles' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+        // Enqueue styles.
+        add_action('wp_enqueue_scripts', array( $this, 'register_styles' ));
+        add_action('wp_enqueue_scripts', array( $this, 'enqueue_styles' ));
 
-		// Load Dashicons.
-		add_action( 'wp_enqueue_scripts', array( $this, 'load_dashicons_front_end' ) );
+        // Load Dashicons.
+        add_action('wp_enqueue_scripts', array( $this, 'load_dashicons_front_end' ));
 
-	}
+    }
 
-	/**
-	 * Registers all styles used within the plugin
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public static function register_styles() {
+    /**
+     * Registers all styles used within the plugin
+     *
+     * @since  1.0.0
+     * @return void
+     */
+    public static function register_styles()
+    {
 
-		wp_register_style(
-			'tamus-order-plugin-wp-styles',
-			TAMUS_ORDER_DIR_URL . 'css/styles.css',
-			false,
-			filemtime( TAMUS_ORDER_DIR_PATH . 'css/styles.css' ),
-			'screen'
-		);
+        wp_register_style(
+            'tamus-order-plugin-wp-styles',
+            TAMUS_ORDER_DIR_URL . 'css/styles.css',
+            false,
+            filemtime(TAMUS_ORDER_DIR_PATH . 'css/styles.css'),
+            'screen'
+        );
 
-	}
+    }
 
-	/**
-	 * Registers all styles used within the plugin
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public static function register_admin_styles() {
+    /**
+     * Registers all styles used within the plugin
+     *
+     * @since  1.0.0
+     * @return void
+     */
+    public static function register_admin_styles()
+    {
 
-		wp_register_style(
-			'tamus-order-plugin-wp-admin-styles',
-			TAMUS_ORDER_DIR_URL . 'css/admin.css',
-			false,
-			filemtime( TAMUS_ORDER_DIR_PATH . 'css/admin.css' ),
-			'screen'
-		);
+        wp_register_style(
+            'tamus-order-plugin-wp-admin-styles',
+            TAMUS_ORDER_DIR_URL . 'css/admin.css',
+            false,
+            filemtime(TAMUS_ORDER_DIR_PATH . 'css/admin.css'),
+            'screen'
+        );
 
-	}
+    }
 
-	/**
-	 * Registers all scripts used within the plugin
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public static function register_admin_scripts() {
+    /**
+     * Registers all scripts used within the plugin
+     *
+     * @since  1.0.0
+     * @return void
+     */
+    public static function register_admin_scripts()
+    {
 
-		wp_register_script(
-			'tamus-order-plugin-wp-admin-script',
-			TAMUS_ORDER_DIR_URL . 'js/admin-tamus-order.js',
-			array('select2'),
-			filemtime( TAMUS_ORDER_DIR_PATH . 'js/admin-tamus-order.js' ),
-			true
-		);
+        wp_register_script(
+            'tamus-order-plugin-wp-admin-script',
+            TAMUS_ORDER_DIR_URL . 'js/admin-tamus-order.js',
+            array('select2'),
+            filemtime(TAMUS_ORDER_DIR_PATH . 'js/admin-tamus-order.js'),
+            true
+        );
 
-	}
+    }
 
-	/**
-	 * Enqueues extension styles
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public static function enqueue_styles() {
+    /**
+     * Enqueues extension styles
+     *
+     * @since  1.0.0
+     * @return void
+     */
+    public static function enqueue_styles()
+    {
 
-		wp_enqueue_style( 'tamus-order-plugin-wp-styles' );
+        wp_enqueue_style('tamus-order-plugin-wp-styles');
 
-	}
+    }
 
-	/**
-	 * Enqueues extension styles
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public static function enqueue_admin_styles() {
+    /**
+     * Enqueues extension styles
+     *
+     * @since  1.0.0
+     * @return void
+     */
+    public static function enqueue_admin_styles()
+    {
 
-		wp_enqueue_style( 'tamus-order-plugin-wp-admin-styles' );
-		wp_enqueue_script( 'tamus-order-plugin-wp-admin-script' );
+        wp_enqueue_style('tamus-order-plugin-wp-admin-styles');
+        wp_enqueue_script('tamus-order-plugin-wp-admin-script');
 
-	}
+    }
 
-	/**
-	 * Loads WordPress Dashicons library.
-	 */
-	public function load_dashicons_front_end() {
-	  wp_enqueue_style( 'dashicons' );
-	}
+    /**
+     * Loads WordPress Dashicons library.
+     */
+    public function load_dashicons_front_end()
+    {
+        wp_enqueue_style('dashicons');
+    }
 
 }

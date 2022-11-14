@@ -16,60 +16,64 @@ namespace TAMUS\Order;
  * Add assets
  *
  * @package tamus-order-plugin-wp
- * @since 1.0.0
+ * @since   1.0.0
  */
-class Bundle_PostType {
+class Bundle_PostType
+{
 
-	/**
-	 * Initialize the class
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public function __construct() {
+    /**
+     * Initialize the class
+     *
+     * @since  1.0.0
+     * @return void
+     */
+    public function __construct()
+    {
 
-		// Register_post_types.
-		add_action( 'init', array( $this, 'register_post_type' ) );
-		add_action( 'acf/init', array( $this, 'register_custom_fields' ) );
+        // Register_post_types.
+        add_action('init', array( $this, 'register_post_type' ));
+        add_action('acf/init', array( $this, 'register_custom_fields' ));
 
-	}
+    }
 
-	/**
-	 * Register the post type.
-	 *
-	 * @return void
-	 */
-	public function register_post_type() {
+    /**
+     * Register the post type.
+     *
+     * @return void
+     */
+    public function register_post_type()
+    {
 
-		require_once TAMUS_ORDER_DIR_PATH . 'src/class-posttype.php';
+        include_once TAMUS_ORDER_DIR_PATH . 'src/class-posttype.php';
 
-		new \TAMUS\Order\PostType(
-			array(
-				'singular' => 'Bundle',
-				'plural'   => 'Bundles',
-			),
-			'bundle',
-			array(),
-			'dashicons-database',
-			array( 'title', 'thumbnail' ),
-			array(
-				'capability_type'    => array( 'bundle', 'bundles' ),
-				'publicly_queryable' => false,
-				'has_archive'        => false,
-				'rewrite'            => false,
-				'public'             => false,
-			)
-		);
+        new \TAMUS\Order\PostType(
+            array(
+            'singular' => 'Bundle',
+            'plural'   => 'Bundles',
+            ),
+            'bundle',
+            array(),
+            'dashicons-database',
+            array( 'title', 'thumbnail' ),
+            array(
+            'capability_type'    => array( 'bundle', 'bundles' ),
+            'publicly_queryable' => false,
+            'has_archive'        => false,
+            'rewrite'            => false,
+            'public'             => false,
+            )
+        );
 
-	}
+    }
 
-	/**
-	 * Register custom fields
-	 *
-	 * @since 1.0.0
-	 * @return void
-	 */
-	public function register_custom_fields() {
-		require_once TAMUS_ORDER_DIR_PATH . 'fields/bundle-fields.php';
-	}
+    /**
+     * Register custom fields
+     *
+     * @since  1.0.0
+     * @return void
+     */
+    public function register_custom_fields()
+    {
+        include_once TAMUS_ORDER_DIR_PATH . 'fields/bundle-fields.php';
+    }
 }
