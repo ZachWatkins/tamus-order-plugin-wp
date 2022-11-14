@@ -50,6 +50,12 @@
     "lint": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --ignore=vendor,node_modules",
     "lint:errors": "@lint -n",
     "lint:modified": "@lint --filter=gitmodified"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
 		]
 	}
 }
