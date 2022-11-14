@@ -56,6 +56,10 @@
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
     }
+  },
+  "autoload": {
+      "classmap": [
+          "src/"
 		]
 	}
 }
