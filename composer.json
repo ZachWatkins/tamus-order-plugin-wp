@@ -13,6 +13,10 @@
             "role": "Software Developer"
         },
         {
+        "name": "Contributors",
+        "homepage": "https://github.com/zachwatkins/tamus-order-plugin-wp/graphs/contributors"
+    },
+    {
             "name": "Pamela Luckenbill",
             "role": "Administrator"
         }
